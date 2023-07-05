@@ -26,8 +26,10 @@
                 <div class="ps-4">
                     <i class="ni ni-bullet-list-67 text-dark text-sm opacity-10" style="color: #f4645f;"></i>
                 </div>
-                <h6 class="ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">Repport</h6>
+                <h6 class="ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">
+                    {{(Illuminate\Support\Facades\Auth::user()->id>2)? 'Repport' : 'Control'}}</h6>
             </li>
+            @if(Illuminate\Support\Facades\Auth::user()->id>2)
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'Infractions' ? 'active' : '' }}"
                     href="{{ route('Infractions') }}">
@@ -48,7 +50,19 @@
                     <span class="nav-link-text ms-1">Alerts</span>
                 </a>
             </li>
-    <!-- 
+            @else
+            <li class="nav-item">
+                <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
+                    href="{{ route('control') }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Control</span>
+                </a>
+            </li>
+            @endif
+            <!-- 
             <li class="nav-item">
                 <a class="nav-link {{ str_contains(request()->url(), 'Accidents') == true ? 'active' : '' }}"
                     href="{{ route('Accidents') }}">

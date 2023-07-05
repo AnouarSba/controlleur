@@ -39,7 +39,7 @@ Route::post('Alert_list',[ ControlController::class, 'alert_list'])->name('Alert
 Route::post('Alert_t',[ ControlController::class, 'alert_trait'])->name('Alert_trait')->middleware('auth');
 Route::post('Alert_s',[ ControlController::class, 'alert_save'])->name('Alert_save')->middleware('auth');
 Route::get('Alert_r/{alert}',[ ControlController::class, 'alert_rapport'])->name('Alert_rapport')->middleware('auth');
-Route::get('control',[ ControlController::class, 'control'])->name('control')->middleware('auth'); 
+Route::get('Control',[ ControlController::class, 'control'])->name('control')->middleware('auth'); 
 Route::get('Instructions',[ ControlController::class, 'inst'])->name('inst')->middleware('auth'); 
 Route::get('Guide',[ ControlController::class, 'dalil'])->name('dalil')->middleware('auth'); 
 Route::get('Reglement',[ ControlController::class, 'emp'])->name('emp')->middleware('auth'); 
