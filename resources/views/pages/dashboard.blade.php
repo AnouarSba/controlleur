@@ -90,10 +90,10 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Cartes vendue</p>
                                 <h5 class="font-weight-bolder">
-                                    5
+                                    0
                                 </h5>
                                 <p class="mb-0">
-                                    <span class="text-success text-sm font-weight-bolder">2</span>
+                                    <span class="text-success text-sm font-weight-bolder">0</span>
                                     Aujourd'huit
                                 </p>
                             </div>
@@ -115,10 +115,10 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Flexy</p>
                                 <h5 class="font-weight-bolder">
-                                    2,300 DA
+                                    0.00 DA
                                 </h5>
                                 <p class="mb-0">
-                                    <span class="text-success text-sm font-weight-bolder">130 DA </span>
+                                    <span class="text-success text-sm font-weight-bolder">0 DA </span>
                                     Aujourd'huit
                                 </p>
                             </div>
@@ -141,10 +141,10 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Total rapport</p>
                                 <h5 class="font-weight-bolder">
-                                    5
+                                    {{$all}}
                                 </h5>
                                 <p class="mb-0">
-                                    <span class="text-success text-sm font-weight-bolder">2</span>
+                                    <span class="text-success text-sm font-weight-bolder">{{$today}}</span>
                                     Aujourd'huit
                                 </p>
                             </div>

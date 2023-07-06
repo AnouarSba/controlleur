@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
 
 use \PhpOffice\PhpWord\TemplateProcessor;
-
+use Carbon\carbon;
 class ControlController extends Controller
 {
     public function Infractions()

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Infraction;
+
+use Carbon\carbon;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard');
+        $t = Infraction::count();
+        $r = Infraction::whereDate('created_at', Carbon::today())->count();
+        return view('pages.dashboard', ['today'=>$r, 'all' => $t]);
     }
 }
