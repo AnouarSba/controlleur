@@ -24,6 +24,8 @@ return new class extends Migration
             $table->date('infra_date');
             $table->integer('status');
             $table->text('proces');
+            $table->text('quest');
+
             $table->string('lat')->nullable();
             $table->string('lang')->nullable();
 

@@ -98,5 +98,8 @@
                 </div>
             </div>
         </div>
+        <div class="col-12" style="display: contents;">
+            <a href="/"> <button type="button" class="btn btn-primary mb-2"> Retour</button></a>
+        </div>
     </div>
 </div>
