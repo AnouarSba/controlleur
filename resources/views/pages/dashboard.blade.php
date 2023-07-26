@@ -78,7 +78,7 @@
 }
 </style>
 @section('content')
-@include('layouts.navbars.auth.topnav', ['title' => 'Dashboard'])
+@include('layouts.navbars.auth.topnav', ['title' => 'الرئيسية'])
 <div class="container-fluid py-4">
     <div class="row">
         @if(Illuminate\Support\Facades\Auth::user()->id>2)

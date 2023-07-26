@@ -1,9 +1,9 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-@include('layouts.navbars.auth.topnav', ['title' => 'المخالفات'])
+@include('layouts.navbars.auth.topnav', ['title' => 'مراقبة الصندوق'])
 <div class="container-fluid py-4">
-    <form class="form main__form" id="myform" action="/add_infra" style="    z-index: 9;
+    <form class="form main__form" id="myform" action="/add_coffre" style="    z-index: 9;
     position: relative;
     border: black;
     border-radius: 9px;
@@ -11,43 +11,20 @@
         @csrf
         <div class="form__linput">
             <label class="form__label" for="fname">التاريخ</label>
-            <input class="form__input" type="date" id="date" required name="date" />
-        </div>
-        <div class="form__linput">
-            <label class="form__label" for="fname">العامل:</label>
-            <fieldset dir="rtl">
-                <div class="some-class" style="float:right">
-                    <input type="radio" class="radio" name="x" value="0" onchange="handleChange(this);" id="z" />
-                    <label for="y">السائق </label>
-                    <input type="radio" checked class="radio" name="x" value="1" onchange="handleChange(this);"
-                        id="y" />
-                    <label for="z">القابض </label>
-
-                </div>
-            </fieldset>
+            <input class="form__input" required type="datetime-local" id="date" required name="date" />
         </div>
         <div class="form__linput">
             <label class="form__label" for="name">الاسم</label>
 
-            <select class="form__select" id="name" required name="name">
-                <option value="" required>--- اختر العامل ---</option>
+            <select class="form__select" required id="name" required name="name">
+                <option value="" required>--- القابض ---</option>
                 @foreach (App\Models\Kabid::where('id','>','2')->get() as $k)
                 <option value="{{$k->id}}">{{$k->name}}</option>
                 @endforeach
             </select>
         </div>
         <div class="form__linput">
-            <label class="form__label" for="bus">الحافلة</label>
-
-            <select class="form__select" id="country-select" required name="bus">
-                <option value="">اختر الحافلة</option>
-                @foreach (App\Models\Bus::get() as $bus)
-                <option value="{{$bus->id}}">{{$bus->name}}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="form__linput">
-            <label class="form__label" for="ligne">الخط</label>
+            <label class="form__label" required for="ligne">الخط</label>
             <select class="form__select" id="ligne" required name="ligne">
                 <option value="" required>اختر الخط</option>
                 @foreach (App\Models\Ligne::get() as $l)
@@ -55,23 +32,57 @@
                 @endforeach
             </select>
         </div>
+
         <div class="form__linput">
-            <label class="form__label" for="arret">المحطة</label>
-            <select class="form__select" id="arret" required name="arret">
-                <option value="" required>اختر المحطة</option>
-                @foreach (App\Models\Arret::get() as $a)
-                <option value="{{$a->id}}">{{$a->name}}</option>
-                @endforeach
-            </select>
+            <label class="form__label" for="bus">التذاكر بقيمة 20 دج</label>
+            <div class="row">
+                <div class="col-5"><input onkeyup="ch(1)" value="0" required type="number" min="0" id="t20" name="t20">
+                </div>
+                <div class="col-5">بمبلغ <span id="tp20">0</span> دج</div>
+            </div>
+
         </div>
         <div class="form__linput">
-            <label class="form__label" for="infra">الخطأ</label>
-            <select class="form__select" id="infra" required name="infra">
-                <option value="" required>اختر نوع الخطأ</option>
-                @foreach (App\Models\Fkab::get() as $fk)
-                <option value="{{$fk->id}}">{{$fk->name}}</option>
-                @endforeach
-            </select>
+            <label class="form__label" for="bus">التذاكر بقيمة 25 دج</label>
+            <div class="row">
+                <div class="col-5"><input onkeyup="ch(2)" value="0" required type="number" min="0" id="t25" name="t25">
+                </div>
+                <div class="col-5">بمبلغ <span id="tp25">0</span> دج</div>
+            </div>
+
+        </div>
+        <div class="form__linput">
+            <label class="form__label" for="bus">التذاكر بقيمة 30 دج</label>
+            <div class="row">
+                <div class="col-5"><input onkeyup="ch(3)" value="0" required type="number" min="0" id="t30" name="t30">
+                </div>
+                <div class="col-5">بمبلغ <span id="tp30">0</span> دج</div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-8">اجمالي التذاكر <span id="tt">0</span> دج</div>
+        </div>
+
+        <div class="form__linput">
+            <label class="form__label" for="bus">النقود </label>
+            <div class="row">
+                <div class="col-5"><input onkeyup="ch(4)" value="0" required type="text" id="money" name="money"></div>
+                <div class="col-7">اجمالي الصندوق <span id="ts">0</span> دج</div>
+            </div>
+
+        </div>
+        <div class="form__linput">
+            <label class="form__label" for="bus">المحاسب </label>
+            <div class="row">
+                <div class="col-5"><input value="0" required type="text" id="caisse" name="caisse"></div>
+            </div>
+
+        </div>
+        <div class="form__linput">
+            <label class="form__label" for="infra">ملاحظة:</label>
+            <textarea class="form-control" rows="5" id="rq" name="rq"></textarea>
+
         </div>
         <input type="hidden" name="lang" id="lang">
         <input type="hidden" name="lat" id="lat">
@@ -197,6 +208,21 @@ new Chart(ctx1, {
         },
     },
 });
+
+function ch(x) {
+
+    x = document.getElementById("t20").value * 20;
+    y = document.getElementById("t25").value * 25;
+    z = document.getElementById("t30").value * 30;
+    xx = document.getElementById("money").value * 1;
+    document.getElementById("tp20").textContent = x;
+    document.getElementById("tp25").textContent = y;
+    document.getElementById("tp30").textContent = z;
+
+
+    document.getElementById("tt").textContent = x + y + z;
+    document.getElementById("ts").textContent = x + y + z + xx;
+}
 
 function handleChange(src) {
     $.ajaxSetup({

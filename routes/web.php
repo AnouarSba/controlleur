@@ -32,10 +32,12 @@ Route::post('Infraction_list',[ ControlController::class, 'Infra_list'])->name('
 Route::post('Infraction_t',[ ControlController::class, 'infra_trait'])->name('Infra_trait')->middleware('auth');
 Route::post('Infraction_s',[ ControlController::class, 'Infra_save'])->name('Infra_save')->middleware('auth');
 Route::get('Infraction_r/{infra}',[ ControlController::class, 'Infra_rapport'])->name('Infra_rapport')->middleware('auth');
+Route::get('Coffre/{c}',[ ControlController::class, 'Coffre_rapport'])->name('Coffre_rapport')->middleware('auth');
 
 Route::get('Alert_list',[ ControlController::class, 'alert_list'])->middleware('auth'); 
   
 Route::post('Alert_list',[ ControlController::class, 'alert_list'])->name('Alert_list')->middleware('auth'); 
+Route::post('Coffre_list',[ ControlController::class, 'coffre_list'])->name('Coffre_list')->middleware('auth'); 
 Route::post('Alert_t',[ ControlController::class, 'alert_trait'])->name('Alert_trait')->middleware('auth');
 Route::post('Alert_s',[ ControlController::class, 'alert_save'])->name('Alert_save')->middleware('auth');
 Route::get('Alert_r/{alert}',[ ControlController::class, 'alert_rapport'])->name('Alert_rapport')->middleware('auth');
@@ -72,7 +74,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/inf_show/{id}',[ ControlController::class, 'inf_show'])->name('inf_show'); 
 	Route::get('/inf_type/{id}',[ ControlController::class, 'inf_type'])->name('inf_type'); 
 	Route::get('/Alerts', [ControlController::class, 'Alerts'])->name('Alerts'); 
+	Route::get('/Coffre', [ControlController::class, 'Coffre'])->name('Coffre'); 
 	Route::post('/add_alert', [ControlController::class, 'store_alert'])->name('store_alert'); 
+	Route::post('/add_coffre', [ControlController::class, 'store_coffre'])->name('store_coffre'); 
 	Route::get('/Accidents', [ControlController::class, 'Accidents'])->name('Accidents'); 
 	Route::get('/Controle_Bus', [ControlController::class, 'Controle_Bus'])->name('Controle_Bus'); 
 	Route::get('/Controle_Employer', [ControlController::class, 'Controle_Employer'])->name('Controle_Employer'); 

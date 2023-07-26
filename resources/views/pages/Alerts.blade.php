@@ -6,7 +6,7 @@
     display: none;
 }
 </style>
-@include('layouts.navbars.auth.topnav', ['title' => 'Alerts'])
+@include('layouts.navbars.auth.topnav', ['title' => 'التبليغات'])
 <div class="container-fluid py-4">
     <form class="form main__form" id="myform" action="/add_alert" style="    z-index: 9;
     position: relative;

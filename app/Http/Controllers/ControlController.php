@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use DataTables;
 use App\Models\Infraction;
+use App\Models\Coffre;
 use App\Models\Chauffeur;
 use App\Models\Kabid;
 use App\Models\Fkab;
@@ -25,6 +26,10 @@ class ControlController extends Controller
     public function Infractions()
     {
         return view('pages.Infractions');
+    }
+    public function Coffre()
+    {
+        return view('pages.Coffre');
     }
     public function Alerts()
     {
@@ -113,6 +118,29 @@ if ($request->id == "0") {
     return response()->json(['options'=>$data]);
     
   
+}
+public function store_coffre(Request $request)
+{
+    $d= explode('T', $request->date)[0];
+    $t= explode('T', $request->date)[1];
+
+    $y = Auth::id();
+    $date = $d;
+    $time = $t;
+    $name = $request->name;
+    $caisse = $request->caisse;
+    $t20 = $request->t20;
+    $t25 = $request->t25;
+    $t30 = $request->t30;
+    $money = $request->money;
+    $ts = $t20*20+$t25*25+$t30*30 + $money;
+    $ligne = $request->ligne;
+    $lat = $request->lat;
+    $lang = $request->lang;
+    $rq = $request->rq;
+   // DB::statement("SET SQL_MODE=''");
+    $row = Coffre::create(['user_id' => $y, 'emp_id' => $name, 'ts' => $ts,'rq' => $rq, 'caisse' => $caisse,'money' => $money,'lat' => $lat, 'lang' => $lang, 'ligne_id' => $ligne, 't20' => $t20,'t25' => $t25,'t30' => $t30, 'time' => $time, 'c_date' => $date ]);
+    return view('pages.Coffre');
 }
 public function store_infra(Request $request)
 {
@@ -216,6 +244,62 @@ public function alert_save(Request $request)
   
     return view('admin.Alert', [ 'sttart_date'=> $from,  'markers'=> $markers, 'user_id' => $request->type_id, 'endd_date'=> $to, 'controlleur'=> $controlleur]);
 
+}
+public function coffre_rapport(Request $request)
+{
+    $c = Coffre::find($request->c);
+    if ($c) {
+    $templateProcessor = new TemplateProcessor('assets/word/rapport_coffre_original.docx');
+    
+        $employer = Kabid::find($c->emp_id);
+        if ($employer) {
+            $name = $employer->name;
+        }
+        
+    
+    $ctrl = User::find($c->user_id);
+        if ($ctrl) {
+           $ctrl = $ctrl->username;
+        }
+    
+        $ligne = Ligne::find($c->ligne_id);
+        if ($ligne) {
+           $ligne = $ligne->name;
+        }
+        $time=$c->time;
+        $money=$c->money;
+        $t20=$c->t20;
+        $t25=$c->t25;
+        $t30=$c->t30;
+        $tp20= $t20 * 20;
+        $tp25= $t25 * 25;
+        $tp30= $t30 * 30;
+        $tt = $tp20+$tp25+$tp30;
+        $ts = $c->ts;
+        $caisse = $c->caisse;
+    $templateProcessor->setValue('c_nom', $ctrl);
+    $templateProcessor->setValue('nom', $name);
+    $templateProcessor->setValue('ligne', $ligne);
+    $templateProcessor->setValue('t20', $t20);
+    $templateProcessor->setValue('t25', $t25);
+    $templateProcessor->setValue('t30', $t30);
+    $templateProcessor->setValue('tp20', $tp20);
+    $templateProcessor->setValue('tp25', $tp25);
+    $templateProcessor->setValue('tp30', $tp30);
+    $templateProcessor->setValue('time', $time);
+    $templateProcessor->setValue('tt', $tt);
+    $templateProcessor->setValue('money', $money);
+   // $templateProcessor->setValue('pm', $pm);
+    $templateProcessor->setValue('caisse', $caisse);
+    $templateProcessor->setValue('ts', $ts);
+    $templateProcessor->setValue('date', $c->c_date);
+    $templateProcessor->setValue('remarque', $c->rq);
+    $templateProcessor->setImageValue('logo', 'assets/word/logo.png');
+    $templateProcessor->saveAs('assets/word/rapport_coffre.docx');
+
+    // Return a download response to the user
+    return response()->download('assets/word/rapport_coffre.docx');
+    }
 }
 public function infra_rapport(Request $request)
 {
@@ -578,6 +662,73 @@ $from= explode('T',$req['sttart_date'])[0];
    
 $to= explode('T',$req['endd_date'])[0];
     return view('admin.alert', ['sttart_date'=> $from,  'user_id'=> $request->type_id, 'endd_date'=> $to,  'markers'=> $markers, 'controlleur'=> $controlleur]);
+
+}
+
+
+public function coffre_list(Request $request)
+{  
+           $from= $request->sttart_date;	
+       $to= $request->endd_date;
+       if ($request->user_id) {
+           $query= Coffre::where('user_id', '=',$request->user_id);
+       }
+       else {
+           $query = Coffre::where('coffres.id', '!=', 0);
+       }
+    if ($request->ajax()) {
+        $data = $query->leftJoin('lignes', function($join) {
+            $join->on('lignes.id', '=', 'coffres.ligne_id');
+          })
+       ->Join('users', 'coffres.user_id', '=', 'users.id')
+       ->Join('kabids', 'coffres.emp_id','=','kabids.id')
+       ->whereBetween('c_date', [$from, $to])
+       ->select('coffres.id as id', 'ts', 'caisse', 'users.username as ctrl_name', 'kabids.name as emp_name','lignes.name as l_name','c_date');
+      
+        return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn = '';
+                    $btn = $btn.'<a href="'.route('Coffre_rapport',$row->id).'" class="btn btn-success btn-sm">التقرير</a>';
+/*
+                    if($row->status != 1)  $btn .= '
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" onclick="put_id('.$row->id.',1);" data-target="#exampleModal">
+                    حفظ
+                  </button>
+                  
+                  '; 
+                  $btn = $btn.'
+                  <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" onclick="put_id2('.$row->id.',`'.$row->proces.'`);" data-target="#exampleModal1">
+                  معالجة
+                </button>';
+                  /*                   $btn .= '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">معالجة</a>';
+                       $btn .= '<a href="javascript:void(0)" class="edit btn btn-danger btn-sm">حذف</a>';
+     */
+                        return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+    }
+    if ($request->type_id) {
+        $controlleur = User::find($request->type_id)->username;
+    }
+    else $controlleur = 'الكل';
+    $req = $request->validate([
+        'sttart_date' => 'required|date',
+        'endd_date' => 'required|date',
+       ]);
+       if ($request->user_id) {
+        $query= Coffre::where('user_id', '=',$request->user_id);
+    }
+    else {
+        $query = Coffre::where('id', '!=', 0);
+    }
+$markers = $query->whereBetween('created_at', [$req['sttart_date'], $req['endd_date']])->get();
+
+$from= explode('T',$req['sttart_date'])[0];	
+   
+$to= explode('T',$req['endd_date'])[0];
+    return view('admin.coffre', ['sttart_date'=> $from,  'user_id'=> $request->type_id, 'endd_date'=> $to,  'markers'=> $markers, 'controlleur'=> $controlleur]);
 
 }
 }

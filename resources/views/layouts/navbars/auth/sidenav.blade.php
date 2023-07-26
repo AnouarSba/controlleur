@@ -19,7 +19,7 @@
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Dashboard</span>
+                    <span class="nav-link-text ms-1">الرئيسية</span>
                 </a>
             </li>
             <li class="nav-item mt-3 d-flex align-items-center">
@@ -37,7 +37,7 @@
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-sound-wave text-dark text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Infractions</span>
+                    <span class="nav-link-text ms-1">مخالفات</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -47,7 +47,17 @@
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Alerts</span>
+                    <span class="nav-link-text ms-1">تبليغات</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ str_contains(request()->url(), 'Coffre') == true ? 'active' : '' }}"
+                    href="{{ route('Coffre') }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">مراقبة الصندوق</span>
                 </a>
             </li>
             @else
