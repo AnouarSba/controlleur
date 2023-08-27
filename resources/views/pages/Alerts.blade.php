@@ -26,7 +26,7 @@
                     <label for="y">تبليغ عام </label>
                     <input type="radio" checked class="radio" name="x" value="1" onchange="handleChange(this);"
                         id="y" />
-                    <label for="z">تبليغ خاص بالمؤسسة </label>
+                    <label for="z">تبليغ خاص بالحافلة </label>
 
                 </div>
             </fieldset>
