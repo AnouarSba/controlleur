@@ -36,7 +36,8 @@
         <div class="form__linput">
             <label class="form__label" for="bus">التذاكر بقيمة 20 دج</label>
             <div class="row">
-                <div class="col-5"><input onkeyup="ch(1)" value="0" required type="number" min="0" id="t20" name="t20">
+                <div class="col-5"><input onkeyup="ch(1)" value="0" required type="number" style="width:100px" min="0"
+                        id="t20" name="t20">
                 </div>
                 <div class="col-5">بمبلغ <span id="tp20">0</span> دج</div>
             </div>
@@ -45,7 +46,8 @@
         <div class="form__linput">
             <label class="form__label" for="bus">التذاكر بقيمة 25 دج</label>
             <div class="row">
-                <div class="col-5"><input onkeyup="ch(2)" value="0" required type="number" min="0" id="t25" name="t25">
+                <div class="col-5"><input onkeyup="ch(2)" value="0" required type="number" style="width:100px" min="0"
+                        id="t25" name="t25">
                 </div>
                 <div class="col-5">بمبلغ <span id="tp25">0</span> دج</div>
             </div>
@@ -54,7 +56,8 @@
         <div class="form__linput">
             <label class="form__label" for="bus">التذاكر بقيمة 30 دج</label>
             <div class="row">
-                <div class="col-5"><input onkeyup="ch(3)" value="0" required type="number" min="0" id="t30" name="t30">
+                <div class="col-5"><input onkeyup="ch(3)" value="0" required type="number" style="width:100px" min="0"
+                        id="t30" name="t30">
                 </div>
                 <div class="col-5">بمبلغ <span id="tp30">0</span> دج</div>
             </div>
@@ -68,6 +71,7 @@
             <label class="form__label" for="bus">النقود </label>
             <div class="row">
                 <div class="col-5"><input onkeyup="ch(4)" value="0" required type="text" id="money" name="money"></div>
+                <br>
                 <div class="col-7">اجمالي الصندوق <span id="ts">0</span> دج</div>
             </div>
 
