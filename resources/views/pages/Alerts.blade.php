@@ -7,6 +7,11 @@
 }
 </style>
 @include('layouts.navbars.auth.topnav', ['title' => 'التبليغات'])
+@if(isset($ctrl))
+<script>
+alert('لقد قمت بالتبليغ')
+</script>
+@endif
 <div class="container-fluid py-4">
     <form class="form main__form" id="myform" action="/add_alert" style="    z-index: 9;
     position: relative;

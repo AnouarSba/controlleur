@@ -6,6 +6,54 @@
 
             <div class="card" style="background-color: rgb(120, 144, 230)">
                 <div class="card-header">
+                    <h3>{{ __('أماكن المراقبة') }}</h3>
+                </div>
+
+                <div class="card-body">
+                    @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                    @endif
+                    <form method="POST" action="{{ route('location') }}">
+                        @csrf
+                        <div class="form-row align-items-center">
+
+                            <div class="col-auto">
+                                <label for="exampleFormControlInput1">id conrolleur </label>
+                                <select class="form-control" id="country-select" required name="type_id">
+                                    <option value="">اختر المراقب</option>
+                                    @foreach ($users as $user)
+                                    <option value="{{$user->id}}">{{$user->username}}</option>
+                                    @endforeach
+                                </select>
+                                @error('type_id') <span class="text-danger error">{{ $message }}</span>@enderror
+                            </div>
+                            <div class="col-auto">
+                                <label for="exampleFormControlInput1">Date De Debut</label>
+                                <input type="datetime-local" class="form-control" id="game-date-time-text"
+                                    name="sttart_date" value="{{ now()->setTimezone('T')->format('Y-m-d H:m') }}">
+                                @error('start_date') <span class="text-danger error">{{ $message }}</span>@enderror
+                            </div>
+
+                            <div class="col-auto">
+                                <label for="exampleFormControlInput1">Date de Fin</label>
+                                <input type="datetime-local" class="form-control" id="game-date-time-text"
+                                    name="endd_date" value="{{ now()->setTimezone('T')->format('Y-m-d H:m') }}">
+                                @error('end_date') <span class="text-danger error">{{ $message }}</span>@enderror
+                            </div>
+
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary mb-2"> Envoyer</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="card" style="background-color: rgb(120, 144, 230)">
+                <div class="card-header">
                     <h3>{{ __('معالجة المخالفات') }}</h3>
                 </div>
 

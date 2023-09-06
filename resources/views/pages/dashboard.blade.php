@@ -158,6 +158,12 @@
                 </div>
             </div>
         </div>
+
+        @endif
+        @if(isset($ctrl_b))
+        <script>
+        alert('انت تراقب الحافلة {{$buses[$ctrl_b]->name}}')
+        </script>
         @endif
         <!--
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -499,6 +505,25 @@
         </div> -->
     <!--Copy this into your website or website generator, in the HTML section.-->
 
+    <form action="{{ route('pos') }}" id="myform1" style="margin-left:10px; margin-top:10px;
+    z-index: 99;
+    position: relative;
+    font-size: 25px;">
+
+        <select class="" id="country-select" required name="bus">
+            <option value="">اختر الحافلة</option>
+            @foreach (App\Models\Bus::get() as $bus)
+            <option value="{{$bus->id}}">{{$bus->name}}</option>
+            @endforeach
+        </select>
+
+        <input type="hidden" name="lang" id="lang">
+        <input type="hidden" name="lat" id="lat">
+        <button class="bg-gradient-secondary" style="text-align: center; color:white;
+margin-right: 0%;
+" onclick="getLocation();" type="button">مراقبة</button>
+    </form>
+
     <div id='imageGalleryWithTitle' class="news-container" style="position: relative"></div>
     @include('layouts.footers.auth.footer')
 </div>
@@ -585,6 +610,34 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 <script src="./assets/js/plugins/chartjs.min.js"></script>
+
+<script>
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+function showPosition(position) {
+    var a = position.coords.latitude + ',' + position.coords.longitude;
+
+    document.getElementById("lang").value = position.coords.longitude;
+    document.getElementById("lat").value = position.coords.latitude;
+    let applyForm = document.getElementById('myform1');
+
+    if (!applyForm.checkValidity()) {
+        if (applyForm.reportValidity) {
+            applyForm.reportValidity();
+        } else {
+            alert(msg.ieErrorForm);
+        }
+    } else {
+        document.getElementById("myform1").submit();
+    }
+}
+</script>
 <script>
 var ctx1 = document.getElementById("chart-line").getContext("2d");
 

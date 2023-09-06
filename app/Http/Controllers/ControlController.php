@@ -12,6 +12,7 @@ use App\Models\Kabid;
 use App\Models\Fkab;
 use App\Models\Fchauffeur;
 use App\Models\User;
+use App\Models\Position;
 use App\Models\Bus;
 use App\Models\Ligne;
 use App\Models\Arret;
@@ -72,7 +73,8 @@ if ($request->id == "0") {
 }
 public function control(Request $request)
 {
-    return view('controls.control');
+    $users = User::where('id', '>', 2)->get();
+    return view('controls.control', ['users' => $users]);
 
 }
 public function inst(Request $request)
@@ -140,7 +142,7 @@ public function store_coffre(Request $request)
     $rq = $request->rq;
    // DB::statement("SET SQL_MODE=''");
     $row = Coffre::create(['user_id' => $y, 'emp_id' => $name, 'ts' => $ts,'rq' => $rq, 'caisse' => $caisse,'money' => $money,'lat' => $lat, 'lang' => $lang, 'ligne_id' => $ligne, 't20' => $t20,'t25' => $t25,'t30' => $t30, 'time' => $time, 'c_date' => $date ]);
-    return view('pages.Coffre');
+    return view('pages.Coffre', ['ctrl'=>1]);
 }
 public function store_infra(Request $request)
 {
@@ -154,9 +156,11 @@ public function store_infra(Request $request)
     $lat = $request->lat;
     $lang = $request->lang;
     $infra = $request->infra;
+
     DB::statement("SET SQL_MODE=''");
     $row = Infraction::create(['user_id' => $y, 'emp_type' => $x, 'emp_id' => $name, 'bus_id' => $bus,'lat' => $lat, 'lang' => $lang, 'ligne_id' => $ligne, 'arret_id' => $arret, 'infra_id' => $infra, 'infra_date' => $date ]);
-    return view('pages.Infractions');
+    $ctrl = 1;
+    return view('pages.Infractions' , ['ctrl' => $ctrl]);
 }
 public function store_alert(Request $request)
 {
@@ -172,7 +176,7 @@ public function store_alert(Request $request)
     $alert = $request->alrt;
     DB::statement("SET SQL_MODE=''");
     $row = Alert::create(['user_id' => $y, 'alert_type' => $x, 'bus_id' => $bus,'lat' => $lat, 'lang' => $lang, 'ligne_id' => $ligne, 'arret_id' => $arret, 'alert' => $alert, 'alert_date' => $date ]);
-    return view('pages.Alerts');
+    return view('pages.Alerts', ['ctrl'=>1]);
 }
 public function infra_save(Request $request)
 {
@@ -729,6 +733,31 @@ $from= explode('T',$req['sttart_date'])[0];
    
 $to= explode('T',$req['endd_date'])[0];
     return view('admin.coffre', ['sttart_date'=> $from,  'user_id'=> $request->type_id, 'endd_date'=> $to,  'markers'=> $markers, 'controlleur'=> $controlleur]);
+
+}
+
+public function locate(Request $request)
+{
+    
+    $y = Auth::id();
+    $bus = $request->bus;
+   // $ligne = $request->ligne;
+    $lat = $request->lat;
+    $lang = $request->lang;
+    DB::statement("SET SQL_MODE=''");
+    $row = Position::create(['user_id' => $y, 'bus_id' => $bus,'lat' => $lat, 'lang' => $lang ]);
+  
+    $buses = Bus::get();
+    return view('pages.dashboard', ['ctrl_b'=>$bus, 'buses' => $buses]);}
+    
+public function location(Request $request)
+{
+    $from = $request->sttart_date;
+    $to = $request->endd_date;
+    $controlleur = User::find($request->type_id)->username;
+    $markers = Position::where('user_id', '=', $request->type_id)
+    ->whereBetween('created_at', [$from, $to])->get();
+    return view('admin.location', ['sttart_date'=> $from,  'markers'=> $markers,  'endd_date'=> $to, 'controlleur'=> $controlleur]);
 
 }
 }

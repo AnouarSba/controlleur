@@ -2,6 +2,11 @@
 
 @section('content')
 @include('layouts.navbars.auth.topnav', ['title' => 'المخالفات'])
+@if(isset($ctrl))
+<script>
+alert('لقد قمت بتحرير المخالفة')
+</script>
+@endif
 <div class="container-fluid py-4">
     <form class="form main__form" id="myform" action="/add_infra" style="    z-index: 9;
     position: relative;
