@@ -503,7 +503,7 @@ public function infra_list(Request $request)
        ->where('infractions.emp_type', '=', 1)
             
             ->whereBetween('infra_date', [$from, $to])
-       ->select('infractions.id as id', 'infractions.status as status','quest', 'infractions.proces as proces', 'emp_type','emp_id', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name', 'arrets.name as a_name', 'kabids.name as en', 'fkabs.name as i_name');
+       ->select('infractions.id as id', 'infractions.status as status', 'infra_date','quest', 'infractions.proces as proces', 'emp_type','emp_id', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name', 'arrets.name as a_name', 'kabids.name as en', 'fkabs.name as i_name');
       
          }
         else {
@@ -515,7 +515,7 @@ public function infra_list(Request $request)
             ->Join('users', 'infractions.user_id', '=', 'users.id')
             ->where('infractions.emp_type', '=',0)
             ->whereBetween('infra_date', [$from, $to])
-            ->select('infractions.id as id', 'infractions.status as status', 'quest', 'infractions.proces as proces', 'emp_type','emp_id', 'buses.name as b_name', 'lignes.name as l_name', 'arrets.name as a_name', 'chauffeurs.name as en', 'users.username as ctrl_name', 'fchauffeurs.name as i_name');
+            ->select('infractions.id as id', 'infractions.status as status', 'infra_date','quest', 'infractions.proces as proces', 'emp_type','emp_id', 'buses.name as b_name', 'lignes.name as l_name', 'arrets.name as a_name', 'chauffeurs.name as en', 'users.username as ctrl_name', 'fchauffeurs.name as i_name');
          
         }
 
@@ -620,7 +620,7 @@ public function alert_list(Request $request)
           })
        ->Join('users', 'alerts.user_id', '=', 'users.id')
        ->whereBetween('alert_date', [$from, $to])
-       ->select('alerts.id as id', 'alert_type', 'buses.name as b_name', 'users.username as ctrl_name','alert as i_name', 'alerts.status as status',  'lignes.name as l_name', 'arrets.name as a_name', 'alert', 'proces');
+       ->select('alerts.id as id', 'alert_type', 'alert_date', 'buses.name as b_name', 'users.username as ctrl_name','alert as i_name', 'alerts.status as status',  'lignes.name as l_name', 'arrets.name as a_name', 'alert', 'proces');
       
         return Datatables::of($data)
                 ->addIndexColumn()
@@ -709,8 +709,11 @@ public function coffre_list(Request $request)
                        $btn .= '<a href="javascript:void(0)" class="edit btn btn-danger btn-sm">حذف</a>';
      */
                         return $btn;
+                })->addColumn('dif', function($row){
+                    $btn = 37000-$row->ts+$row->caisse;
+                        return $btn;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'dif'])
                 ->make(true);
     }
     if ($request->type_id) {

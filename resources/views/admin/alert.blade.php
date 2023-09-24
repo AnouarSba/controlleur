@@ -69,6 +69,8 @@
                     <th> المحطة</th>
                     <th> تبليغ عن</th>
                     <th> مآل التبليغ</th>
+                    <th> تاريخ التبليغ</th>
+
                     <th>Action</th>
                 </tr>
             </thead>
@@ -307,6 +309,10 @@ $(function() {
             {
                 data: 'status',
                 name: 'status'
+            },
+            {
+                data: 'alert_date',
+                name: 'alert_date'
             },
             {
                 data: 'action',

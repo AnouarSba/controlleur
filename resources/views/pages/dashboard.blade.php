@@ -139,12 +139,62 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Total rapport</p>
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">عدد المخالفات</p>
                                 <h5 class="font-weight-bolder">
-                                    {{$all}}
+                                    {{$all_i}}
                                 </h5>
                                 <p class="mb-0">
-                                    <span class="text-success text-sm font-weight-bolder">{{$today}}</span>
+                                    <span class="text-success text-sm font-weight-bolder">{{$today_i}}</span>
+                                    Aujourd'huit
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                                <i class="ni ni-single-copy-04 text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">عدد التبليغات</p>
+                                <h5 class="font-weight-bolder">
+                                    {{$all_a}}
+                                </h5>
+                                <p class="mb-0">
+                                    <span class="text-success text-sm font-weight-bolder">{{$today_a}}</span>
+                                    Aujourd'huit
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                                <i class="ni ni-single-copy-04 text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">عدد حسابات الصندوق</p>
+                                <h5 class="font-weight-bolder">
+                                    {{$all_c}}
+                                </h5>
+                                <p class="mb-0">
+                                    <span class="text-success text-sm font-weight-bolder">{{$today_c}}</span>
                                     Aujourd'huit
                                 </p>
                             </div>
@@ -504,7 +554,7 @@
             </div>
         </div> -->
     <!--Copy this into your website or website generator, in the HTML section.-->
-
+    @if(Illuminate\Support\Facades\Auth::user()->id>2)
     <form action="{{ route('pos') }}" id="myform1" style="margin-left:10px; margin-top:10px;
     z-index: 99;
     position: relative;
@@ -523,7 +573,7 @@
 margin-right: 0%;
 " onclick="getLocation();" type="button">مراقبة</button>
     </form>
-
+    @endif
     <div id='imageGalleryWithTitle' class="news-container" style="position: relative"></div>
     @include('layouts.footers.auth.footer')
 </div>

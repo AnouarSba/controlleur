@@ -67,6 +67,7 @@
                     <th> المراقب</th>
                     @if($kabs) <th>اسم القابض</th>
                     @else <th>اسم السائق</th> @endif
+                    <th> تاريخ المخالفة</th>
                     <th> الخط</th>
                     <th> الحافلة</th>
                     <th> المحطة</th>
@@ -306,6 +307,10 @@ $(function() {
             {
                 data: 'en',
                 name: name
+            },
+            {
+                data: 'infra_date',
+                name: 'infra_date'
             },
             {
                 data: 'l_name',
