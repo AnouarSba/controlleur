@@ -784,7 +784,6 @@ public function repo_list(Request $request)
 
             $data = Report::join('buses','reports.bus_id','=','buses.id')
         ->join('lignes','reports.ligne_id','=','lignes.id')
-        ->join('fkabs','reports.infra_id','=','fkabs.id')
        ->Join('kabids', 'reports.emp_id','=','kabids.id')
        ->Join('users', 'reports.user_id', '=', 'users.id')
         ->Join('chauffeurs', 'reports.emp_id', '=', 'chauffeurs.id')
