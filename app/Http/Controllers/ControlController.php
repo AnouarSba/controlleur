@@ -754,7 +754,7 @@ public function locate(Request $request)
     $lat = $request->lat;
     $lang = $request->lang;
     DB::statement("SET SQL_MODE=''");
-   // $row = Position::create(['user_id' => $y, 'bus_id' => $bus,'lat' => $lat, 'lang' => $lang ]);
+   $row = Position::create(['user_id' => $y, 'bus_id' => $bus,'lat' => $lat, 'lang' => $lang ]);
     $row = Report::create(['user_id' => $y, 'bus_id' => $bus,'ligne_id' => $ligne, 'num' => $num, 'kabid_id' => $kabid,'chauffeur_id' => $chauff, 'place' => $place ]);
   
     $buses = Bus::get();
