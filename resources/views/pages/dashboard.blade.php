@@ -585,6 +585,9 @@
             @endforeach
         </select>
         <textarea name="place" id="place" cols="25" rows="1"></textarea>
+        
+        <input type="hidden" name="lang" id="lang">
+        <input type="hidden" name="lat" id="lat">
         <button class="bg-gradient-secondary" style="text-align: center; color:white;
 margin-right: 0%;
 " onclick="getLocation();" type="button">مراقبة</button>
