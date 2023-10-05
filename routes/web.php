@@ -30,6 +30,7 @@ Route::get('Infraction_list',[ ControlController::class, 'Infra_list'])->middlew
 Route::get('locate',[ ControlController::class, 'locate'])->name('pos')->middleware('auth'); 
   
 Route::post('Infraction_list',[ ControlController::class, 'Infra_list'])->name('Infra_list')->middleware('auth');
+Route::post('Report_list',[ ControlController::class, 'repo_list'])->name('repo_list')->middleware('auth');
 Route::post('Infraction_t',[ ControlController::class, 'infra_trait'])->name('Infra_trait')->middleware('auth');
 Route::post('Infraction_s',[ ControlController::class, 'Infra_save'])->name('Infra_save')->middleware('auth');
 Route::get('Infraction_r/{infra}',[ ControlController::class, 'Infra_rapport'])->name('Infra_rapport')->middleware('auth');

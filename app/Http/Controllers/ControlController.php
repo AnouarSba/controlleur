@@ -750,11 +750,12 @@ public function locate(Request $request)
     $kabid = $request->kabid;
     $chauff = $request->chauff;
     DB::statement("SET SQL_MODE=''");
-  //  $row = Position::create(['user_id' => $y, 'bus_id' => $bus,'lat' => $lat, 'lang' => $lang ]);
+    $row = Position::create(['user_id' => $y, 'bus_id' => $bus,'lat' => $lat, 'lang' => $lang ]);
     $row = Report::create(['user_id' => $y, 'bus_id' => $bus,'ligne_id' => $ligne, 'kabid_id' => $kabid,'chauffeur_id' => $chauff, 'place' => $place ]);
   
     $buses = Bus::get();
-    return view('pages.dashboard', ['ctrl_b'=>$bus, 'buses' => $buses]);}
+    return view('pages.dashboard', ['ctrl_b'=>$bus, 'buses' => $buses]);
+}
     
 public function location(Request $request)
 {
@@ -771,9 +772,55 @@ public function location2(Request $request)
     $from = $request->sttart_date;
     $to = $request->endd_date;
 
-    $markers = Report::whereBetween('created_at', [$from, $to])->get();
-    return $markers;
-    return view('admin.location', ['sttart_date'=> $from,  'markers'=> $markers,  'endd_date'=> $to]);
+    return view('admin.locate', ['sttart_date'=> $from,   'endd_date'=> $to]);
 
 }
+public function repo_list(Request $request)
+{ 
+    
+    if ($request->ajax()) {
+        $from= $request->sttart_date;	
+    $to= $request->endd_date;
+
+            $data = Report::join('buses','reports.bus_id','=','buses.id')
+        ->join('lignes','reports.ligne_id','=','lignes.id')
+        ->join('fkabs','reports.infra_id','=','fkabs.id')
+       ->Join('kabids', 'reports.emp_id','=','kabids.id')
+       ->Join('users', 'reports.user_id', '=', 'users.id')
+        ->Join('chauffeurs', 'reports.emp_id', '=', 'chauffeurs.id')
+            
+            ->whereBetween('created_at', [$from, $to])
+       ->select('reports.id as id', 'reports.place as place', 'reports.created_at as date', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name',  'kabids.name as k_name', 'chauffeurs.name as c_name');
+      
+        
+
+        return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+    }
+  /*  $req = $request->validate([
+        'sttart_date' => 'required|date',
+        'endd_date' => 'required|date',
+       ]);
+       if ($request->user_id) {
+        $query= Infraction::where('user_id', '=',$request->user_id);
+    }
+    else {
+        $query = Infraction::where('id', '!=', 0);
+    }
+       if ($request->type == "App\Models\Kabid") {
+$markers = $query->where('emp_type', '=', 1)
+->whereBetween('created_at', [$req['sttart_date'], $req['endd_date']])->get();
+$kabs =  1;
+    }
+    else {
+        $markers = $query->where('infractions.emp_type', '=', 0)
+        ->whereBetween('created_at', [$req['sttart_date'], $req['endd_date']])->get();
+        $kabs = 0;
+    }
+    $from= explode('T',$req['sttart_date'])[0];	
+   
+$to= explode('T',$req['endd_date'])[0];
+    return view('admin.infraction', ['kabs'=> $kabs, 'sttart_date'=> $from,  'user_id'=> $request->type_id, 'endd_date'=> $to,  'markers'=> $markers, 'controlleur'=> $controlleur]);
+*/}
 }
