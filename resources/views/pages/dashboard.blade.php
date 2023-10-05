@@ -560,15 +560,31 @@
     position: relative;
     font-size: 25px;">
 
+        <select class="" id="country-select" required name="ligne">
+            <option value="">اختر </option>
+            @foreach (App\Models\Ligne::get() as $ligne)
+            <option value="{{$ligne->id}}">{{$ligne->name}}</option>
+            @endforeach
+        </select>
         <select class="" id="country-select" required name="bus">
             <option value="">اختر الحافلة</option>
             @foreach (App\Models\Bus::get() as $bus)
             <option value="{{$bus->id}}">{{$bus->name}}</option>
             @endforeach
         </select>
-
-        <input type="hidden" name="lang" id="lang">
-        <input type="hidden" name="lat" id="lat">
+        <select class="" id="country-select" required name="kabid">
+            <option value="">اختر </option>
+            @foreach (App\Models\Kabid::get() as $kabid)
+            <option value="{{$kabid->id}}">{{$kabid->name}}</option>
+            @endforeach
+        </select>
+        <select class="" id="country-select" required name="Chauffeur">
+            <option value="">اختر </option>
+            @foreach (App\Models\Chauffeur::get() as $Chauffeur)
+            <option value="{{$Chauffeur->id}}">{{$Chauffeur->name}}</option>
+            @endforeach
+        </select>
+        <textarea name="place" id="place" cols="30" rows="10"></textarea>
         <button class="bg-gradient-secondary" style="text-align: center; color:white;
 margin-right: 0%;
 " onclick="getLocation();" type="button">مراقبة</button>

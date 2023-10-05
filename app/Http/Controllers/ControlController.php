@@ -744,11 +744,13 @@ public function locate(Request $request)
     
     $y = Auth::id();
     $bus = $request->bus;
-   // $ligne = $request->ligne;
-    $lat = $request->lat;
-    $lang = $request->lang;
+    $ligne = $request->ligne;
+    $place = $request->place;
+    $kabid = $request->kabid;
+    $chauff = $request->chauff;
     DB::statement("SET SQL_MODE=''");
     $row = Position::create(['user_id' => $y, 'bus_id' => $bus,'lat' => $lat, 'lang' => $lang ]);
+    $row = Report::create(['user_id' => $y, 'bus_id' => $bus,'ligne_id' => $ligne, 'kabid_id' => $kabid,'chauffeur_id' => $chauff, 'place' => $place ]);
   
     $buses = Bus::get();
     return view('pages.dashboard', ['ctrl_b'=>$bus, 'buses' => $buses]);}
@@ -761,6 +763,16 @@ public function location(Request $request)
     $markers = Position::where('user_id', '=', $request->type_id)
     ->whereBetween('created_at', [$from, $to])->get();
     return view('admin.location', ['sttart_date'=> $from,  'markers'=> $markers,  'endd_date'=> $to, 'controlleur'=> $controlleur]);
+
+}
+public function location2(Request $request)
+{
+    $from = $request->sttart_date;
+    $to = $request->endd_date;
+
+    $markers = Report::whereBetween('created_at', [$from, $to])->get();
+    return $markers;
+    return view('admin.location', ['sttart_date'=> $from,  'markers'=> $markers,  'endd_date'=> $to]);
 
 }
 }
