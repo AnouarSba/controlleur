@@ -100,6 +100,26 @@ An &#105;frame should be displayed here but your browser version does not suppor
 
     <div id="accordion" class=" col-12 shadow p-3 mb-5 bg-white rounded"
         style="font-family: Aparajita;font-size: 25px;direction:rtl;width:90%;">
+        
+        <div class="card-header" id="heading8" style="direction:rtl;text-align: right;font-size: 28px;">
+            <h5 class="mb-0 mr-0">
+                <button class="btn btn-link collapsed d8" data-toggle="collapse"
+                    style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse8"
+                    aria-expanded="true" aria-controls="collapse8">
+                    التعليمة رقم  34 المؤرخة في 2023/09/26 <br>
+                المتعلقة بتنظيم دفع المداخيل للتذاكر</button>
+            </h5>
+        </div>
+
+        <div id="collapse8" class="collapse " aria-labelledby="heading8" data-parent="#accordion">
+            <div class="card-body row" style="text-align: center;">
+                
+                <div class="row" style="margin:auto">
+                    <img src="{{asset('assets/image/t8.jpg')}}" alt=""  width="80%" height="100%">
+
+                </div>
+            </div>
+        </div>
         <div class="card-header" id="heading1" style="direction:rtl;text-align: right;font-size: 28px;">
             <h5 class="mb-0 mr-0">
                 <button class="btn btn-link collapsed d1" data-toggle="collapse"

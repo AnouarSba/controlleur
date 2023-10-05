@@ -212,7 +212,7 @@
         @endif
         @if(isset($ctrl_b))
         <script>
-        alert('انت تراقب الحافلة {{$buses[$ctrl_b]->name}}')
+        alert('انت تراقب الحافلة {{$buses[$ctrl_b-1]->name}}')
         </script>
         @endif
         <!--

@@ -710,7 +710,7 @@ public function coffre_list(Request $request)
      */
                         return $btn;
                 })->addColumn('dif', function($row){
-                    $btn = 37000-$row->ts+$row->caisse;
+                    $btn = 37000-($row->ts+$row->caisse);
                         return $btn;
                 })
                 ->rawColumns(['action', 'dif'])
