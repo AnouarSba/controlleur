@@ -15,6 +15,7 @@ class Report extends Model
         'kabid_id',
         'chauffeur_id',
         'place',
+        'num',
  
     ];
 }

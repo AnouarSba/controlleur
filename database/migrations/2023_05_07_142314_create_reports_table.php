@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('bus_id')->length(2);
             $table->integer('ligne_id')->length(2)->nullable();
             $table->text('place');
+            $table->string('num')->nullable();
             $table->integer('kabid_id')->length(2)->nullable();
             $table->integer('chauffeur_id')->length(2)->nullable();
 
