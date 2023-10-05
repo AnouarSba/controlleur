@@ -148,28 +148,7 @@ $(function() {
                 name: 'reports.created_at'
             }
         ],
-        createdRow: function(row, data, index) {
-
-            // Updated Schedule Week 1 - 07 Mar 22
-            $('td:eq(8)', row).css('display', 'none');
-            if (data.status == null || data.status == 0) {
-                $('td:eq(8)', row).css('background-color', 'grey'); //Original Date
-                $('td:eq(8)', row).html(''); //Original Date
-            }
-            if (data.status == 1) {
-                $('td:eq(8)', row).html('محفوظة'); //Original Date
-            }
-            if (data.status == 2) {
-                if (data.quest == null || data.quest == '') {
-                    $('td:eq(8)', row).html('في انتظار الاستفسار');
-                    $('td:eq(8)', row).addClass('animate');
-
-                } else $('td:eq(8)', row).html(data.quest);
-            }
-            /* else if (data.cn == null) {
-                              $('td:eq(2)', row).css('background-color', 'grey'); // Behind of Original Date
-                          }*/
-        },
+        
     });
 
 });
