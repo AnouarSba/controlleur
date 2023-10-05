@@ -789,7 +789,7 @@ public function repo_list(Request $request)
        ->Join('users', 'reports.user_id', '=', 'users.id')
         ->Join('chauffeurs', 'reports.emp_id', '=', 'chauffeurs.id')
             
-            ->whereBetween('created_at', [$from, $to])
+            ->whereBetween('reports.created_at', [$from, $to])
        ->select('reports.id as id', 'reports.place as place', 'reports.created_at as date', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name',  'kabids.name as k_name', 'chauffeurs.name as c_name');
       
         

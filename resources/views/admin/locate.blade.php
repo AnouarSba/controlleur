@@ -128,7 +128,7 @@ $(function() {
             },
             {
                 data: 'place',
-                name: 'place'
+                name: 'reported.place'
             },
             {
                 data: 'c_name',
