@@ -560,31 +560,31 @@
     position: relative;
     font-size: 25px;">
 
-        <select class="" id="country-select" required name="ligne">
-            <option value="">اختر </option>
+        <select class="" id="country-select" style="width:150px" required name="ligne">
+            <option value="">اختر الخط</option>
             @foreach (App\Models\Ligne::get() as $ligne)
             <option value="{{$ligne->id}}">{{$ligne->name}}</option>
             @endforeach
         </select>
-        <select class="" id="country-select" required name="bus">
+        <select class="" id="country-select" style="width:150px" required name="bus">
             <option value="">اختر الحافلة</option>
             @foreach (App\Models\Bus::get() as $bus)
             <option value="{{$bus->id}}">{{$bus->name}}</option>
             @endforeach
         </select>
-        <select class="" id="country-select" required name="kabid">
-            <option value="">اختر </option>
+        <select class="" id="country-select" style="width:150px" required name="kabid">
+            <option value="">اختر القابض</option>
             @foreach (App\Models\Kabid::get() as $kabid)
             <option value="{{$kabid->id}}">{{$kabid->name}}</option>
             @endforeach
         </select>
-        <select class="" id="country-select" required name="Chauffeur">
-            <option value="">اختر </option>
+        <select class="" id="country-select" style="width:150px" required name="Chauffeur">
+            <option value="">اختر السائق</option>
             @foreach (App\Models\Chauffeur::get() as $Chauffeur)
             <option value="{{$Chauffeur->id}}">{{$Chauffeur->name}}</option>
             @endforeach
         </select>
-        <textarea name="place" id="place" cols="30" rows="10"></textarea>
+        <textarea name="place" id="place" cols="25" rows="1"></textarea>
         <button class="bg-gradient-secondary" style="text-align: center; color:white;
 margin-right: 0%;
 " onclick="getLocation();" type="button">مراقبة</button>
