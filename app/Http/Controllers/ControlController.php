@@ -16,6 +16,7 @@ use App\Models\Position;
 use App\Models\Bus;
 use App\Models\Ligne;
 use App\Models\Arret;
+use App\Models\Report;
 use App\Models\Alert;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
