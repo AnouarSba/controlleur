@@ -578,13 +578,15 @@
             <option value="{{$kabid->id}}">{{$kabid->name}}</option>
             @endforeach
         </select>
-        <select class="" id="country-select" style="width:150px" required name="Chauff">
+        <select class="" id="country-select" style="width:150px" required name="chauff">
             <option value="">اختر السائق</option>
             @foreach (App\Models\Chauffeur::get() as $Chauffeur)
             <option value="{{$Chauffeur->id}}">{{$Chauffeur->name}}</option>
             @endforeach
         </select>
-        <textarea name="place" id="place" cols="25" rows="1"></textarea>
+        <input type="text" required placeholder="الرقم التسلسلي" name="num" id="num">
+
+        <textarea name="place" required placeholder="المكان" id="place" cols="25" rows="1"></textarea>
         
         <input type="hidden" name="lang" id="lang">
         <input type="hidden" name="lat" id="lat">

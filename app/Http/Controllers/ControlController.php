@@ -749,9 +749,13 @@ public function locate(Request $request)
     $place = $request->place;
     $kabid = $request->kabid;
     $chauff = $request->chauff;
+    $num = $request->num;
+    
+    $lat = $request->lat;
+    $lang = $request->lang;
     DB::statement("SET SQL_MODE=''");
-    $row = Position::create(['user_id' => $y, 'bus_id' => $bus,'lat' => $lat, 'lang' => $lang ]);
-    $row = Report::create(['user_id' => $y, 'bus_id' => $bus,'ligne_id' => $ligne, 'kabid_id' => $kabid,'chauffeur_id' => $chauff, 'place' => $place ]);
+   // $row = Position::create(['user_id' => $y, 'bus_id' => $bus,'lat' => $lat, 'lang' => $lang ]);
+    $row = Report::create(['user_id' => $y, 'bus_id' => $bus,'ligne_id' => $ligne, 'num' => $num, 'kabid_id' => $kabid,'chauffeur_id' => $chauff, 'place' => $place ]);
   
     $buses = Bus::get();
     return view('pages.dashboard', ['ctrl_b'=>$bus, 'buses' => $buses]);
@@ -784,12 +788,12 @@ public function repo_list(Request $request)
 
             $data = Report::join('buses','reports.bus_id','=','buses.id')
         ->join('lignes','reports.ligne_id','=','lignes.id')
-       ->Join('kabids', 'reports.emp_id','=','kabids.id')
+       ->Join('kabids', 'reports.kabid_id','=','kabids.id')
        ->Join('users', 'reports.user_id', '=', 'users.id')
-        ->Join('chauffeurs', 'reports.emp_id', '=', 'chauffeurs.id')
+        ->Join('chauffeurs', 'reports.chauffeur_id', '=', 'chauffeurs.id')
             
             ->whereBetween('reports.created_at', [$from, $to])
-       ->select('reports.id as id', 'reports.place as place', 'reports.created_at as date', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name',  'kabids.name as k_name', 'chauffeurs.name as c_name');
+       ->select('reports.id as id', 'num', 'reports.place as place', 'reports.created_at as date', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name',  'kabids.name as k_name', 'chauffeurs.name as c_name');
       
         
 

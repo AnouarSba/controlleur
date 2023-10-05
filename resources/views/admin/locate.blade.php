@@ -70,6 +70,7 @@
                     <th> الخط</th>
                     <th> الحافلة</th>
                     <th> المكان</th>
+                    <th> الرقم التسلسلي</th>
                     <th>اسم القابض</th>
                      <th>اسم السائق</th>
                     <th> تاريخ المراقبة</th>
@@ -129,6 +130,10 @@ $(function() {
             {
                 data: 'place',
                 name: 'reported.place'
+            },
+            {
+                data: 'num',
+                name: 'reported.num'
             },
             {
                 data: 'c_name',
