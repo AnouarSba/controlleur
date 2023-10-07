@@ -29,8 +29,8 @@
                 <h6 class="ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">
                     {{(Illuminate\Support\Facades\Auth::user()->id>2)? 'Repport' : 'Control'}}</h6>
             </li>
-            @if(Illuminate\Support\Facades\Auth::user()->id>2)
-            <li class="nav-item">
+            @if(Illuminate\Support\Facades\Auth::user()->id>2 && Illuminate\Support\Facades\Auth::user()->id<9) <li
+                class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'Infractions' ? 'active' : '' }}"
                     href="{{ route('Infractions') }}">
                     <div
@@ -39,40 +39,52 @@
                     </div>
                     <span class="nav-link-text ms-1">مخالفات</span>
                 </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ str_contains(request()->url(), 'Alerts') == true ? 'active' : '' }}"
-                    href="{{ route('Alerts') }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">تبليغات</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ str_contains(request()->url(), 'Coffre') == true ? 'active' : '' }}"
-                    href="{{ route('Coffre') }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">مراقبة الصندوق</span>
-                </a>
-            </li>
-            @else
-            <li class="nav-item">
-                <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
-                    href="{{ route('control') }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Control</span>
-                </a>
-            </li>
-            @endif
-            <!-- 
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(request()->url(), 'Alerts') == true ? 'active' : '' }}"
+                        href="{{ route('Alerts') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">تبليغات</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(request()->url(), 'Coffre') == true ? 'active' : '' }}"
+                        href="{{ route('Coffre') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">مراقبة الصندوق</span>
+                    </a>
+                </li>
+                @elseif(Illuminate\Support\Facades\Auth::user()->id>8)
+
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(request()->url(), 'Stop_bus') == true ? 'active' : '' }}"
+                        href="{{ route('Panne_bus') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">توقف الحافلة</span>
+                    </a>
+                </li>
+                @else
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
+                        href="{{ route('control') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Control</span>
+                    </a>
+                </li>
+                @endif
+                <!-- 
             <li class="nav-item">
                 <a class="nav-link {{ str_contains(request()->url(), 'Accidents') == true ? 'active' : '' }}"
                     href="{{ route('Accidents') }}">

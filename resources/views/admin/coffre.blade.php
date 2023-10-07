@@ -69,7 +69,7 @@
                     <th> تاريخ</th>
                     <th> المبلغ الاجمالي (دج)</th>
                     <th> المحاسب </th>
-                    <th>الفارق  </th>
+                    <th>الفارق </th>
 
                     <th>Action</th>
                 </tr>
@@ -311,8 +311,8 @@ $(function() {
                 name: 'caisse'
             },
             {
-                data: 'dif',
-                name: 'dif'
+                data: 'rq',
+                name: 'rq'
             },
             {
                 data: 'action',

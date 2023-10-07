@@ -28,7 +28,11 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ControlController;
 Route::get('Infraction_list',[ ControlController::class, 'Infra_list'])->middleware('auth'); 
 Route::get('locate',[ ControlController::class, 'locate'])->name('pos')->middleware('auth'); 
-  
+Route::post('Stop',[ ControlController::class, 'panne'])->name('panne')->middleware('auth'); 
+Route::post('/store_panne',[ ControlController::class, 'store_panne'])->name('store_panne')->middleware('auth'); 
+Route::get('Stop',[ ControlController::class, 'panne'])->name('panne')->middleware('auth'); 
+Route::get('/Stop_Bus',[ ControlController::class, 'Panne_bus'])->name('Panne_bus')->middleware('auth'); 
+
 Route::post('Infraction_list',[ ControlController::class, 'Infra_list'])->name('Infra_list')->middleware('auth');
 Route::post('Report_list',[ ControlController::class, 'repo_list'])->name('repo_list')->middleware('auth');
 Route::post('Infraction_t',[ ControlController::class, 'infra_trait'])->name('Infra_trait')->middleware('auth');
@@ -46,6 +50,7 @@ Route::get('Alert_r/{alert}',[ ControlController::class, 'alert_rapport'])->name
 Route::get('Control',[ ControlController::class, 'control'])->name('control')->middleware('auth'); 
 Route::post('Locations',[ ControlController::class, 'location'])->name('location')->middleware('auth'); 
 Route::post('Locate',[ ControlController::class, 'location2'])->name('location2')->middleware('auth'); 
+//Route::get('Stop',[ ControlController::class, 'panne'])->name('panne')->middleware('auth'); 
 Route::get('Instructions',[ ControlController::class, 'inst'])->name('inst')->middleware('auth'); 
 Route::get('Guide',[ ControlController::class, 'dalil'])->name('dalil')->middleware('auth'); 
 Route::get('Reglement',[ ControlController::class, 'emp'])->name('emp')->middleware('auth'); 

@@ -71,12 +71,16 @@
 .article-image {
     width: 100%;
     max-height: 100%;
+    height: 220px
 }
 
 .article-title {
     padding: 10px;
 }
 </style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 @section('content')
 @include('layouts.navbars.auth.topnav', ['title' => 'الرئيسية'])
 <div class="container-fluid py-4">
@@ -587,7 +591,7 @@
         <input type="text" required placeholder="الرقم التسلسلي" name="num" id="num">
 
         <textarea name="place" required placeholder="المكان" id="place" cols="25" rows="1"></textarea>
-        
+
         <input type="hidden" name="lang" id="lang">
         <input type="hidden" name="lat" id="lat">
         <button class="bg-gradient-secondary" style="text-align: center; color:white;
@@ -595,9 +599,47 @@ margin-right: 0%;
 " onclick="getLocation();" type="button">مراقبة</button>
     </form>
     @endif
+
     <div id='imageGalleryWithTitle' class="news-container" style="position: relative"></div>
+    <button type="button" class="btn btn-primary btn-sm" id="btnn" hidden data-toggle="modal"
+        data-target="#exampleModal3">
+        تقرير
+    </button>
+    <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">تقرير توقف الحافلات</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{route('panne')}}" method="post">
+                        @csrf
+
+                        <input type="hidden" name="infra" id="infra_q2">
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">من</label>
+                            <input type="datetime-local" required name="sttart_date" id="sttart_date">
+                            <br>
+                            <label for="message-text" style="position:absolute" class="col-form-label">الى</label>
+                            <input type="datetime-local" required name="endd_date" id="endd_date">
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                            <input type="submit" class="btn btn-primary" value="تاكيد">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     @include('layouts.footers.auth.footer')
 </div>
+
 @endsection
 
 @push('js')
@@ -606,10 +648,18 @@ margin-right: 0%;
 document.addEventListener("DOMContentLoaded", function() {
     var articles = [{
             class: 'Ribbon',
+            onClickLink: '{{route("panne")}}',
+            imgageSource: 'https://static.vecteezy.com/ti/vecteur-libre/p3/8874518-fast-time-logo-stop-clock-speed-concept-fast-delivery-services-express-et-urgents-delai-et-retard-vectoriel.jpg',
+            title: 'تقرير توقف الحافلات'
+        },
+        {
+            class: 'disabled',
             onClickLink: '{{route("inst")}}',
             imgageSource: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4ypHZCDAquTsVoFoTgS51QypyVIo4fBwt9Q&usqp=CAU',
             title: 'التعليمات'
         },
+
+
         {
             class: 'disabled',
             onClickLink: '{{route("emp")}}',
@@ -640,15 +690,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     for (let i = 0; i < articles.length; i++) {
         //Create the container
-        var itemContainer = document.createElement("a");
-        itemContainer.classList.add("article-container");
-        var href = document.createAttribute("href");
-        href.value = articles[i].onClickLink;
-        itemContainer.setAttributeNode(href);
-        var target = document.createAttribute("target");
-        target.value = '_blank';
-        itemContainer.setAttributeNode(target);
+        if (i > 0) {
 
+            var itemContainer = document.createElement("a");
+            itemContainer.classList.add("article-container");
+            var href = document.createAttribute("href");
+            href.value = articles[i].onClickLink;
+            itemContainer.setAttributeNode(href);
+            var target = document.createAttribute("target");
+            target.value = '_blank';
+            itemContainer.setAttributeNode(target);
+        } else {
+            var itemContainer = document.createElement("div");
+            itemContainer.classList.add("article-container");
+            itemContainer.classList.add("date");
+
+        }
         //Create Image
         var div = document.createElement("div");
         div.classList.add(articles[i].class);
@@ -679,6 +736,11 @@ document.addEventListener("DOMContentLoaded", function() {
         rootElement.appendChild(itemContainer);
     }
 });
+window.onload = function() {
+    document.getElementsByClassName("date")[0].onclick = function() {
+        document.getElementById("btnn").click();
+    } // your code 
+};
 </script>
 <script src="./assets/js/plugins/chartjs.min.js"></script>
 
@@ -791,5 +853,12 @@ new Chart(ctx1, {
         },
     },
 });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
 </script>
 @endpush

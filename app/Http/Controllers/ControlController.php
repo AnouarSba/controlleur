@@ -17,6 +17,7 @@ use App\Models\Bus;
 use App\Models\Ligne;
 use App\Models\Arret;
 use App\Models\Report;
+use App\Models\Panne;
 use App\Models\Alert;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
@@ -28,6 +29,10 @@ class ControlController extends Controller
     public function Infractions()
     {
         return view('pages.Infractions');
+    }
+    public function Panne_bus()
+    {
+        return view('pages.Panne');
     }
     public function Coffre()
     {
@@ -688,7 +693,7 @@ public function coffre_list(Request $request)
        ->Join('users', 'coffres.user_id', '=', 'users.id')
        ->Join('kabids', 'coffres.emp_id','=','kabids.id')
        ->whereBetween('c_date', [$from, $to])
-       ->select('coffres.id as id', 'ts', 'caisse', 'users.username as ctrl_name', 'kabids.name as emp_name','lignes.name as l_name','c_date');
+       ->select('coffres.id as id', 'ts', 'caisse', 'rq', 'users.username as ctrl_name', 'kabids.name as emp_name','lignes.name as l_name','c_date');
       
         return Datatables::of($data)
                 ->addIndexColumn()
@@ -761,6 +766,30 @@ public function locate(Request $request)
     return view('pages.dashboard', ['ctrl_b'=>$bus, 'buses' => $buses]);
 }
     
+
+public function store_panne(Request $request)
+{
+    
+    $y = Auth::id();
+    $bus = $request->bus;
+    $ligne = $request->ligne;
+    $service = $request->service;
+  //  $kabid = $request->kabid;
+    $chauff = $request->chauff;
+    $start_date = $request->start_date;
+    
+    $end_date = $request->end_date;
+    $cause = $request->cause;
+$diff = abs(strtotime($end_date) - strtotime($start_date));
+
+$time = floor($diff / (60));
+
+    DB::statement("SET SQL_MODE=''");
+    $row = Panne::create(['user_id' => $y, 'bus_id' => $bus,'ligne_id' => $ligne, 'service' => $service, 'start_date' => $start_date, 'end_date' => $end_date,'chauffeur_id' => $chauff, 'cause' => $cause , 'time' => $time ]);
+  
+    $buses = Bus::get();
+    return view('pages.dashboard', [ 'buses' => $buses]);
+}
 public function location(Request $request)
 {
     $from = $request->sttart_date;
@@ -826,4 +855,41 @@ $kabs =  1;
 $to= explode('T',$req['endd_date'])[0];
     return view('admin.infraction', ['kabs'=> $kabs, 'sttart_date'=> $from,  'user_id'=> $request->type_id, 'endd_date'=> $to,  'markers'=> $markers, 'controlleur'=> $controlleur]);
 */}
+
+public function panne(Request $request)
+{ 
+    
+    if ($request->ajax()) {
+        $from= $request->sttart_date;	
+    $to= $request->endd_date;
+    
+            $data = Panne::whereBetween('start_date', [$from, $to])
+            ->join('buses','pannes.bus_id','=','buses.id')
+        ->join('lignes','pannes.ligne_id','=','lignes.id')
+       //->Join('kabids', 'pannes.kabid_id','=','kabids.id')
+       ->Join('users', 'pannes.user_id', '=', 'users.id')
+        ->Join('chauffeurs', 'pannes.chauffeur_id', '=', 'chauffeurs.id')
+            
+       ->select('pannes.id as id', 'service', 'cause', 'time', 'start_date', 'end_date', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name',  'chauffeurs.name as c_name');
+      
+        
+
+        return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+    }
+    if ($request->sttart_date) {
+        
+        $from = $request->sttart_date;
+        $to = $request->endd_date;
+        }
+        else {
+            $from = '2023-10-01 00:00:00' ;
+            $to = $date = date("Y-m-d H:i:s");
+        }
+        $data = Panne::whereBetween('start_date', [$from, $to])->select( DB::raw("sum(time) as time"))->get();
+        if(!$data[0]->time) $t = 0;
+        else $t = $data[0]->time;
+        return view('admin.panne', ['sttart_date'=> $from,   'endd_date'=> $to, 'time'=> $t]);
+}
 }

@@ -3,7 +3,7 @@
 <div class="col-md-12">
     <div class="row justify-content-center">
         <div class="col-md-12 py-2">
-        <div class="card" style="background-color: rgb(120, 144, 230)">
+            <div class="card" style="background-color: rgb(120, 144, 230)">
                 <div class="card-header">
                     <h3>{{ __('تقرير المراقبة') }}</h3>
                 </div>
@@ -18,7 +18,7 @@
                         @csrf
                         <div class="form-row align-items-center">
 
-                            
+
                             <div class="col-auto">
                                 <label for="exampleFormControlInput1">Date De Debut</label>
                                 <input type="datetime-local" class="form-control" id="game-date-time-text"
@@ -207,6 +207,43 @@
                                     name="type_id">
                                 @error('type_id') <span class="text-danger error">{{ $message }}</span>@enderror
                             </div>
+                            <div class="col-auto">
+                                <label for="exampleFormControlInput1">Date De Debut</label>
+                                <input type="datetime-local" class="form-control" id="game-date-time-text"
+                                    name="sttart_date" value="{{ now()->setTimezone('T')->format('Y-m-d H:m') }}">
+                                @error('start_date') <span class="text-danger error">{{ $message }}</span>@enderror
+                            </div>
+
+                            <div class="col-auto">
+                                <label for="exampleFormControlInput1">Date de Fin</label>
+                                <input type="datetime-local" class="form-control" id="game-date-time-text"
+                                    name="endd_date" value="{{ now()->setTimezone('T')->format('Y-m-d H:m') }}">
+                                @error('end_date') <span class="text-danger error">{{ $message }}</span>@enderror
+                            </div>
+
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary mb-2"> Envoyer</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="card" style="background-color: rgb(120, 144, 230)">
+                <div class="card-header">
+                    <h3>{{ __('تقرير توقف الحافلات') }}</h3>
+                </div>
+
+                <div class="card-body">
+                    @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                    @endif
+                    <form method="POST" action="{{ route('panne') }}">
+                        @csrf
+                        <div class="form-row align-items-center">
+
                             <div class="col-auto">
                                 <label for="exampleFormControlInput1">Date De Debut</label>
                                 <input type="datetime-local" class="form-control" id="game-date-time-text"
