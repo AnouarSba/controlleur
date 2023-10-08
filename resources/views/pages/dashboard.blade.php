@@ -558,7 +558,7 @@
             </div>
         </div> -->
     <!--Copy this into your website or website generator, in the HTML section.-->
-    @if(Illuminate\Support\Facades\Auth::user()->id>2)
+    @if(Illuminate\Support\Facades\Auth::user()->id>2 && Illuminate\Support\Facades\Auth::user()->id<9)
     <form action="{{ route('pos') }}" id="myform1" style="margin-left:10px; margin-top:10px;
     z-index: 99;
     position: relative;
@@ -599,7 +599,9 @@ margin-right: 0%;
 " onclick="getLocation();" type="button">مراقبة</button>
     </form>
     @endif
-
+@php
+$p = Illuminate\Support\Facades\Auth::user()->id;
+@endphp
     <div id='imageGalleryWithTitle' class="news-container" style="position: relative"></div>
     <button type="button" class="btn btn-primary btn-sm" id="btnn" hidden data-toggle="modal"
         data-target="#exampleModal3">
@@ -687,15 +689,16 @@ document.addEventListener("DOMContentLoaded", function() {
     ]
 
     var rootElement = document.getElementById("imageGalleryWithTitle");
-
+    var p = {{ $p }};
     for (let i = 0; i < articles.length; i++) {
         //Create the container
         if (i > 0) {
-
             var itemContainer = document.createElement("a");
             itemContainer.classList.add("article-container");
             var href = document.createAttribute("href");
             href.value = articles[i].onClickLink;
+            if(p>=9 && i==3)
+            itemContainer.style.display = "none";
             itemContainer.setAttributeNode(href);
             var target = document.createAttribute("target");
             target.value = '_blank';

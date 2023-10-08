@@ -18,7 +18,9 @@ use App\Models\Ligne;
 use App\Models\Arret;
 use App\Models\Report;
 use App\Models\Panne;
+use App\Models\Move;
 use App\Models\Alert;
+use App\Models\Tpanne;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
 
@@ -32,7 +34,15 @@ class ControlController extends Controller
     }
     public function Panne_bus()
     {
-        return view('pages.Panne');
+        
+    $p= Tpanne::get();
+        return view('pages.Panne', ['panne' =>$p]);
+    }
+    public function Move_bus()
+    {
+        
+   // $p= Tpanne::get();, ['panne' =>$p]
+        return view('pages.Move');
     }
     public function Coffre()
     {
@@ -780,16 +790,43 @@ public function store_panne(Request $request)
     
     $end_date = $request->end_date;
     $cause = $request->cause;
+    $caused = $request->caused;
 $diff = abs(strtotime($end_date) - strtotime($start_date));
 
 $time = floor($diff / (60));
 
     DB::statement("SET SQL_MODE=''");
-    $row = Panne::create(['user_id' => $y, 'bus_id' => $bus,'ligne_id' => $ligne, 'service' => $service, 'start_date' => $start_date, 'end_date' => $end_date,'chauffeur_id' => $chauff, 'cause' => $cause , 'time' => $time ]);
+    $row = Panne::create(['user_id' => $y, 'bus_id' => $bus,'ligne_id' => $ligne, 'service' => $service, 'start_date' => $start_date, 'end_date' => $end_date,'chauffeur_id' => $chauff, 'cause' => $cause, 'caused' => $caused , 'time' => $time ]);
   
     $buses = Bus::get();
-    return view('pages.dashboard', [ 'buses' => $buses]);
+    
+    $p= Tpanne::get();
+    return view('pages.Panne', ['cs' =>1, 'panne' =>$p, 'buses' => $buses]);
 }
+
+public function store_move(Request $request)
+{
+    
+    $y = Auth::id();
+    $bus = $request->bus;
+    $station = $request->station;
+    $service = $request->service;
+    $kabid = $request->kabid;
+    $chauff = $request->chauff;
+    $timing = $request->timing;
+    
+    $status = $request->status;
+    $gstatus = $request->gstatus;
+
+    DB::statement("SET SQL_MODE=''");
+    $row = Move::create(['user_id' => $y, 'bus_id' => $bus,'station_id' => $station, 'service' => $service, 'timing' => $timing, 'status' => $status,'chauffeur_id' => $chauff, 'chauffeur_id' => $chauff, 'kabid_id' => $kabid , 'gstatus' => $gstatus ]);
+  
+    $buses = Bus::get();
+    
+ //   $p= Tpanne::get();'panne' =>$p, 
+    return view('pages.Move', ['cs1' =>1, 'buses' => $buses]);
+}
+
 public function location(Request $request)
 {
     $from = $request->sttart_date;
@@ -804,8 +841,9 @@ public function location2(Request $request)
 {
     $from = $request->sttart_date;
     $to = $request->endd_date;
+    $user = $request->type_id;
 
-    return view('admin.locate', ['sttart_date'=> $from,   'endd_date'=> $to]);
+    return view('admin.locate', ['sttart_date'=> $from,   'endd_date'=> $to,   'type_id'=> $user]);
 
 }
 public function repo_list(Request $request)
@@ -814,8 +852,10 @@ public function repo_list(Request $request)
     if ($request->ajax()) {
         $from= $request->sttart_date;	
     $to= $request->endd_date;
-
-            $data = Report::join('buses','reports.bus_id','=','buses.id')
+        if($request->type_id == 0)
+        $data = Report::where('reports.id', '!=', 0);
+        else $data = Report::where('user_id',$request->type_id );
+            $data = $data->join('buses','reports.bus_id','=','buses.id')
         ->join('lignes','reports.ligne_id','=','lignes.id')
        ->Join('kabids', 'reports.kabid_id','=','kabids.id')
        ->Join('users', 'reports.user_id', '=', 'users.id')
@@ -870,7 +910,7 @@ public function panne(Request $request)
        ->Join('users', 'pannes.user_id', '=', 'users.id')
         ->Join('chauffeurs', 'pannes.chauffeur_id', '=', 'chauffeurs.id')
             
-       ->select('pannes.id as id', 'service', 'cause', 'time', 'start_date', 'end_date', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name',  'chauffeurs.name as c_name');
+       ->select('pannes.id as id', 'service', 'cause', 'caused', 'time', 'start_date', 'end_date', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name',  'chauffeurs.name as c_name');
       
         
 
@@ -890,6 +930,49 @@ public function panne(Request $request)
         $data = Panne::whereBetween('start_date', [$from, $to])->select( DB::raw("sum(time) as time"))->get();
         if(!$data[0]->time) $t = 0;
         else $t = $data[0]->time;
-        return view('admin.panne', ['sttart_date'=> $from,   'endd_date'=> $to, 'time'=> $t]);
+        
+    $p= Tpanne::get()->pluck('name');
+        return view('admin.panne', ['sttart_date'=> $from,   'endd_date'=> $to,'tp'=> $p, 'time'=> $t]);
+}
+
+
+public function move(Request $request)
+{ 
+      
+        
+    if ($request->ajax()) {
+        $from= $request->sttart_date;	
+    $to= $request->endd_date;
+    
+           $data = Move::whereBetween('timing', [$from, $to])
+            ->join('buses','moves.bus_id','=','buses.id')
+        //->join('lignes','moves.ligne_id','=','lignes.id')
+       ->Join('kabids', 'moves.kabid_id','=','kabids.id')
+       ->Join('users', 'moves.user_id', '=', 'users.id')
+        ->Join('chauffeurs', 'moves.chauffeur_id', '=', 'chauffeurs.id')
+            
+       ->select('moves.id as id', 'service', 'moves.status as ms', 'gstatus', 'timing', 'station_id','users.username as ctrl_name', 'buses.name as b_name', 'kabids.name as k_name',  'chauffeurs.name as c_name');
+      
+        
+
+        return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+    }
+    if ($request->sttart_date) {
+        
+        $from = $request->sttart_date;
+        $to = $request->endd_date;
+        }
+        else {
+            $from = '2023-10-01 00:00:00' ;
+            $to = $date = date("Y-m-d H:i:s");
+        }
+    /*    $data = Move::whereBetween('timing', [$from, $to])->select( DB::raw("sum(time) as time"))->get();
+        if(!$data[0]->time) $t = 0;
+        else $t = $data[0]->time;
+        
+    $p= Tpanne::get()->pluck('name');,'tp'=> $p, 'time'=> $t */
+        return view('admin.move', ['sttart_date'=> $from,   'endd_date'=> $to]);
 }
 }

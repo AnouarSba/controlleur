@@ -2,7 +2,7 @@
 
 @section('content')
 @include('layouts.navbars.auth.topnav', ['title' => 'توقف الحافلة'])
-@if(isset($ctrl))
+@if(isset($cs))
 <script>
 alert('لقد قمت بالتبليغ عن توقف الحافلة')
 </script>
@@ -46,12 +46,12 @@ alert('لقد قمت بالتبليغ عن توقف الحافلة')
             </select>
         </div>
         @php
-        $arr=[' ', 'A', 'B', 'C', 'D']
+        $arr=[' ', 'A', 'B', 'C', 'D'];
         @endphp
         <div class="form__linput">
             <label class="form__label" for="arret">الخدمة</label>
             <select class="form__select" id="arret" required name="service">
-                <option value="" required>اختر المحطة</option>
+                <option value="" required>اختر الخدمة</option>
                 @for($i=1; $i<=4 ; $i++) <option value="{{$i}}">{{$arr[$i]}}</option>
                     @endfor
             </select>
@@ -71,8 +71,14 @@ alert('لقد قمت بالتبليغ عن توقف الحافلة')
 
         <div class="form-group">
             <label class="form__label" for="arret" style="float:right">سبب التوقف</label>
-
-            <textarea name="cause" required placeholder="سبب التوقف" id="cause" cols="50" rows="5"></textarea>
+ <select class="form__select" id="arret" required name="cause">
+                <option value="" required>-- السبب --</option>
+                @foreach ($panne as $k)
+                <option value="{{$k->id}}">{{$k->name}}</option>
+                @endforeach
+            </select>
+             <label class="form__label" for="arret" style="float:right">تفصيل سبب التوقف</label>
+            <textarea name="caused" required placeholder="تفصيل سبب التوقف" id="cause" cols="50" rows="5"></textarea>
         </div>
         <input class="primary-btn form__btn" style="text-align: center;
     margin-right: 0%;

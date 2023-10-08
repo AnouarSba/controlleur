@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Locations</title>
+    <title>Move</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
@@ -58,27 +58,29 @@
     alert('انت تراقب الحافلة {{$buses[$ctrl]}}')
     </script>
     @endif
-    <div class="container">
+    <div class="container" dir="rtl">
 
         <h4>التاريخ من : <?php echo $sttart_date; ?> إلى : <?php echo $endd_date; ?> </h4>
 
-        <table class="table table-bordered data-table">
+        <table class="table table-bordered data-table" dir="rtl" style="text-align:right; font-size:12px">
             <thead>
                 <tr>
                     <th>رقم</th>
                     <th> المراقب</th>
-                    <th> الخط</th>
+                    <th> المحطة</th>
                     <th> الحافلة</th>
-                    <th> المكان</th>
-                    <th> الرقم التسلسلي</th>
+                    <th>اسم السائق</th>
                     <th>اسم القابض</th>
-                     <th>اسم السائق</th>
-                    <th> تاريخ المراقبة</th>
+                    <th> الخدمة</th>
+                    <th> الحالة </th>
+                    <th> حالة اللوحة الالكترونية </th>
+                    <th> التوقيت </th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
+
     </div>
 
 </body>
@@ -96,63 +98,83 @@ $.ajaxSetup({
 
 
 $(function() {
-    
+    var arr = ['A', 'B', 'C', 'D'];
+    var s=['دخول','خروج'];
+    var st=['محطة الأمير عبد القادر','المحطة رقم 17'];
+    var g=['تشتغل','لا تشتغل'];
+
     var table = $('.data-table').DataTable({
         dom: "lBfrtip",
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('repo_list') }}",
+            url: "{{ route('move') }}",
             type: "post",
             data: {
                 sttart_date: "{{$sttart_date}}",
                 endd_date: "{{$endd_date}}",
-                type_id: "{{$type_id}}",
                 'csrf-token': $('meta[name=csrf-token]').attr("content")
             },
             deferRender: true,
         },
         columns: [{
                 data: 'id',
-                name: 'reports.id'
+                name: 'moves.id'
             },
             {
                 data: 'ctrl_name',
                 name: 'users.username'
             },
             {
-                data: 'l_name',
-                name: 'lignes.name'
+                data: 'station_id',
+                name: 'station_id'
             },
             {
                 data: 'b_name',
                 name: 'buses.name'
             },
             {
-                data: 'place',
-                name: 'reported.place'
-            },
-            {
-                data: 'num',
-                name: 'reported.num'
-            },
-            {
-                data: 'k_name',
-                name: 'kabids.name'
-            }, 
-            {
                 data: 'c_name',
                 name: 'chauffeurs.name'
             },
             {
-                data: 'date',
-                name: 'reports.created_at'
-            }
+                data: 'k_name',
+                name: 'kabids.name'
+            },
+            {
+                data: 'service',
+                name: 'service'
+            },
+            {
+                data: 'ms',
+                name: 'moves.status'
+            },
+
+            {
+                data: 'gstatus',
+                name: 'gstatus'
+            },
+            
+            {
+                data: 'timing',
+                name: 'timing'
+            },
         ],
-        
+        createdRow: function(row, data, index) {
+                              $('td:eq(2)', row).html(st[data.station_id]); // Behind of Original Date
+
+            // Updated Schedule Week 1 - 07 Mar 22
+            $('td:eq(6)', row).html(arr[data.service - 1]); //Original Date
+
+                              $('td:eq(7)', row).html(s[data.ms]); // Behind of Original Date
+                              $('td:eq(8)', row).html(g[data.gstatus]); // Behind of Original Date
+                     
+        },
+
     });
 
 });
+
 function put_id(x, y) {
     $('#infra').val(x);
     $('#status').val(y);

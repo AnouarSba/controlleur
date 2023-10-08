@@ -29,10 +29,13 @@ use App\Http\Controllers\ControlController;
 Route::get('Infraction_list',[ ControlController::class, 'Infra_list'])->middleware('auth'); 
 Route::get('locate',[ ControlController::class, 'locate'])->name('pos')->middleware('auth'); 
 Route::post('Stop',[ ControlController::class, 'panne'])->name('panne')->middleware('auth'); 
+Route::post('Move',[ ControlController::class, 'move'])->name('move')->middleware('auth'); 
 Route::post('/store_panne',[ ControlController::class, 'store_panne'])->name('store_panne')->middleware('auth'); 
+Route::post('/store_move',[ ControlController::class, 'store_move'])->name('store_move')->middleware('auth'); 
+Route::get('Move',[ ControlController::class, 'move'])->name('move')->middleware('auth'); 
 Route::get('Stop',[ ControlController::class, 'panne'])->name('panne')->middleware('auth'); 
 Route::get('/Stop_Bus',[ ControlController::class, 'Panne_bus'])->name('Panne_bus')->middleware('auth'); 
-
+Route::get('/Move_Bus',[ ControlController::class, 'Move_bus'])->name('Move_bus')->middleware('auth'); 
 Route::post('Infraction_list',[ ControlController::class, 'Infra_list'])->name('Infra_list')->middleware('auth');
 Route::post('Report_list',[ ControlController::class, 'repo_list'])->name('repo_list')->middleware('auth');
 Route::post('Infraction_t',[ ControlController::class, 'infra_trait'])->name('Infra_trait')->middleware('auth');

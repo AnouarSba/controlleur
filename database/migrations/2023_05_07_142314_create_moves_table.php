@@ -11,20 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pannes', function (Blueprint $table) {
+        Schema::create('moves', function (Blueprint $table) {
                 $table->increments('id');
 
             $table->integer('user_id')->length(2);
             $table->integer('bus_id')->length(2);
-            $table->integer('ligne_id')->length(2)->nullable();
+            $table->integer('station_id')->length(2)->nullable();
             $table->integer('service')->length(1);
-            $table->integer('cause')->length(1);
-            $table->text('caused')->nullable();
+            $table->integer('status')->length(1);
+            $table->integer('gstatus')->length(1);
             $table->integer('chauffeur_id')->length(2)->nullable();
             $table->integer('kabid_id')->length(2)->nullable();
-            $table->timestamp('start_date')->nullable();
-            $table->timestamp('end_date')->nullable();
-            $table->integer('time')->length(8);
+            $table->timestamp('timing')->nullable(); 
 
 
             $table->timestamps();
@@ -36,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pannes');
+        Schema::dropIfExists('moves');
     }
 };

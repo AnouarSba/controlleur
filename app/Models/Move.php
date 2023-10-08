@@ -5,21 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Panne extends Model
+class Move extends Model
 {
     use HasFactory;
     protected $fillable = [
         'user_id',
         'bus_id',
-        'ligne_id',
+        'station_id',
         'kabid_id',
         'chauffeur_id',
         'service',
-        'start_date',
-        'end_date',
-        'time',
-        'cause',
-        'caused',
- 
+        'timing',
+        'status',
+        'gstatus',
+
     ];
 }

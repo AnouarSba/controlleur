@@ -74,6 +74,7 @@
                     <th> وقت التوقف</th>
                     <th> وقت الانطلاق</th>
                     <th>سبب التوقف </th>
+                    <th>التفصيل </th>
                     <th> الوقت المستغرق</th>
                 </tr>
             </thead>
@@ -102,6 +103,8 @@ $.ajaxSetup({
 
 $(function() {
     var arr = ['A', 'B', 'C', 'D'];
+    var a = @php echo $tp; @endphp ;
+    
     var table = $('.data-table').DataTable({
         dom: "lBfrtip",
         processing: true,
@@ -154,6 +157,10 @@ $(function() {
                 name: 'cause'
             },
             {
+                data: 'caused',
+                name: 'caused'
+            },
+            {
                 data: 'time',
                 name: 'time'
             },
@@ -163,9 +170,10 @@ $(function() {
             // Updated Schedule Week 1 - 07 Mar 22
             $('td:eq(5)', row).html(arr[data.service - 1]); //Original Date
 
-            /* else if (data.cn == null) {
-                              $('td:eq(2)', row).css('background-color', 'grey'); // Behind of Original Date
-                          }*/
+            if (data.cause == 0) {
+                              $('td:eq(8)', row).html('لم يحدد'); // Behind of Original Date
+                          }
+                          else $('td:eq(8)', row).html(a[data.cause-1]);
         },
 
     });
