@@ -78,7 +78,7 @@ alert('لقد قمت بالتبليغ عن توقف الحافلة')
                 @endforeach
             </select>
              <label class="form__label" for="arret" style="float:right">تفصيل سبب التوقف</label>
-            <textarea name="caused" required placeholder="تفصيل سبب التوقف" id="cause" cols="50" rows="5"></textarea>
+            <textarea name="caused" required placeholder="تفصيل سبب التوقف" id="cause" cols="30" rows="5"></textarea>
         </div>
         <input class="primary-btn form__btn" style="text-align: center;
     margin-right: 0%;

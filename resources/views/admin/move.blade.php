@@ -58,9 +58,11 @@
     alert('انت تراقب الحافلة {{$buses[$ctrl]}}')
     </script>
     @endif
-    <div class="container" dir="rtl">
+    <div class="container"  style="overflow:scroll" dir="rtl">
 
-        <h4>التاريخ من : <?php echo $sttart_date; ?> إلى : <?php echo $endd_date; ?> </h4>
+        <h4>التاريخ من : <?php echo str_replace("T", " ", $sttart_date); 
+        ?> إلى : <?php echo
+        str_replace("T", " ", $endd_date); ?> </h4>
 
         <table class="table table-bordered data-table" dir="rtl" style="text-align:right; font-size:12px">
             <thead>
@@ -70,7 +72,7 @@
                     <th> المحطة</th>
                     <th> الحافلة</th>
                     <th>اسم السائق</th>
-                    <th>اسم القابض</th>
+                  <!--  <th>اسم القابض</th>-->
                     <th> الخدمة</th>
                     <th> الحالة </th>
                     <th> حالة اللوحة الالكترونية </th>
@@ -100,7 +102,7 @@ $.ajaxSetup({
 $(function() {
     var arr = ['A', 'B', 'C', 'D'];
     var s=['دخول','خروج'];
-    var st=['محطة الأمير عبد القادر','المحطة رقم 17'];
+    var st=  @php echo $tp; @endphp ;;
     var g=['تشتغل','لا تشتغل'];
 
     var table = $('.data-table').DataTable({
@@ -137,10 +139,10 @@ $(function() {
                 data: 'c_name',
                 name: 'chauffeurs.name'
             },
-            {
+          /*  {
                 data: 'k_name',
                 name: 'kabids.name'
-            },
+            },*/
             {
                 data: 'service',
                 name: 'service'
@@ -164,10 +166,10 @@ $(function() {
                               $('td:eq(2)', row).html(st[data.station_id]); // Behind of Original Date
 
             // Updated Schedule Week 1 - 07 Mar 22
-            $('td:eq(6)', row).html(arr[data.service - 1]); //Original Date
+            $('td:eq(5)', row).html(arr[data.service - 1]); //Original Date
 
-                              $('td:eq(7)', row).html(s[data.ms]); // Behind of Original Date
-                              $('td:eq(8)', row).html(g[data.gstatus]); // Behind of Original Date
+                              $('td:eq(6)', row).html(s[data.ms]); // Behind of Original Date
+                              $('td:eq(7)', row).html(g[data.gstatus]); // Behind of Original Date
                      
         },
 

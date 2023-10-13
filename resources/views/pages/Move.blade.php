@@ -1,7 +1,7 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-@include('layouts.navbars.auth.topnav', ['title' => 'تحركة الحافلة'])
+@include('layouts.navbars.auth.topnav', ['title' => 'حركة الحافلة'])
 @if(isset($cs))
 <script>
 alert('لقد قمت بالتبليغ عن توقف الحافلة')
@@ -21,9 +21,10 @@ alert('لقد قمت بتأكيد حركة الحافلة')
         <div class="form__linput">
             <label class="form__label" for="ligne">المحطة</label>
             <select class="form__select" id="station" required name="station">
-                <option value="" required>اختر المحطة</option>
-                <option value="0">محطة الأمير عبد القادر</option>
-                <option value="1">المحطة رقم 17</option>
+                <option value="" required>اختر المحطة</option>>
+                @foreach ($st as $s)
+                <option value="{{$s->id}}">{{$s->name}}</option>
+                @endforeach
             </select>
         </div>
         
@@ -55,7 +56,7 @@ alert('لقد قمت بتأكيد حركة الحافلة')
                 @endforeach
             </select>
         </div>
-        <div class="form__linput">
+      <!--  <div class="form__linput">
             <label class="form__label" for="name">اسم القابض</label>
 
             <select class="form__select" id="kabid" required name="kabid">
@@ -64,7 +65,7 @@ alert('لقد قمت بتأكيد حركة الحافلة')
                 <option value="{{$k->id}}">{{$k->name}}</option>
                 @endforeach
             </select>
-        </div>
+        </div>-->
         @php
         $arr=[' ', 'A', 'B', 'C', 'D'];
         @endphp
@@ -118,6 +119,6 @@ alert('لقد قمت بتأكيد حركة الحافلة')
                 d.getMinutes().AddZero()].join(':');
        var elem=document.getElementById("start_date"); 
        elem.value = localDateTime;
-       alert(localDateTime)
+       
      </script>
 @endpush

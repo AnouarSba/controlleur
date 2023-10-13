@@ -93,6 +93,12 @@ alert('لقد قمت بمراقبة الصندوق')
             <textarea class="form-control" rows="5" id="rq" name="rq"></textarea>
 
         </div>
+         <div class="some-class" style="float:right;    width: 15%;
+    position: relative;">
+                    <input type="checkbox" class="radio" name="inf"  id="inf" />
+                    <label for="y">مخالفة </label>
+                   
+                </div>
         <input type="hidden" name="lang" id="lang">
         <input type="hidden" name="lat" id="lat">
         <button class="primary-btn form__btn" style="text-align: center;

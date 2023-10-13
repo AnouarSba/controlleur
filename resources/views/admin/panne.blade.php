@@ -58,9 +58,11 @@
     alert('انت تراقب الحافلة {{$buses[$ctrl]}}')
     </script>
     @endif
-    <div class="container" dir="rtl">
+    <div class="container" style="overflow:scroll" dir="rtl">
 
-        <h4>التاريخ من : <?php echo $sttart_date; ?> إلى : <?php echo $endd_date; ?> </h4>
+        <h4>التاريخ من : <?php echo str_replace("T", " ", $sttart_date); 
+        ?> إلى : <?php echo
+        str_replace("T", " ", $endd_date); ?> </h4>
 
         <table class="table table-bordered data-table" dir="rtl" style="text-align:right; font-size:12px">
             <thead>
@@ -76,6 +78,7 @@
                     <th>سبب التوقف </th>
                     <th>التفصيل </th>
                     <th> الوقت المستغرق</th>
+                    <th>  </th>
                 </tr>
             </thead>
             <tbody>
@@ -86,7 +89,34 @@
         </div>
 
     </div>
-
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> تحديث توقيت نهاية التوقف </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{route('panne_edit')}}" method="post">
+                        @csrf
+                       
+                        <input type="hidden" name="panne" id="panne">
+                        <input type="hidden" value="{{$sttart_date}}" name="sttart_date" id="sttart_date">
+                        <input type="hidden" value="{{$time}}" name="time" id="time">
+                        <input type="datetime-local" name="endd_date" id="end_date">
+                      
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                    <input type="submit" class="btn btn-primary" value="تاكيد">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 <script>
@@ -94,6 +124,8 @@
 </script>
 
 <script type="text/javascript">
+
+
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -164,6 +196,10 @@ $(function() {
                 data: 'time',
                 name: 'time'
             },
+            {
+                data: 'action',
+                name: 'action'
+            },
         ],
         createdRow: function(row, data, index) {
 
@@ -181,8 +217,22 @@ $(function() {
 });
 
 function put_id(x, y) {
-    $('#infra').val(x);
-    $('#status').val(y);
+    
+    $('#panne').val(x);
+      Number.prototype.AddZero= function(b,c){
+        var  l= (String(b|| 10).length - String(this).length)+1;
+        return l> 0? new Array(l).join(c|| '0')+this : this;
+     }//to add zero to less than 10,
+
+
+       var d = new Date(),
+       localDateTime= [ d.getFullYear(),(d.getMonth()+1).AddZero(),
+                d.getDate().AddZero()
+               ].join('-') +'T' +
+               [d.getHours().AddZero(),
+                d.getMinutes().AddZero()].join(':');
+      
+    $('#end_date').val(localDateTime);
 }
 
 function put_id01(x, y) {

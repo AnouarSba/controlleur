@@ -58,9 +58,11 @@
     alert('انت تراقب الحافلة {{$buses[$ctrl]}}')
     </script>
     @endif
-    <div class="container">
+    <div class="container" style="overflow:scroll" dir="rtl">
 
-        <h4>التاريخ من : <?php echo $sttart_date; ?> إلى : <?php echo $endd_date; ?> </h4>
+        <h4>التاريخ من : <?php echo str_replace("T", " ", $sttart_date); 
+        ?> إلى : <?php echo
+        str_replace("T", " ", $endd_date); ?> </h4>
 
         <table class="table table-bordered data-table">
             <thead>

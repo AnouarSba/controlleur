@@ -54,11 +54,15 @@
 
 <body>
 
-    <div class="container">
+    <div class="container" style="overflow:scroll" dir="rtl">
         <h1>المخالفات (@if($kabs) القابضين
             @else السائقين @endif)</h1>
         <h3>المراقب: <?php echo $controlleur; ?></h3>
-        <h4>التاريخ من : <?php echo $sttart_date; ?> إلى : <?php echo $endd_date; ?> </h4>
+        
+
+        <h4>التاريخ من : <?php echo str_replace("T", " ", $sttart_date); 
+        ?> إلى : <?php echo
+        str_replace("T", " ", $endd_date); ?> </h4>
 
         <table class="table table-bordered data-table">
             <thead>

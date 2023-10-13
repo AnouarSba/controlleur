@@ -39,12 +39,15 @@ Route::get('/Move_Bus',[ ControlController::class, 'Move_bus'])->name('Move_bus'
 Route::post('Infraction_list',[ ControlController::class, 'Infra_list'])->name('Infra_list')->middleware('auth');
 Route::post('Report_list',[ ControlController::class, 'repo_list'])->name('repo_list')->middleware('auth');
 Route::post('Infraction_t',[ ControlController::class, 'infra_trait'])->name('Infra_trait')->middleware('auth');
+Route::post('Coffre_t',[ ControlController::class, 'Coffre_trait'])->name('Coffre_trait')->middleware('auth');
 Route::post('Infraction_s',[ ControlController::class, 'Infra_save'])->name('Infra_save')->middleware('auth');
+Route::post('Coffre_s',[ ControlController::class, 'Coffre_save'])->name('Coffre_save')->middleware('auth');
 Route::get('Infraction_r/{infra}',[ ControlController::class, 'Infra_rapport'])->name('Infra_rapport')->middleware('auth');
 Route::get('Coffre/{c}',[ ControlController::class, 'Coffre_rapport'])->name('Coffre_rapport')->middleware('auth');
 
 Route::get('Alert_list',[ ControlController::class, 'alert_list'])->middleware('auth'); 
-  
+Route::post('panne_edit',[ ControlController::class, 'panne_edit'])->name('panne_edit')->middleware('auth'); 
+
 Route::post('Alert_list',[ ControlController::class, 'alert_list'])->name('Alert_list')->middleware('auth'); 
 Route::post('Coffre_list',[ ControlController::class, 'coffre_list'])->name('Coffre_list')->middleware('auth'); 
 Route::post('Alert_t',[ ControlController::class, 'alert_trait'])->name('Alert_trait')->middleware('auth');

@@ -25,8 +25,9 @@ return new class extends Migration
             $table->time('time');
             $table->date('c_date');
             $table->text('rq');
+            $table->text('quest')->nullable();
 
-            
+             $table->integer('inf')->length(1);
             $table->string('lat')->nullable();
             $table->string('lang')->nullable();
             $table->timestamps();

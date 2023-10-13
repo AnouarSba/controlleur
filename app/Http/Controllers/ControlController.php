@@ -21,6 +21,7 @@ use App\Models\Panne;
 use App\Models\Move;
 use App\Models\Alert;
 use App\Models\Tpanne;
+use App\Models\Tstation;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
 
@@ -41,8 +42,8 @@ class ControlController extends Controller
     public function Move_bus()
     {
         
-   // $p= Tpanne::get();, ['panne' =>$p]
-        return view('pages.Move');
+    $p= Tstation::get();
+        return view('pages.Move', ['st' =>$p]);
     }
     public function Coffre()
     {
@@ -156,8 +157,11 @@ public function store_coffre(Request $request)
     $lat = $request->lat;
     $lang = $request->lang;
     $rq = $request->rq;
+    $inf = $request->inf;
+    if(!$inf) $inf=0;
+    else $inf=1;
    // DB::statement("SET SQL_MODE=''");
-    $row = Coffre::create(['user_id' => $y, 'emp_id' => $name, 'ts' => $ts,'rq' => $rq, 'caisse' => $caisse,'money' => $money,'lat' => $lat, 'lang' => $lang, 'ligne_id' => $ligne, 't20' => $t20,'t25' => $t25,'t30' => $t30, 'time' => $time, 'c_date' => $date ]);
+    $row = Coffre::create(['user_id' => $y, 'emp_id' => $name, 'ts' => $ts,'rq' => $rq, 'caisse' => $caisse,'money' => $money,'lat' => $lat, 'lang' => $lang, 'ligne_id' => $ligne, 't20' => $t20,'t25' => $t25,'t30' => $t30, 'time' => $time,'inf' => $inf, 'c_date' => $date ]);
     return view('pages.Coffre', ['ctrl'=>1]);
 }
 public function store_infra(Request $request)
@@ -246,6 +250,60 @@ public function infra_save(Request $request)
     ->whereBetween('created_at', [$from, $to])->get();
   
     return view('admin.infraction', ['kabs'=> $kabs, 'sttart_date'=> $from,  'markers'=> $markers, 'user_id' => $request->type_id, 'endd_date'=> $to, 'controlleur'=> $controlleur]);
+
+}
+
+public function Coffre_save(Request $request)
+{
+    $infra = Coffre::find($request->infra);
+    if ($infra) {
+       $infra->inf = $request->status;
+       $infra->save();
+     if ($request->status == 2) {
+      /*  $templateProcessor = new TemplateProcessor('assets/word/questionnaire_original.docx');
+        $emploi = $infra->emp_type;
+        if ($emploi == 1) {
+            $type = 'قابض';
+            $employer = Kabid::find($infra->emp_id);
+            if ($employer) {
+                $name = $employer->name;
+            }
+            $inf = Fkab::find($infra->infra_id);
+            if ($inf) {
+               $infraction = $inf->name;
+            }
+        }
+        else{
+            $type = 'سائق';
+            $employer = Chauffeur::find($infra->emp_id);
+            if ($employer) {
+                $name = $employer->name;
+            }
+            $inf = Fchauffeur::find($infra->infra_id);
+            if ($inf) {
+               $infraction = $inf->name;
+            }
+        }
+        $templateProcessor->setValue('nom', $name);
+        $templateProcessor->setValue('type', $type);
+        $templateProcessor->setValue('infraction', $infraction);
+        $templateProcessor->setValue('date', $infra->infra_date);
+        $templateProcessor->saveAs('assets/word/questionnaire.docx');
+        
+        // Return a download response to the user
+        return response()->download('assets/word/questionnaire.docx');
+    
+    */
+    }
+   }
+    $from = $request->from;
+    $to = $request->to;
+    $controlleur = $request->controlleur;
+    $markers = Infraction::where('infractions.emp_type', '=', 0)
+    ->where('user_id', '=', $request->type_id)
+    ->whereBetween('created_at', [$from, $to])->get();
+  
+    return view('admin.coffre', ['sttart_date'=> $from,  'markers'=> $markers, 'user_id' => $request->type_id, 'endd_date'=> $to, 'controlleur'=> $controlleur]);
 
 }
 public function alert_save(Request $request)
@@ -472,6 +530,28 @@ public function infra_trait(Request $request)
     ->whereBetween('created_at', [$from, $to])->get();
   
     return view('admin.infraction', ['kabs'=> $kabs,  'markers'=> $markers, 'user_id' => $request->type_id, 'sttart_date'=> $from, 'endd_date'=> $to, 'controlleur'=> $controlleur]);
+
+}
+public function Coffre_trait(Request $request)
+{
+    $infra = Coffre::find($request->infra);
+    if ($infra) {
+        if ($request->proces) {
+            $infra->proces = $request->proces;
+        }
+        if ($request->quest) {
+            $infra->quest = $request->quest;
+        }
+       $infra->save();
+    }
+    $from = $request->from;
+    $to = $request->to;
+    $controlleur = $request->controlleur;
+    $markers = Infraction::where('infractions.emp_type', '=', 0)
+    ->where('user_id', '=', $request->type_id)
+    ->whereBetween('created_at', [$from, $to])->get();
+  
+    return view('admin.coffre', [ 'markers'=> $markers, 'user_id' => $request->type_id, 'sttart_date'=> $from, 'endd_date'=> $to, 'controlleur'=> $controlleur]);
 
 }
 public function alert_trait(Request $request)
@@ -703,27 +783,26 @@ public function coffre_list(Request $request)
        ->Join('users', 'coffres.user_id', '=', 'users.id')
        ->Join('kabids', 'coffres.emp_id','=','kabids.id')
        ->whereBetween('c_date', [$from, $to])
-       ->select('coffres.id as id', 'ts', 'caisse', 'rq', 'users.username as ctrl_name', 'kabids.name as emp_name','lignes.name as l_name','c_date');
+       ->select('coffres.id as id', 'inf', 'quest', 'ts', 'caisse', 'rq', 'users.username as ctrl_name', 'kabids.name as emp_name','lignes.name as l_name','c_date');
       
         return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = '';
                     $btn = $btn.'<a href="'.route('Coffre_rapport',$row->id).'" class="btn btn-success btn-sm">التقرير</a>';
-/*
-                    if($row->status != 1)  $btn .= '
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" onclick="put_id('.$row->id.',1);" data-target="#exampleModal">
-                    حفظ
-                  </button>
-                  
-                  '; 
-                  $btn = $btn.'
-                  <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" onclick="put_id2('.$row->id.',`'.$row->proces.'`);" data-target="#exampleModal1">
-                  معالجة
-                </button>';
-                  /*                   $btn .= '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">معالجة</a>';
-                       $btn .= '<a href="javascript:void(0)" class="edit btn btn-danger btn-sm">حذف</a>';
-     */
+  if($row->inf == 1)  $btn .= '
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" onclick="put_id01('.$row->id.',2);" data-target="#exampleModal01">
+                       استفسار
+                     </button>
+                     
+                     ';
+                     if($row->inf == 2) 
+                     $btn .= '
+                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" onclick="put_id2('.$row->id.',`'.$row->quest.'`);"  data-target="#exampleModal2">
+                        نتيجة الاستفسار
+                      </button> 
+                      
+                      ';
                         return $btn;
                 })->addColumn('dif', function($row){
                     $btn = 37000-($row->ts+$row->caisse);
@@ -791,9 +870,11 @@ public function store_panne(Request $request)
     $end_date = $request->end_date;
     $cause = $request->cause;
     $caused = $request->caused;
+    if($request->end_date){
 $diff = abs(strtotime($end_date) - strtotime($start_date));
 
-$time = floor($diff / (60));
+$time = floor($diff / (60));}
+else $time = 0;
 
     DB::statement("SET SQL_MODE=''");
     $row = Panne::create(['user_id' => $y, 'bus_id' => $bus,'ligne_id' => $ligne, 'service' => $service, 'start_date' => $start_date, 'end_date' => $end_date,'chauffeur_id' => $chauff, 'cause' => $cause, 'caused' => $caused , 'time' => $time ]);
@@ -823,8 +904,8 @@ public function store_move(Request $request)
   
     $buses = Bus::get();
     
- //   $p= Tpanne::get();'panne' =>$p, 
-    return view('pages.Move', ['cs1' =>1, 'buses' => $buses]);
+    $p= Tstation::get(); 
+    return view('pages.Move', ['cs1' =>1, 'st' =>$p, 'buses' => $buses]);
 }
 
 public function location(Request $request)
@@ -862,7 +943,7 @@ public function repo_list(Request $request)
         ->Join('chauffeurs', 'reports.chauffeur_id', '=', 'chauffeurs.id')
             
             ->whereBetween('reports.created_at', [$from, $to])
-       ->select('reports.id as id', 'num', 'reports.place as place', 'reports.created_at as date', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name',  'kabids.name as k_name', 'chauffeurs.name as c_name');
+       ->select('reports.id as id', 'num', 'reports.place as place', 'reports.created_at as date', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name','kabids.name as k_name',   'chauffeurs.name as c_name');
       
         
 
@@ -898,12 +979,16 @@ $to= explode('T',$req['endd_date'])[0];
 
 public function panne(Request $request)
 { 
-    
+        $y = Auth::id();
+if($y >8) {$data=Panne::where('user_id', $y);
+
+}
+else $data = Panne::where('pannes.id' , '!=', 0);
     if ($request->ajax()) {
         $from= $request->sttart_date;	
     $to= $request->endd_date;
     
-            $data = Panne::whereBetween('start_date', [$from, $to])
+            $data = $data->whereBetween('start_date', [$from, $to])
             ->join('buses','pannes.bus_id','=','buses.id')
         ->join('lignes','pannes.ligne_id','=','lignes.id')
        //->Join('kabids', 'pannes.kabid_id','=','kabids.id')
@@ -916,6 +1001,19 @@ public function panne(Request $request)
 
         return Datatables::of($data)
                 ->addIndexColumn()
+                ->addColumn('action', function($row){
+                        $btn = '';
+                     
+                
+                    if(!$row->end_date && Auth::id()>8)  $btn .= '
+                    <button type="button"  class="btn btn-warning btn-sm" data-toggle="modal" onclick="put_id('.$row->id.',1);" data-target="#exampleModal">
+                    تحديث
+                  </button>
+                  
+                  ';
+                        return $btn;
+                })
+                ->rawColumns(['action'])
                 ->make(true);
     }
     if ($request->sttart_date) {
@@ -927,14 +1025,41 @@ public function panne(Request $request)
             $from = '2023-10-01 00:00:00' ;
             $to = $date = date("Y-m-d H:i:s");
         }
-        $data = Panne::whereBetween('start_date', [$from, $to])->select( DB::raw("sum(time) as time"))->get();
-        if(!$data[0]->time) $t = 0;
-        else $t = $data[0]->time;
+        $data = $data->whereBetween('start_date', [$from, $to])->get();
+        // ->select( DB::raw("sum(time) as time"))
+         $t = 0;
+        foreach($data as $d){
+        if($d->end_date)
+         $t += $d->time;
+         else { $t= '?';
+         break;}
+}
         
     $p= Tpanne::get()->pluck('name');
         return view('admin.panne', ['sttart_date'=> $from,   'endd_date'=> $to,'tp'=> $p, 'time'=> $t]);
 }
+public function panne_edit(Request $request)
+{ 
+        $y = Auth::id();
 
+    if ($request->endd_date) {
+        
+        $t = $request->time;
+        $p = $request->panne;
+        $from = $request->sttart_date;
+        $to = $request->endd_date;
+        
+        
+        $data = Panne::where('id', $p)->first();
+        $data->end_date = $to ;
+        $data->save();
+        // ->select( DB::raw("sum(time) as time"))
+      
+}
+        
+    $p= Tpanne::get()->pluck('name');
+        return view('admin.panne', ['sttart_date'=> $from,   'endd_date'=> $to,'tp'=> $p, 'time'=> $t]);
+}
 
 public function move(Request $request)
 { 
@@ -947,11 +1072,11 @@ public function move(Request $request)
            $data = Move::whereBetween('timing', [$from, $to])
             ->join('buses','moves.bus_id','=','buses.id')
         //->join('lignes','moves.ligne_id','=','lignes.id')
-       ->Join('kabids', 'moves.kabid_id','=','kabids.id')
+     //  ->Join('kabids', 'moves.kabid_id','=','kabids.id')
        ->Join('users', 'moves.user_id', '=', 'users.id')
         ->Join('chauffeurs', 'moves.chauffeur_id', '=', 'chauffeurs.id')
             
-       ->select('moves.id as id', 'service', 'moves.status as ms', 'gstatus', 'timing', 'station_id','users.username as ctrl_name', 'buses.name as b_name', 'kabids.name as k_name',  'chauffeurs.name as c_name');
+       ->select('moves.id as id', 'service', 'moves.status as ms', 'gstatus', 'timing', 'station_id','users.username as ctrl_name', 'buses.name as b_name', /* 'kabids.name as k_name',*/ 'chauffeurs.name as c_name');
       
         
 
@@ -971,8 +1096,9 @@ public function move(Request $request)
     /*    $data = Move::whereBetween('timing', [$from, $to])->select( DB::raw("sum(time) as time"))->get();
         if(!$data[0]->time) $t = 0;
         else $t = $data[0]->time;
-        
-    $p= Tpanne::get()->pluck('name');,'tp'=> $p, 'time'=> $t */
-        return view('admin.move', ['sttart_date'=> $from,   'endd_date'=> $to]);
+        , 'time'=> $t */
+      
+    $p= Tstation::get()->pluck('name'); 
+    return view('admin.move', ['sttart_date'=> $from,   'endd_date'=> $to,'tp'=> $p]);
 }
 }

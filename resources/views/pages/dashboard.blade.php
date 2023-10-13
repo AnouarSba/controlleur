@@ -195,10 +195,12 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold">عدد حسابات الصندوق</p>
                                 <h5 class="font-weight-bolder">
-                                    {{$all_c}}
+                                    {{$all_c}} <span style="    color: red;
+    font-size: 14px;">( {{$all_ci}} مخالفات )</span>
                                 </h5>
                                 <p class="mb-0">
-                                    <span class="text-success text-sm font-weight-bolder">{{$today_c}}</span>
+                                    <span class="text-success text-sm font-weight-bolder">{{$today_c}}</span>&nbsp;<span style="    color: red;
+    font-size: 14px;">( {{$today_ci}}  )</span>
                                     Aujourd'huit
                                 </p>
                             </div>

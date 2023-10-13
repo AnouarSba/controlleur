@@ -54,10 +54,14 @@
 
 <body>
 
-    <div class="container">
+    <div class="container"  style="overflow:scroll" dir="rtl">
         <h1>مراقبة الصندوق</h1>
         <h3>المراقب: <?php echo $controlleur; ?></h3>
-        <h4>التاريخ من : <?php echo $sttart_date; ?> إلى : <?php echo $endd_date; ?> </h4>
+        
+
+        <h4>التاريخ من : <?php echo str_replace("T", " ", $sttart_date); 
+        ?> إلى : <?php echo
+        str_replace("T", " ", $endd_date); ?> </h4>
 
         <table class="table table-bordered data-table">
             <thead>
@@ -120,7 +124,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('Infra_save')}}" method="post">
+                    <form action="{{route('Coffre_save')}}" method="post">
                         @csrf
                         هل أنت متأكد من تقديم الاستفسار
                         <input type="hidden" name="infra" id="infra_q">
@@ -183,7 +187,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('Infra_trait')}}" method="post">
+                    <form action="{{route('Coffre_trait')}}" method="post">
                         @csrf
 
                         <input type="hidden" name="infra" id="infra_q2">
@@ -344,15 +348,11 @@ function put_id01(x, y) {
     $('#status_q').val(y);
 }
 
-/*function put_id2(x, y) {
-    $('#infra_t').val(x);
-    $('#proces').html(y);
-}*/
-
 function put_id2(x, y) {
-    $('#alert_2').val(x);
-    $('#cntnt').html(y);
+    $('#infra_q2').val(x);
+    $('#quest').html(y);
 }
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
