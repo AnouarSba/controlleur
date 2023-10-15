@@ -38,6 +38,15 @@ alert('لقد قمت بتأكيد حركة الحافلة')
                 @endforeach
             </select>
         </div>
+         <div class="form__linput">
+            <label class="form__label" for="ligne">الخط</label>
+            <select class="form__select" id="ligne" required name="ligne">
+                <option value="" required>اختر الخط</option>
+                @foreach (App\Models\Ligne::get() as $l)
+                <option value="{{$l->id}}">{{$l->name}}</option>
+                @endforeach
+            </select>
+        </div>
 <div class="form__linput">
             <label class="form__label" for="ligne">حالة الحافلة</label>
             <select class="form__select" id="status" required name="status">

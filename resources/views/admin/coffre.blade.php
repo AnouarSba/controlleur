@@ -74,6 +74,7 @@
                     <th> المبلغ الاجمالي (دج)</th>
                     <th> المحاسب </th>
                     <th>الفارق </th>
+                    <th hidden>الفارق </th>
 
                     <th>Action</th>
                 </tr>
@@ -319,6 +320,10 @@ $(function() {
                 name: 'rq'
             },
             {
+                data: 'inf',
+                name: 'inf'
+            },
+            {
                 data: 'action',
                 name: 'action',
                 orderable: false,
@@ -329,10 +334,8 @@ $(function() {
 
             // Updated Schedule Week 1 - 07 Mar 22
 
-
-            /* else if (data.cn == null) {
-                              $('td:eq(2)', row).css('background-color', 'grey'); // Behind of Original Date
-                          }*/
+                              $('td:eq(8)', row).hide(); // Behind of Original Date
+                          
         },
     });
 

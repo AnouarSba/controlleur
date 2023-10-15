@@ -809,6 +809,13 @@ public function coffre_list(Request $request)
                         return $btn;
                 })
                 ->rawColumns(['action', 'dif'])
+                ->filterColumn('inf', function ($query, $keyword) {
+                    $sql = "CASE
+                WHEN inf = 1 THEN 'مخالفة'
+                ELSE ''
+                END  like ?";
+                    $query->whereRaw($sql, ["%{$keyword}%"]);
+                })
                 ->make(true);
     }
     if ($request->type_id) {
@@ -890,6 +897,7 @@ public function store_move(Request $request)
     
     $y = Auth::id();
     $bus = $request->bus;
+    $bus = $request->ligne;
     $station = $request->station;
     $service = $request->service;
     $kabid = $request->kabid;
@@ -900,7 +908,7 @@ public function store_move(Request $request)
     $gstatus = $request->gstatus;
 
     DB::statement("SET SQL_MODE=''");
-    $row = Move::create(['user_id' => $y, 'bus_id' => $bus,'station_id' => $station, 'service' => $service, 'timing' => $timing, 'status' => $status,'chauffeur_id' => $chauff, 'chauffeur_id' => $chauff, 'kabid_id' => $kabid , 'gstatus' => $gstatus ]);
+    $row = Move::create(['user_id' => $y, 'bus_id' => $bus, 'ligne_id' => $ligne,'station_id' => $station, 'service' => $service, 'timing' => $timing, 'status' => $status,'chauffeur_id' => $chauff, 'chauffeur_id' => $chauff, 'kabid_id' => $kabid , 'gstatus' => $gstatus ]);
   
     $buses = Bus::get();
     
@@ -1071,12 +1079,12 @@ public function move(Request $request)
     
            $data = Move::whereBetween('timing', [$from, $to])
             ->join('buses','moves.bus_id','=','buses.id')
-        //->join('lignes','moves.ligne_id','=','lignes.id')
+        ->leftjoin('lignes','moves.ligne_id','=','lignes.id')
      //  ->Join('kabids', 'moves.kabid_id','=','kabids.id')
        ->Join('users', 'moves.user_id', '=', 'users.id')
         ->Join('chauffeurs', 'moves.chauffeur_id', '=', 'chauffeurs.id')
             
-       ->select('moves.id as id', 'service', 'moves.status as ms', 'gstatus', 'timing', 'station_id','users.username as ctrl_name', 'buses.name as b_name', /* 'kabids.name as k_name',*/ 'chauffeurs.name as c_name');
+       ->select('moves.id as id', 'service', 'moves.status as ms', 'gstatus', 'timing', 'station_id','users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name', /* 'kabids.name as k_name',*/ 'chauffeurs.name as c_name');
       
         
 

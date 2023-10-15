@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->integer('user_id')->length(2);
             $table->integer('bus_id')->length(2);
+            $table->integer('ligne_id')->length(2);
             $table->integer('station_id')->length(2)->nullable();
             $table->integer('service')->length(1);
             $table->integer('status')->length(1);

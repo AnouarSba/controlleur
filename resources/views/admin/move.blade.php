@@ -71,6 +71,7 @@
                     <th> المراقب</th>
                     <th> المحطة</th>
                     <th> الحافلة</th>
+                    <th>الخط </th>
                     <th>اسم السائق</th>
                   <!--  <th>اسم القابض</th>-->
                     <th> الخدمة</th>
@@ -136,6 +137,10 @@ $(function() {
                 name: 'buses.name'
             },
             {
+                data: 'l_name',
+                name: 'lignes.name'
+            },
+            {
                 data: 'c_name',
                 name: 'chauffeurs.name'
             },
@@ -163,13 +168,13 @@ $(function() {
             },
         ],
         createdRow: function(row, data, index) {
-                              $('td:eq(2)', row).html(st[data.station_id]); // Behind of Original Date
+                              $('td:eq(2)', row).html(st[data.station_id-1]); // Behind of Original Date
 
             // Updated Schedule Week 1 - 07 Mar 22
-            $('td:eq(5)', row).html(arr[data.service - 1]); //Original Date
+            $('td:eq(6)', row).html(arr[data.service - 1]); //Original Date
 
-                              $('td:eq(6)', row).html(s[data.ms]); // Behind of Original Date
-                              $('td:eq(7)', row).html(g[data.gstatus]); // Behind of Original Date
+                              $('td:eq(7)', row).html(s[data.ms]); // Behind of Original Date
+                              $('td:eq(8)', row).html(g[data.gstatus]); // Behind of Original Date
                      
         },
 
