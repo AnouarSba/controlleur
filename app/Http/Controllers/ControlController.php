@@ -94,6 +94,20 @@ if ($request->id == "0") {
     
   
 }
+public function panne_show(Request $request)
+
+{
+
+        
+$emp = Lpanne::where('type',$request->id)->pluck("name","id");
+
+
+ $data = view('p-ajax-select',compact('emp'))->render();
+
+return response()->json(['options'=>$data]);
+
+
+}
 public function control(Request $request)
 {
     $users = User::where('id', '>', 2)->get();
@@ -899,20 +913,21 @@ public function store_panne(Request $request)
     
     $end_date = $request->end_date;
     $cause = $request->cause;
+    $panne = $request->panne;
     $caused = $request->caused;
     if($request->end_date){
 $diff = abs(strtotime($end_date) - strtotime($start_date));
 
 $time = floor($diff / (60));}
 else $time = 0;
-
     DB::statement("SET SQL_MODE=''");
-    $row = Panne::create(['user_id' => $y, 'bus_id' => $bus,'ligne_id' => $ligne, 'service' => $service, 'start_date' => $start_date, 'end_date' => $end_date,'chauffeur_id' => $chauff, 'cause' => $cause, 'caused' => $caused , 'time' => $time ]);
+    $row = Panne::create(['user_id' => $y, 'bus_id' => $bus, 'panne' => $panne,'ligne_id' => $ligne, 'service' => $service, 'start_date' => $start_date, 'end_date' => $end_date,'chauffeur_id' => $chauff, 'cause' => $cause, 'caused' => $caused , 'time' => $time ]);
   
     $buses = Bus::get();
     
     $p= Tpanne::get();
-    return view('pages.Panne', ['cs' =>1, 'panne' =>$p, 'buses' => $buses]);
+    $lp= Lpanne::get();
+    return view('pages.Panne', ['cs' =>1, 'panne' =>$p, 'lpanne' =>$lp, 'buses' => $buses]);
 }
 
 public function store_move(Request $request)
@@ -1026,7 +1041,7 @@ else $data = Panne::where('pannes.id' , '!=', 0);
        ->Join('users', 'pannes.user_id', '=', 'users.id')
         ->Join('chauffeurs', 'pannes.chauffeur_id', '=', 'chauffeurs.id')
             
-       ->select('pannes.id as id', 'service', 'cause', 'caused', 'time', 'start_date', 'end_date', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name',  'chauffeurs.name as c_name');
+       ->select('pannes.id as id', 'service', 'cause','panne', 'caused', 'time', 'start_date', 'end_date', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name',  'chauffeurs.name as c_name');
       
         
 
@@ -1066,8 +1081,10 @@ else $data = Panne::where('pannes.id' , '!=', 0);
          break;}
 }
         
-    $p= Tpanne::get()->pluck('name');
-        return view('admin.panne', ['sttart_date'=> $from,   'endd_date'=> $to,'tp'=> $p, 'time'=> $t]);
+    $p= Tpanne::get()->pluck('name');   
+     $lp= Lpanne::get()->pluck('name');
+
+        return view('admin.panne', ['sttart_date'=> $from,   'endd_date'=> $to,'tp'=> $p,'lp'=> $lp, 'time'=> $t]);
 }
 public function panne_edit(Request $request)
 { 

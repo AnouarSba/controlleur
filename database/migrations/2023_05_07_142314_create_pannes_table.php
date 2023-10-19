@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('ligne_id')->length(2)->nullable();
             $table->integer('service')->length(1);
             $table->integer('cause')->length(1);
+            $table->integer('panne')->length(3)->nullable();
             $table->text('caused')->nullable();
             $table->integer('chauffeur_id')->length(2)->nullable();
             $table->integer('kabid_id')->length(2)->nullable();

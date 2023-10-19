@@ -68,7 +68,7 @@
             <thead>
                 <tr>
                     <th>رقم</th>
-                    <th> المراقب</th>
+                    <th> رئيس المحطة</th>
                     <th> الخط</th>
                     <th> الحافلة</th>
                     <th>اسم السائق</th>
@@ -76,6 +76,7 @@
                     <th> وقت التوقف</th>
                     <th> وقت الانطلاق</th>
                     <th>سبب التوقف </th>
+                    <th> العطب </th>
                     <th>التفصيل </th>
                     <th> الوقت المستغرق</th>
                     <th>  </th>
@@ -136,6 +137,7 @@ $.ajaxSetup({
 $(function() {
     var arr = ['A', 'B', 'C', 'D'];
     var a = @php echo $tp; @endphp ;
+    var ps = @php echo $lp; @endphp ;
     
     var table = $('.data-table').DataTable({
         dom: "lBfrtip",
@@ -189,6 +191,10 @@ $(function() {
                 name: 'cause'
             },
             {
+                data: 'panne',
+                name: 'panne'
+            },
+            {
                 data: 'caused',
                 name: 'caused'
             },
@@ -210,6 +216,10 @@ $(function() {
                               $('td:eq(8)', row).html('لم يحدد'); // Behind of Original Date
                           }
                           else $('td:eq(8)', row).html(a[data.cause-1]);
+                          if (data.panne == 0 && data.panne==null) {
+                              $('td:eq(9)', row).html(''); // Behind of Original Date
+                          }
+                          else $('td:eq(9)', row).html(ps[data.panne-1]);
         },
 
     });

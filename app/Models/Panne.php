@@ -19,6 +19,7 @@ class Panne extends Model
         'end_date',
         'time',
         'cause',
+        'panne',
         'caused',
  
     ];

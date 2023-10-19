@@ -95,8 +95,9 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('/add_panne',[ ControlController::class, 'store_lpanne'])->name('store_lpanne'); 
 	
 	
-	Route::get('/inf_show/{id}',[ ControlController::class, 'inf_show'])->name('inf_show'); 
-	Route::get('/inf_type/{id}',[ ControlController::class, 'inf_type'])->name('inf_type'); 
+		Route::get('/inf_show/{id}',[ ControlController::class, 'inf_show'])->name('inf_show'); 
+		Route::get('/panne_show/{id}',[ ControlController::class, 'panne_show'])->name('panne_show'); 
+		Route::get('/inf_type/{id}',[ ControlController::class, 'inf_type'])->name('inf_type'); 
 	Route::get('/Alerts', [ControlController::class, 'Alerts'])->name('Alerts'); 
 	Route::get('/Coffre', [ControlController::class, 'Coffre'])->name('Coffre'); 
 	Route::post('/add_alert', [ControlController::class, 'store_alert'])->name('store_alert'); 
