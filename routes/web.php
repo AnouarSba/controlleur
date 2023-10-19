@@ -27,15 +27,17 @@ use App\Http\Controllers\ChangePassword;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ControlController;
 Route::get('Infraction_list',[ ControlController::class, 'Infra_list'])->middleware('auth'); 
+
 Route::get('locate',[ ControlController::class, 'locate'])->name('pos')->middleware('auth'); 
 Route::post('Stop',[ ControlController::class, 'panne'])->name('panne')->middleware('auth'); 
 Route::post('Move',[ ControlController::class, 'move'])->name('move')->middleware('auth'); 
 Route::post('/store_panne',[ ControlController::class, 'store_panne'])->name('store_panne')->middleware('auth'); 
 Route::post('/store_move',[ ControlController::class, 'store_move'])->name('store_move')->middleware('auth'); 
-Route::get('Move',[ ControlController::class, 'move'])->name('move')->middleware('auth'); 
-Route::get('Stop',[ ControlController::class, 'panne'])->name('panne')->middleware('auth'); 
+Route::get('Moved',[ ControlController::class, 'move'])->name('Move')->middleware('auth'); 
+Route::get('Stoped',[ ControlController::class, 'panne'])->name('Panne')->middleware('auth'); 
 Route::get('/Stop_Bus',[ ControlController::class, 'Panne_bus'])->name('Panne_bus')->middleware('auth'); 
 Route::get('/Move_Bus',[ ControlController::class, 'Move_bus'])->name('Move_bus')->middleware('auth'); 
+
 Route::post('Infraction_list',[ ControlController::class, 'Infra_list'])->name('Infra_list')->middleware('auth');
 Route::post('Report_list',[ ControlController::class, 'repo_list'])->name('repo_list')->middleware('auth');
 Route::post('Infraction_t',[ ControlController::class, 'infra_trait'])->name('Infra_trait')->middleware('auth');
@@ -61,9 +63,12 @@ Route::get('Instructions',[ ControlController::class, 'inst'])->name('inst')->mi
 Route::get('Guide',[ ControlController::class, 'dalil'])->name('dalil')->middleware('auth'); 
 Route::get('Reglement',[ ControlController::class, 'emp'])->name('emp')->middleware('auth'); 
 Route::get('Nidam',[ ControlController::class, 'nidam'])->name('nidam')->middleware('auth'); 
+Route::get('Reglement_int',[ ControlController::class, 'reg'])->name('int')->middleware('auth'); 
 Route::get('Stop_point',[ ControlController::class, 'stop'])->name('stop')->middleware('auth'); 
 
 Route::get('/', function () {return redirect('/dashboard');})->middleware('auth');
+
+		Route::get('List_pannes',[ ControlController::class, 'lpannes'])->name('lpannes')->middleware('auth'); 
 	Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
 	Route::post('/register', [RegisterController::class, 'store'])->middleware('guest')->name('register.perform');
 	Route::get('/login', [LoginController::class, 'show'])->middleware('guest')->name('login');
@@ -86,6 +91,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('videos', MediaController::class); 
 	Route::get('/Infractions',[ ControlController::class, 'Infractions'])->name('Infractions'); 
 	Route::post('/add_infra',[ ControlController::class, 'store_infra'])->name('store_infra'); 
+	
+		Route::post('/add_panne',[ ControlController::class, 'store_lpanne'])->name('store_lpanne'); 
+	
+	
 	Route::get('/inf_show/{id}',[ ControlController::class, 'inf_show'])->name('inf_show'); 
 	Route::get('/inf_type/{id}',[ ControlController::class, 'inf_type'])->name('inf_type'); 
 	Route::get('/Alerts', [ControlController::class, 'Alerts'])->name('Alerts'); 

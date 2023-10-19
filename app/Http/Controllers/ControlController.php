@@ -21,6 +21,7 @@ use App\Models\Panne;
 use App\Models\Move;
 use App\Models\Alert;
 use App\Models\Tpanne;
+use App\Models\Lpanne;
 use App\Models\Tstation;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
@@ -33,11 +34,16 @@ class ControlController extends Controller
     {
         return view('pages.Infractions');
     }
+     public function lpannes()
+    {
+        return view('pages.lpannes');
+    }
     public function Panne_bus()
     {
         
     $p= Tpanne::get();
-        return view('pages.Panne', ['panne' =>$p]);
+    $lp= Lpanne::get();
+        return view('pages.Panne', ['panne' =>$p, 'lpanne' =>$lp]);
     }
     public function Move_bus()
     {
@@ -97,6 +103,11 @@ public function control(Request $request)
 public function inst(Request $request)
 {
     return view('pdf.ta3lima');
+
+}
+public function reg(Request $request)
+{
+    return view('pdf.reglement');
 
 }
 public function dalil(Request $request)
@@ -182,6 +193,18 @@ public function store_infra(Request $request)
     $ctrl = 1;
     return view('pages.Infractions' , ['ctrl' => $ctrl]);
 }
+
+public function store_lpanne(Request $request)
+{
+    $type = $request->type;
+    $name = $request->name;
+
+    DB::statement("SET SQL_MODE=''");
+    $row = Lpanne::create(['name' => $name, 'type' => $type ]);
+    $ctrl = 1;
+    return view('pages.lpannes' , ['lpanne' => $ctrl]);
+}
+
 public function store_alert(Request $request)
 {
     $x = $request->x;
@@ -897,7 +920,7 @@ public function store_move(Request $request)
     
     $y = Auth::id();
     $bus = $request->bus;
-    $bus = $request->ligne;
+    $ligne = $request->ligne;
     $station = $request->station;
     $service = $request->service;
     $kabid = $request->kabid;
@@ -988,7 +1011,7 @@ $to= explode('T',$req['endd_date'])[0];
 public function panne(Request $request)
 { 
         $y = Auth::id();
-if($y >8) {$data=Panne::where('user_id', $y);
+if($y >8 && $y<14) {$data=Panne::where('user_id', $y);
 
 }
 else $data = Panne::where('pannes.id' , '!=', 0);

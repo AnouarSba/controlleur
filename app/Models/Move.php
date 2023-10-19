@@ -11,6 +11,7 @@ class Move extends Model
     protected $fillable = [
         'user_id',
         'bus_id',
+        'ligne_id',
         'station_id',
         'kabid_id',
         'chauffeur_id',

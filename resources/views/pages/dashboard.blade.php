@@ -85,7 +85,34 @@
 @include('layouts.navbars.auth.topnav', ['title' => 'الرئيسية'])
 <div class="container-fluid py-4">
     <div class="row">
-        @if(Illuminate\Support\Facades\Auth::user()->id>2)
+        @if(Illuminate\Support\Facades\Auth::user()->id>13)
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Pannes</p>
+                                <h5 class="font-weight-bolder">
+                                    {{$all_p}}
+                                </h5>
+                                <p class="mb-0">
+                                    <span class="text-success text-sm font-weight-bolder">{{$today_p}}</span>
+                                    Aujourd'hui
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        @elseif(Illuminate\Support\Facades\Auth::user()->id>2)
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
@@ -98,7 +125,7 @@
                                 </h5>
                                 <p class="mb-0">
                                     <span class="text-success text-sm font-weight-bolder">0</span>
-                                    Aujourd'huit
+                                    Aujourd'hui
                                 </p>
                             </div>
                         </div>
@@ -123,7 +150,7 @@
                                 </h5>
                                 <p class="mb-0">
                                     <span class="text-success text-sm font-weight-bolder">0 DA </span>
-                                    Aujourd'huit
+                                    Aujourd'hui
                                 </p>
                             </div>
                         </div>
@@ -149,7 +176,7 @@
                                 </h5>
                                 <p class="mb-0">
                                     <span class="text-success text-sm font-weight-bolder">{{$today_i}}</span>
-                                    Aujourd'huit
+                                    Aujourd'hui
                                 </p>
                             </div>
                         </div>
@@ -174,7 +201,7 @@
                                 </h5>
                                 <p class="mb-0">
                                     <span class="text-success text-sm font-weight-bolder">{{$today_a}}</span>
-                                    Aujourd'huit
+                                    Aujourd'hui
                                 </p>
                             </div>
                         </div>
@@ -201,7 +228,7 @@
                                 <p class="mb-0">
                                     <span class="text-success text-sm font-weight-bolder">{{$today_c}}</span>&nbsp;<span style="    color: red;
     font-size: 14px;">( {{$today_ci}}  )</span>
-                                    Aujourd'huit
+                                    Aujourd'hui
                                 </p>
                             </div>
                         </div>
@@ -658,6 +685,12 @@ document.addEventListener("DOMContentLoaded", function() {
         },
         {
             class: 'disabled',
+            onClickLink: '{{route("int")}}',
+            imgageSource: 'https://blog.emploitic.com/wp-content/uploads/2023/02/reglement-interieur-1000x500-1.png',
+            title: 'النظام الداخلي'
+        },
+        {
+            class: 'disabled',
             onClickLink: '{{route("inst")}}',
             imgageSource: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4ypHZCDAquTsVoFoTgS51QypyVIo4fBwt9Q&usqp=CAU',
             title: 'التعليمات'
@@ -699,7 +732,13 @@ document.addEventListener("DOMContentLoaded", function() {
             itemContainer.classList.add("article-container");
             var href = document.createAttribute("href");
             href.value = articles[i].onClickLink;
-            if(p>=9 && i==3)
+            if(p>=9 && i==4 )
+            itemContainer.style.display = "none";
+            itemContainer.setAttributeNode(href);
+            var target = document.createAttribute("target");
+            target.value = '_blank';
+            itemContainer.setAttributeNode(target);
+             if(p>=14 && i>=2 )
             itemContainer.style.display = "none";
             itemContainer.setAttributeNode(href);
             var target = document.createAttribute("target");

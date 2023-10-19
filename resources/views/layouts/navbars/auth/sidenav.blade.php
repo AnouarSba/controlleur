@@ -8,11 +8,14 @@
                 class="navbar-brand-img h-100" alt="main_logo">
             <span class="ms-1 font-weight-bold">Controlleur</span>
         </a>
+        
+    <br>
     </div>
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
+                <span style="margin:65px;color:red;font-size:14px"> {{Auth::user()->username}} </span><br>
                 <a class="nav-link {{ Route::currentRouteName() == 'home' ? 'active' : '' }}"
                     href="{{ route('home') }}">
                     <div
@@ -27,7 +30,7 @@
                     <i class="ni ni-bullet-list-67 text-dark text-sm opacity-10" style="color: #f4645f;"></i>
                 </div>
                 <h6 class="ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">
-                    {{(Illuminate\Support\Facades\Auth::user()->id>2)? 'Repport' : 'Control'}}</h6>
+                    {{(Illuminate\Support\Facades\Auth::user()->id<3)? 'Control' :((Illuminate\Support\Facades\Auth::user()->id<14)? 'Repport': 'Pannes')}}</h6>
             </li>
             @if(Illuminate\Support\Facades\Auth::user()->id>2 && Illuminate\Support\Facades\Auth::user()->id<9) <li
                 class="nav-item">
@@ -60,7 +63,7 @@
                         <span class="nav-link-text ms-1">مراقبة الصندوق</span>
                     </a>
                 </li>
-                @elseif(Illuminate\Support\Facades\Auth::user()->id>8)
+                @elseif(Illuminate\Support\Facades\Auth::user()->id>8 && Illuminate\Support\Facades\Auth::user()->id<14 )
 
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(request()->url(), 'Stop_bus') == true ? 'active' : '' }}"
@@ -82,7 +85,19 @@
                         <span class="nav-link-text ms-1">متابعة حركة الحافلات</span>
                     </a>
                 </li>
-                @else
+                 @elseif(Illuminate\Support\Facades\Auth::user()->id>13 )
+
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(request()->url(), 'list_panne') == true ? 'active' : '' }}"
+                        href="{{ route('lpannes') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">قائمة الأعطاب </span>
+                    </a>
+                </li>
+                @elseif(Illuminate\Support\Facades\Auth::user()->id<3)
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
                         href="{{ route('control') }}">

@@ -77,6 +77,13 @@ alert('لقد قمت بالتبليغ عن توقف الحافلة')
                 <option value="{{$k->id}}">{{$k->name}}</option>
                 @endforeach
             </select>
+             <label class="form__label" for="arret" style="float:right">نوع العطب</label>
+ <select class="form__select" id="arret" required name="cause">
+                <option value="" required>-- العطب --</option>
+                @foreach ($lpanne as $k)
+                <option value="{{$k->id}}">{{$k->name}}</option>
+                @endforeach
+            </select>
              <label class="form__label" for="arret" style="float:right">تفصيل سبب التوقف</label>
             <textarea name="caused" required placeholder="تفصيل سبب التوقف" id="cause" cols="30" rows="5"></textarea>
         </div>
