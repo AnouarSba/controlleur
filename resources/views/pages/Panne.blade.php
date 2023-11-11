@@ -78,7 +78,7 @@ alert('لقد قمت بالتبليغ عن توقف الحافلة')
                 @endforeach
             </select>
             <div class="row"  id="lpanne">
-                 <label class="form__label" for="arret" style="float:right">نوع العطب</label>
+                 <label class="form__label" for="arret" style="float:right">تشخيص العطب</label>
  <select class="form__select" id="panne"   name="panne">
                 <option value="" >-- العطب --</option>
                 @foreach ($lpanne as $k)
@@ -128,11 +128,13 @@ $('#lpanne').show();
         $("select[name='panne'").html(data.options);
 
     }); 
+    $("#panne").prop('required',true);
  }
 else {
 
 $('#lpanne').hide();
 $('#panne').val(0);
+$("#panne").prop('required',false);
 }
 } );
 

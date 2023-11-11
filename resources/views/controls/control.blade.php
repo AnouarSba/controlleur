@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ asset('assets/css/adminlte.min.css') }}">
-
+@if(Illuminate\Support\Facades\Auth::user()->id != 12)
 <div class="col-md-12">
     <div class="row justify-content-center">
         <div class="col-md-12 py-2">
@@ -238,6 +238,7 @@
 
                 </div>
             </div>
+            @endif
             <div class="card" style="background-color: rgb(120, 144, 230)">
                 <div class="card-header">
                     <h3>{{ __('تقرير توقف الحافلات') }}</h3>

@@ -106,8 +106,9 @@
                        
                         <input type="hidden" name="panne" id="panne">
                         <input type="hidden" value="{{$sttart_date}}" name="sttart_date" id="sttart_date">
+                        <input type="hidden" value="{{$endd_date}}" name="endd_date" id="sttart_date">
                         <input type="hidden" value="{{$time}}" name="time" id="time">
-                        <input type="datetime-local" name="endd_date" id="end_date">
+                        <input type="datetime-local" name="end_date" id="end_date">
                       
                 </div>
                 <div class="modal-footer">

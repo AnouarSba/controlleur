@@ -22,6 +22,7 @@ class Coffre extends Model
         'ts',
         'rq',
         'time',
+        'inf',
         'c_date'
     ];
 }

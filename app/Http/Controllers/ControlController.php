@@ -1026,7 +1026,7 @@ $to= explode('T',$req['endd_date'])[0];
 public function panne(Request $request)
 { 
         $y = Auth::id();
-if($y >8 && $y<14) {$data=Panne::where('user_id', $y);
+if($y >8 && $y<14 && $y!=12) {$data=Panne::where('user_id', $y);
 
 }
 else $data = Panne::where('pannes.id' , '!=', 0);
@@ -1041,7 +1041,7 @@ else $data = Panne::where('pannes.id' , '!=', 0);
        ->Join('users', 'pannes.user_id', '=', 'users.id')
         ->Join('chauffeurs', 'pannes.chauffeur_id', '=', 'chauffeurs.id')
             
-       ->select('pannes.id as id', 'service', 'cause','panne', 'caused', 'time', 'start_date', 'end_date', 'users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name',  'chauffeurs.name as c_name');
+       ->select('pannes.id as id', 'service', 'cause','panne', 'caused', 'time', 'start_date', 'end_date', 'users.username as ctrl_name','users.id as uid', 'buses.name as b_name', 'lignes.name as l_name',  'chauffeurs.name as c_name');
       
         
 
@@ -1051,7 +1051,7 @@ else $data = Panne::where('pannes.id' , '!=', 0);
                         $btn = '';
                      
                 
-                    if(!$row->end_date && Auth::id()>8)  $btn .= '
+                    if(!$row->end_date && Auth::id()==$row->uid  )  $btn .= '
                     <button type="button"  class="btn btn-warning btn-sm" data-toggle="modal" onclick="put_id('.$row->id.',1);" data-target="#exampleModal">
                     تحديث
                   </button>
@@ -1090,23 +1090,32 @@ public function panne_edit(Request $request)
 { 
         $y = Auth::id();
 
-    if ($request->endd_date) {
+    if ($request->end_date) {
         
         $t = $request->time;
         $p = $request->panne;
         $from = $request->sttart_date;
         $to = $request->endd_date;
+        $fin = $request->end_date;
         
         
         $data = Panne::where('id', $p)->first();
-        $data->end_date = $to ;
-        $data->save();
+        if($data){
+        $data->end_date = $fin ;
+         $f = $data->start_date;
+$diff = abs(strtotime($fin) - strtotime($f));
+
+$time = floor($diff / (60));
+        $data->time = $time ;
+
+        $data->save();}
         // ->select( DB::raw("sum(time) as time"))
       
 }
         
+     $lp= Lpanne::get()->pluck('name');
     $p= Tpanne::get()->pluck('name');
-        return view('admin.panne', ['sttart_date'=> $from,   'endd_date'=> $to,'tp'=> $p, 'time'=> $t]);
+        return view('admin.panne', ['sttart_date'=> $from,   'endd_date'=> $to,'tp'=> $p,'lp'=> $lp, 'time'=> $t]);
 }
 
 public function move(Request $request)

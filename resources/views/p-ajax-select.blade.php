@@ -1,4 +1,4 @@
-<option>--- اختر العطب ---</option>
+                <option value="" >-- العطب --</option>
 
 @if(!empty($emp))
 

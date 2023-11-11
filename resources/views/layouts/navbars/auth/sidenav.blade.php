@@ -30,7 +30,7 @@
                     <i class="ni ni-bullet-list-67 text-dark text-sm opacity-10" style="color: #f4645f;"></i>
                 </div>
                 <h6 class="ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">
-                    {{(Illuminate\Support\Facades\Auth::user()->id<3)? 'Control' :((Illuminate\Support\Facades\Auth::user()->id<14)? 'Repport': 'Pannes')}}</h6>
+                    {{(Illuminate\Support\Facades\Auth::user()->id<3 || Illuminate\Support\Facades\Auth::user()->id==12)? 'Control' :((Illuminate\Support\Facades\Auth::user()->id<14)? 'Repport': 'Pannes')}}</h6>
             </li>
             @if(Illuminate\Support\Facades\Auth::user()->id>2 && Illuminate\Support\Facades\Auth::user()->id<9) <li
                 class="nav-item">
@@ -63,7 +63,7 @@
                         <span class="nav-link-text ms-1">مراقبة الصندوق</span>
                     </a>
                 </li>
-                @elseif(Illuminate\Support\Facades\Auth::user()->id>8 && Illuminate\Support\Facades\Auth::user()->id<14 )
+                @elseif(Illuminate\Support\Facades\Auth::user()->id>8 && Illuminate\Support\Facades\Auth::user()->id<14 && Illuminate\Support\Facades\Auth::user()->id != 12 )
 
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(request()->url(), 'Stop_bus') == true ? 'active' : '' }}"
@@ -97,7 +97,7 @@
                         <span class="nav-link-text ms-1">قائمة الأعطاب </span>
                     </a>
                 </li>
-                @elseif(Illuminate\Support\Facades\Auth::user()->id<3)
+                @elseif(Illuminate\Support\Facades\Auth::user()->id<3 || Illuminate\Support\Facades\Auth::user()->id ==12)
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
                         href="{{ route('control') }}">

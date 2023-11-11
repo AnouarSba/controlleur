@@ -168,6 +168,9 @@ $(function() {
             },
         ],
         createdRow: function(row, data, index) {
+            if(data.station_id > 4)
+                              $('td:eq(2)', row).html(st[data.station_id-2]); // Behind of Original Date
+                              else
                               $('td:eq(2)', row).html(st[data.station_id-1]); // Behind of Original Date
 
             // Updated Schedule Week 1 - 07 Mar 22
