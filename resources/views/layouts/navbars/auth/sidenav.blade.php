@@ -6,7 +6,7 @@
         <a class="navbar-brand m-0" href="{{ route('home') }}" target="_blank">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVXQiXxbNsEFLa7Wo_gRz9ni3LlMlMHrPpJdb5lLSjRb-ch5-vjdgYUFN5SQYy9FKb7Gw&usqp=CAU"
                 class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold">Controlleur</span>
+            <span class="ms-1 font-weight-bold">{{env('APP_NAME')}}</span>
         </a>
         
     <br>
@@ -97,7 +97,8 @@
                         <span class="nav-link-text ms-1">قائمة الأعطاب </span>
                     </a>
                 </li>
-                @elseif(Illuminate\Support\Facades\Auth::user()->id<3 || Illuminate\Support\Facades\Auth::user()->id ==12)
+                @endif
+                @if(Illuminate\Support\Facades\Auth::user()->id<3 || Illuminate\Support\Facades\Auth::user()->id ==12 || Illuminate\Support\Facades\Auth::user()->id ==14)
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
                         href="{{ route('control') }}">

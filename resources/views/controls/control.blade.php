@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ asset('assets/css/adminlte.min.css') }}">
-@if(Illuminate\Support\Facades\Auth::user()->id != 12)
+@if(Illuminate\Support\Facades\Auth::user()->id != 12 && Illuminate\Support\Facades\Auth::user()->id != 14)
 <div class="col-md-12">
     <div class="row justify-content-center">
         <div class="col-md-12 py-2">
