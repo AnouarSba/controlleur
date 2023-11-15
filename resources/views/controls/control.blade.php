@@ -18,7 +18,7 @@
                         @csrf
                         <div class="form-row align-items-center">
 
-<div class="col-auto">
+<div class="col-auto"> 
                                 <label for="exampleFormControlInput1">id conrolleur </label>
                                 <select class="form-control" id="country-select"  name="type_id">
                                     <option value="0">اختر المراقب</option>
