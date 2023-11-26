@@ -1022,7 +1022,33 @@ $kabs =  1;
 $to= explode('T',$req['endd_date'])[0];
     return view('admin.infraction', ['kabs'=> $kabs, 'sttart_date'=> $from,  'user_id'=> $request->type_id, 'endd_date'=> $to,  'markers'=> $markers, 'controlleur'=> $controlleur]);
 */}
+public function lspannes(Request $request)
+{ 
 
+
+    if ($request->ajax()) {
+        
+        $data = Lpanne::join('tpannes','lpannes.type','=','tpannes.id')
+       ->select('lpannes.id as id', 'lpannes.name as name', 'tpannes.name as tname');
+      
+        
+
+        return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+    }
+    return view('admin.lspannes');
+
+}public function c_helloworld(Request $request )
+{ 
+
+            
+    $nom=$request->nom ;
+      
+    
+    return view('admin.test', ['x' => $nom]);
+
+}
 public function panne(Request $request)
 { 
         $y = Auth::id();
