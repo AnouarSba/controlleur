@@ -1043,10 +1043,10 @@ public function lspannes(Request $request)
 { 
 
             
-    $nom=$request->nom ;
+    //$nom=$request->nom ;
       
     
-    return view('admin.test', ['x' => $nom]);
+    return view('admin.test');
 
 }
 public function panne(Request $request)

@@ -28,7 +28,7 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ControlController;
 Route::get('Infraction_list',[ ControlController::class, 'Infra_list'])->middleware('auth'); 
 Route::get('ls_pannes',[ ControlController::class, 'lspannes'])->name('lspannes')->middleware('auth');
-Route::get('hello_world/{nom?}',[ ControlController::class, 'c_helloworld'])->name('helloworld')->middleware('auth');
+Route::get('ticket',[ ControlController::class, 'c_helloworld'])->name('helloworld')->middleware('auth');
 
 Route::get('locate',[ ControlController::class, 'locate'])->name('pos')->middleware('auth'); 
 Route::post('Stop',[ ControlController::class, 'panne'])->name('panne')->middleware('auth'); 
