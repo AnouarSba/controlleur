@@ -944,9 +944,9 @@ public function store_move(Request $request)
     
     $status = $request->status;
     $gstatus = $request->gstatus;
-
+ $nstatus = $request->nstatus;
     DB::statement("SET SQL_MODE=''");
-    $row = Move::create(['user_id' => $y, 'bus_id' => $bus, 'ligne_id' => $ligne,'station_id' => $station, 'service' => $service, 'timing' => $timing, 'status' => $status,'chauffeur_id' => $chauff, 'chauffeur_id' => $chauff, 'kabid_id' => $kabid , 'gstatus' => $gstatus ]);
+    $row = Move::create(['user_id' => $y, 'bus_id' => $bus, 'ligne_id' => $ligne,'station_id' => $station, 'service' => $service, 'timing' => $timing, 'status' => $status,'chauffeur_id' => $chauff, 'chauffeur_id' => $chauff, 'kabid_id' => $kabid , 'gstatus' => $gstatus, 'nstatus' => $nstatus ]);
   
     $buses = Bus::get();
     
@@ -1043,9 +1043,8 @@ public function lspannes(Request $request)
 { 
 
             
-    //$nom=$request->nom ;
-      
-    
+   // $nom=$request->nom 
+
     return view('admin.test');
 
 }
@@ -1159,7 +1158,7 @@ public function move(Request $request)
        ->Join('users', 'moves.user_id', '=', 'users.id')
         ->Join('chauffeurs', 'moves.chauffeur_id', '=', 'chauffeurs.id')
             
-       ->select('moves.id as id', 'service', 'moves.status as ms', 'gstatus', 'timing', 'station_id','users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name', /* 'kabids.name as k_name',*/ 'chauffeurs.name as c_name');
+       ->select('moves.id as id', 'service', 'moves.status as ms', 'gstatus', 'nstatus', 'timing', 'station_id','users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name', /* 'kabids.name as k_name',*/ 'chauffeurs.name as c_name');
       
         
 

@@ -99,6 +99,15 @@ alert('لقد قمت بتأكيد حركة الحافلة')
                 <option value="1">لا تشتغل</option>
             </select>
         </div>
+        
+         <div class="form__linput">
+            <label class="form__label" for="ligne">حالة نظافة الحافلات</label>
+            <select class="form__select" id="nstatus" required name="nstatus">
+                <option value="" required>اختر الحالة</option>
+                <option value="0">نظيفة</option>
+                <option value="1">غير نظيفة</option>
+            </select>
+        </div>
 
         <input class="primary-btn form__btn" style="text-align: center;
     margin-right: 0%;

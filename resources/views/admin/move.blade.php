@@ -76,7 +76,8 @@
                   <!--  <th>اسم القابض</th>-->
                     <th> الخدمة</th>
                     <th> الحالة </th>
-                    <th> حالة اللوحة الالكترونية </th>
+                    <th> حالة اللوحة الالكترونية </t>
+                    <th> حالة نظافة الحافلات</th>
                     <th> التوقيت </th>
                 </tr>
             </thead>
@@ -105,6 +106,8 @@ $(function() {
     var s=['دخول','خروج'];
     var st=  @php echo $tp; @endphp ;;
     var g=['تشتغل','لا تشتغل'];
+          var n=['غير نظيفة',' نظيفة '];
+
 
     var table = $('.data-table').DataTable({
         dom: "lBfrtip",
@@ -162,6 +165,11 @@ $(function() {
                 name: 'gstatus'
             },
             
+              {
+                data: 'nstatus',
+                name: 'nstatus'
+            },
+            
             {
                 data: 'timing',
                 name: 'timing'
@@ -178,6 +186,8 @@ $(function() {
 
                               $('td:eq(7)', row).html(s[data.ms]); // Behind of Original Date
                               $('td:eq(8)', row).html(g[data.gstatus]); // Behind of Original Date
+                                                            $('td:eq(9)', row).html(n[data.nstatus]); // Behind of Original Date
+
                      
         },
 

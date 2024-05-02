@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('service')->length(1);
             $table->integer('status')->length(1);
             $table->integer('gstatus')->length(1);
+             $table->integer('nstatus')->length(1);
             $table->integer('chauffeur_id')->length(2)->nullable();
             $table->integer('kabid_id')->length(2)->nullable();
             $table->timestamp('timing')->nullable(); 
