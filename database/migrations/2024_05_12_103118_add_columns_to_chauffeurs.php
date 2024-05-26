@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('chauffeurs', function (Blueprint $table) {
             $table->string('matricule')->nullable()->after('name');
+            $table->string('fr_name')->nullable()->after('name');
 
         });
     }

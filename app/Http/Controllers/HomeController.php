@@ -11,7 +11,7 @@ use App\Models\Panne;
 use App\Models\Avance;
 use App\Models\User;
 use App\Models\Pointage;
-use App\Models\Attestation;
+use App\Models\attestation;
 
 use Carbon\carbon;
 
@@ -60,9 +60,9 @@ class HomeController extends Controller
         $S = User::where('id',  auth()->user()->id)->first()->salaire;
         $M = User::where('id',  auth()->user()->id)->first()->salaire_mois;
         
-        $D = Attestation::count();
-        $D_t = Attestation::whereDate('date', Carbon::today())->count();
-        $D_reg = Attestation::where('reg',1)->count();
+        $D = attestation::count();
+        $D_t = attestation::whereDate('date', Carbon::today())->count();
+        $D_reg = attestation::where('reg',1)->count();
 
         $tt = Alert::count();
         $rr = Alert::whereDate('created_at', Carbon::today())->count();
