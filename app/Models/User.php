@@ -59,4 +59,18 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($value);
     }
+    public function get_status($date)
+    {
+        $pointage=Pointage::where('date',$date)->where('emp_id', $this->id)->first();
+        if ($pointage) {
+            return $pointage->emp_status_id;
+        } else {
+            return null;
+        }
+        
+    }
+    public function avances()
+    {
+        return $this->hasMany(Avance::class, 'emp_id', 'id');
+    }
 }

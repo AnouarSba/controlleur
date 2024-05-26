@@ -26,6 +26,36 @@ use App\Http\Controllers\ResetPassword;
 use App\Http\Controllers\ChangePassword;            
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ControlController;
+use App\Http\Controllers\ExcelController;
+
+Route::get('/import-excel', [ExcelImportController::class, 'showUploadForm'])->name('import.excel');
+Route::post('/import-excel', [ExcelImportController::class, 'import'])->name('import.excel.submit');
+Route::post('/upload', [ExcelController::class, 'upload'])->name('upload');
+Route::get('/getExcelData', [ExcelController::class, 'getExcelData'])->name('getExcelData');
+Route::post('Export',[ ExcelController::class, 'exportData'])->name('pointage')->middleware('auth'); 
+Route::get('Pointage',[ ExcelController::class, 'do_pointage'])->name('do_pointage')->middleware('auth'); 
+Route::post('Remplir_Pointage',[ ExcelController::class, 'do_pointage'])->name('fill_pointage')->middleware('auth'); 
+Route::post('/upload/image', [ExcelController::class, 'upload'])->name('uploadImage');
+
+// Route::get('Pointage',[ ControlController::class, 'pointage'])->name('pointage')->middleware('auth'); 
+Route::get('Planing',[ ControlController::class, 'planing'])->name('planing')->middleware('auth'); 
+Route::get('Show_Planing',[ ExcelController::class, 'show_planing'])->name('show_planing')->middleware('auth'); 
+Route::get('Show_Avances',[ ExcelController::class, 'show_avances'])->name('show_avances')->middleware('auth'); 
+Route::post('Demande_Avances',[ ExcelController::class, 'demande_avances'])->name('demande_avances')->middleware('auth'); 
+Route::get('Avances',[ ExcelController::class, 'avances'])->name('avances')->middleware('auth'); 
+Route::post('Export_Avance',[ ExcelController::class, 'exportDataAvance'])->name('exportDataAvance')->middleware('auth'); 
+
+
+Route::post('Show_Attestations',[ ExcelController::class, 'show_attestations'])->name('show_attestations')->middleware('auth'); 
+
+Route::post('Demande_Attestations',[ ExcelController::class, 'demande_attestations'])->name('demande_attestations')->middleware('auth'); 
+Route::get('Demander_Attestations',[ ExcelController::class, 'attestations'])->name('attestations')->middleware('auth'); 
+Route::post('attestation_reg',[ ExcelController::class, 'attestation_reg'])->name('attestation_reg')->middleware('auth'); 
+Route::post('PAIE',[ ExcelController::class, 'import_paie'])->name('import_paie')->middleware('auth'); 
+
+
+Route::get('Publicité',[ ControlController::class, 'pub'])->name('pub')->middleware('auth'); 
+
 Route::get('Infraction_list',[ ControlController::class, 'Infra_list'])->middleware('auth'); 
 Route::get('ls_pannes',[ ControlController::class, 'lspannes'])->name('lspannes')->middleware('auth');
 Route::get('ticket',[ ControlController::class, 'c_helloworld'])->name('helloworld')->middleware('auth');

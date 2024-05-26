@@ -84,8 +84,139 @@
 @section('content')
 @include('layouts.navbars.auth.topnav', ['title' => 'الرئيسية'])
 <div class="container-fluid py-4">
+    
+    @if(session('date_error'))
+        <script>
+            alert('{{ session('date_error') }}');
+        </script>
+    @endif
     <div class="row">
-        @if(Illuminate\Support\Facades\Auth::user()->id>13)
+        @if(Illuminate\Support\Facades\Auth::user()->is_==9)
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Nombre de demmandeurs/mois</p>
+                                <h5 class="font-weight-bolder">
+                                    {{$all_d}}
+                                </h5>
+                                @if (date('d') >10 && date('d') <15)
+                                    <p class="mb-0">
+                                    <span class="text-success text-sm font-weight-bolder">{{$today_d}}</span>
+                                    Aujourd'hui
+                                </p>
+                                @endif
+                                
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @elseif(in_array(Illuminate\Support\Facades\Auth::user()->is_,[7,8]))
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Récupérations</p>
+                                <h5 class="font-weight-bolder">
+                                    {{$all_recup}}
+                                </h5>
+                                @if ($today_recup)
+                                <p class="mb-0">
+                                   <span class="text-success text-sm font-weight-bolder">Récupération Aujourd'hui </span>
+                                </p>
+                                @else
+                                <p class="mb-0">
+                                    <span class="text-success text-sm font-weight-bolder">&nbsp; </span>
+                                 </p>
+                                    
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Repos de journée</p>
+                                <h5 class="font-weight-bolder">
+                                    {{$all_rj}}
+                                </h5>
+                                @if ($today_rj)
+                                <p class="mb-0">
+                                   <span class="text-success text-sm font-weight-bolder">Repos Aujourd'hui </span>
+                                </p>
+                                @else
+                                <p class="mb-0">
+                                    <span class="text-success text-sm font-weight-bolder">&nbsp; </span>
+                                 </p>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                @php
+            $months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"];
+                                    
+                                @endphp
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Salaire du mois "{{$months[$month -1]}}" </p>
+                                <h5 class="font-weight-bolder">
+                                    {{$salaire}} DA
+                                </h5>
+                                {{-- @if ($salaire_p) --}}
+                                <p class="mb-0">
+                                   <span class="text-danger text-sm font-weight-bolder"></span>
+                                </p>
+                                {{-- @else
+                                <p class="mb-0">
+                                    <span class="text-success text-sm font-weight-bolder">&nbsp; </span>
+                                 </p>
+                                @endif --}}
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @elseif(Illuminate\Support\Facades\Auth::user()->is_==5)
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
@@ -111,8 +242,34 @@
                 </div>
             </div>
         </div>
+        @elseif(Illuminate\Support\Facades\Auth::user()->is_==6)
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Demmande Attestation / réglée</p>
+                                <h5 class="font-weight-bolder">
+                                    {{$all_dmnd .' / '.$all_dmnd_reg}}
+                                </h5>
+                                <p class="mb-0">
+                                    <span class="text-success text-sm font-weight-bolder">{{$today_dmnd}}</span>
+                                    Aujourd'hui
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
        
-        @elseif(Illuminate\Support\Facades\Auth::user()->id>2)
+        @elseif(in_array(Illuminate\Support\Facades\Auth::user()->is_ , [2, 3, 4]))
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
@@ -163,7 +320,7 @@
                 </div>
             </div>
         </div>
-        @else
+        @elseif(Illuminate\Support\Facades\Auth::user()->is_ == 1)
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
@@ -587,7 +744,7 @@
             </div>
         </div> -->
     <!--Copy this into your website or website generator, in the HTML section.-->
-    @if(Illuminate\Support\Facades\Auth::user()->id>2 && Illuminate\Support\Facades\Auth::user()->id<9)
+    @if(Illuminate\Support\Facades\Auth::user()->is_ == 2 )
     <form action="{{ route('pos') }}" id="myform1" style="margin-left:10px; margin-top:10px;
     z-index: 99;
     position: relative;
@@ -629,7 +786,7 @@ margin-right: 0%;
     </form>
     @endif
 @php
-$p = Illuminate\Support\Facades\Auth::user()->id;
+$p = Illuminate\Support\Facades\Auth::user()->is_;
 @endphp
     <div id='imageGalleryWithTitle' class="news-container" style="position: relative"></div>
     <button type="button" class="btn btn-primary btn-sm" id="btnn" hidden data-toggle="modal"
@@ -695,6 +852,12 @@ document.addEventListener("DOMContentLoaded", function() {
             imgageSource: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4ypHZCDAquTsVoFoTgS51QypyVIo4fBwt9Q&usqp=CAU',
             title: 'التعليمات'
         },
+        {
+            class: 'disabled',
+            onClickLink: '{{route("pub")}}',
+            imgageSource: 'https://fa.qu.edu.iq/wp-content/uploads/2018/09/%D8%A7%D8%B9%D9%84%D8%A7%D9%86.jpg',
+            title: 'الاعلانات'
+        },
 
 
         {
@@ -732,13 +895,13 @@ document.addEventListener("DOMContentLoaded", function() {
             itemContainer.classList.add("article-container");
             var href = document.createAttribute("href");
             href.value = articles[i].onClickLink;
-            if(p>=9 && i==4 )
+            if ([3,4,5,6,7,8,9].includes(p) && i==5 ) 
             itemContainer.style.display = "none";
             itemContainer.setAttributeNode(href);
             var target = document.createAttribute("target");
             target.value = '_blank';
             itemContainer.setAttributeNode(target);
-             if(p>=14 && i>=2 )
+             if([5,6,9].includes(p) && i>=2 )
             itemContainer.style.display = "none";
             itemContainer.setAttributeNode(href);
             var target = document.createAttribute("target");
@@ -746,6 +909,8 @@ document.addEventListener("DOMContentLoaded", function() {
             itemContainer.setAttributeNode(target);
         } else {
             var itemContainer = document.createElement("div");
+            if([6,7,8,9].includes(p) )
+            itemContainer.style.display = "none";
             itemContainer.classList.add("article-container");
             itemContainer.classList.add("date");
 

@@ -30,9 +30,28 @@
                     <i class="ni ni-bullet-list-67 text-dark text-sm opacity-10" style="color: #f4645f;"></i>
                 </div>
                 <h6 class="ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">
-                    {{(Illuminate\Support\Facades\Auth::user()->id<3 || Illuminate\Support\Facades\Auth::user()->id==12)? 'Control' :((Illuminate\Support\Facades\Auth::user()->id<14)? 'Repport': 'Pannes')}}</h6>
+                    @switch(Illuminate\Support\Facades\Auth::user()->is_)
+                        @case(1)
+                        @case(3)
+                        @case(6)
+                        @case(9)
+                            Control
+                            @break
+                            @case(2)
+                            @case(4)
+                            @case(7)
+                            @case(8)
+                            Repport
+                            @break
+                        @case(5)
+                            Pannes
+                            @break
+                        @default
+                            
+                    @endswitch
+                    {{-- {{(in_array( , [1, 3]))?  :((Illuminate\Support\Facades\Auth::user()->id<14)? '': '')}}</h6> --}}
             </li>
-            @if(Illuminate\Support\Facades\Auth::user()->id>2 && Illuminate\Support\Facades\Auth::user()->id<9) <li
+            @if(Illuminate\Support\Facades\Auth::user()->is_ == 2) <li
                 class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'Infractions' ? 'active' : '' }}"
                     href="{{ route('Infractions') }}">
@@ -63,17 +82,7 @@
                         <span class="nav-link-text ms-1">مراقبة الصندوق</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ str_contains(request()->url(), 'hello_world') == true ? 'active' : '' }}"
-                        href="{{ route('helloworld') }}">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">مراقبة التذاكر</span>
-                    </a>
-                </li>
-                @elseif(Illuminate\Support\Facades\Auth::user()->id>8 && Illuminate\Support\Facades\Auth::user()->id<14 && Illuminate\Support\Facades\Auth::user()->id != 12 )
+                @elseif(Illuminate\Support\Facades\Auth::user()->is_ == 4)
 
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(request()->url(), 'Stop_bus') == true ? 'active' : '' }}"
@@ -95,7 +104,7 @@
                         <span class="nav-link-text ms-1">متابعة حركة الحافلات</span>
                     </a>
                 </li>
-                 @elseif(Illuminate\Support\Facades\Auth::user()->id>13 )
+                 @elseif(Illuminate\Support\Facades\Auth::user()->is_ == 5 )
 
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(request()->url(), 'ls_panne') == true ? 'active' : '' }}"
@@ -127,8 +136,7 @@
                         <span class="nav-link-text ms-1">إضافة عطب جديد</span>
                     </a>
                 </li>
-                @endif
-                @if(Illuminate\Support\Facades\Auth::user()->id<3 || Illuminate\Support\Facades\Auth::user()->id ==12 || Illuminate\Support\Facades\Auth::user()->id ==14)
+                @elseif(in_array(Illuminate\Support\Facades\Auth::user()->is_ , [1, 3,6]))
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
                         href="{{ route('control') }}">
@@ -137,6 +145,72 @@
                             <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">Control</span>
+                    </a>
+                    @if (Illuminate\Support\Facades\Auth::user()->is_ == 3)
+                    <a class="nav-link {{ str_contains(request()->url(), 'Pointage') == true ? 'active' : '' }}"
+                        href="{{ route('do_pointage') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Pointage</span>
+                    </a>
+                    @elseif (Illuminate\Support\Facades\Auth::user()->is_ == 1 and Illuminate\Support\Facades\Auth::user()->id != 1 )
+                    <a class="nav-link {{ str_contains(request()->url(), 'Planing') == true ? 'active' : '' }}"
+                        href="{{ route('planing') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Planing</span>
+                    </a>
+                    @endif
+                </li>
+                @endif
+                @if(in_array(Illuminate\Support\Facades\Auth::user()->is_ , [1,2,3,4, 7,8]))
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
+                        href="{{ route('show_planing') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Show Planing</span>
+                    </a>
+                </li>
+                @if(in_array(Illuminate\Support\Facades\Auth::user()->is_ , [2,3,4, 7,8]))
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
+                        href="{{ route('avances') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Avance</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
+                        href="{{ route('attestations') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Attestation de travail</span>
+                    </a>
+                </li>
+                @endif
+                @endif
+                @if(Illuminate\Support\Facades\Auth::user()->is_ == 9)
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
+                        href="{{ route('show_avances') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Avance</span>
                     </a>
                 </li>
                 @endif

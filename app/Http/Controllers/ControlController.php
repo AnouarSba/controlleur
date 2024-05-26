@@ -30,6 +30,14 @@ use \PhpOffice\PhpWord\TemplateProcessor;
 use Carbon\carbon;
 class ControlController extends Controller
 {
+    public function pointage(){
+
+        return view('pages.pointage');
+    }
+    public function planing(){
+
+        return view('pages.planing');
+    }
     public function Infractions()
     {
         return view('pages.Infractions');
@@ -122,6 +130,11 @@ public function inst(Request $request)
 public function reg(Request $request)
 {
     return view('pdf.reglement');
+
+}
+public function pub(Request $request)
+{
+    return view('pdf.pub');
 
 }
 public function dalil(Request $request)
