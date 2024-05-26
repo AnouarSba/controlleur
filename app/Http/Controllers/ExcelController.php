@@ -54,7 +54,7 @@ class ExcelController extends Controller
         if ($request->hasFile('image')) {
             $image_file = $request->file('image');
             $imageName = $request->date . '.' . $image_file->getClientOriginalExtension();
-            $existingImagePath = public_path('images') . '/' . $imageName;
+            $existingImagePath = storage_path('app/public/images') . '/' . $imageName;
             if (File::exists($existingImagePath)) {
                 File::delete($existingImagePath);
             } else {
@@ -65,7 +65,7 @@ class ExcelController extends Controller
                 $Image->date = $request->date;
                 $Image->save();
             }
-            $image_file->move(public_path('images'), $imageName);
+            $image_file->move(storage_path('app/public/images'), $imageName);
 
             return redirect()->back()->with('success', 'Image uploaded successfully.');
         }
@@ -529,13 +529,13 @@ class ExcelController extends Controller
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fileName = 'paie-' . date('Y-m') . '.' . $file->getClientOriginalExtension();
-            $existingFilePath = public_path('assets/files') . '/' . $fileName;
+            $existingFilePath = storage_path('app/public/files') . '/' . $fileName;
             if (File::exists($existingFilePath)) {
                 File::delete($existingFilePath);
             }        
     // Parse the Excel file to extract matricule and salary
     $excelData = Excel::toCollection([], $file)[0]; // Assuming first sheet is used
-            $file->move(public_path('assets/files'), $fileName);
+            $file->move(storage_path('app/public/files'), $fileName);
      
     foreach ($excelData as $row) {
         // Assuming the first column contains matricule and the second column contains salary
