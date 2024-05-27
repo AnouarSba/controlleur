@@ -146,7 +146,7 @@
 
         @if (isset($imagePath))
             @if ($imagePath)
-                <img src="{{ Storage::url($imagePath) }}" onclick="zoom()" id="img" alt="Uploaded Image" class="responsive-image">
+                <img src="{{ asset('/storage/' . $imagePath) }}"  onclick="zoom()" id="img" alt="Uploaded Image" class="responsive-image">
                 <div id="imageModal" class="image-modal">
                     <span class="close">&times;</span>
                     <img class="image-modal-content" id="imgZoom">
