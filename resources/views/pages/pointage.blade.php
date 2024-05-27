@@ -1907,6 +1907,8 @@
                 <label for="tab1"><i class="icon-user"></i>Receveurs</label>
                 <input type="radio" name="pcss3t" id="tab2" class="tab-content-2">
                 <label for="tab2"><i class="icon-road"></i>Chauffeurs</label>
+                <input type="radio" name="pcss3t" id="tab3" class="tab-content-3">
+                <label for="tab3"><i class="icon-road"></i>Chef station</label>
             @endif
 
 
@@ -2053,6 +2055,51 @@
                         </form>
                     </li>
 
+                    <li style="height: 100%" class="tab-content tab-content-3 typography">
+                        <form action="{{ route('fill_pointage') }}" method="POST" id="form">
+                            @csrf
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <!-- Input field for date -->
+                                    <input type="date" onblur="ck4();" name="date" id="dd3"
+                                        class="form-control mb-3">
+                                </div>
+                                <div class="col-sm-4">
+                                    <!-- Button for search (wrapped in a link) -->
+                                    <a href="{{ route('do_pointage') }}">
+                                        <button type="button" class="btn btn-outline-primary w-100">بحث</button>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                @foreach ($chefs as $chef)
+                                    @php
+                                        $state = $chef->get_status($today);
+                                    @endphp
+                                    <div class="col-lg-6 col-sm-12  border border-primary p-2 mb-2">
+                                        <!-- Added col-4 for column layout and mb-3 for margin bottom -->
+                                        <div class="form-check"> <!-- Use form-check for checkbox styling -->
+                                            {{-- <input class="form-check-input" type="checkbox" name="ch[]" value="{{ $chef->id }}" id="chef{{ $chef->id }}"> --}}
+                                            <label class="form-check-label" for="chef{{ $chef->id }}">
+                                                {{ $chef->username }}
+                                            </label>
+                                            <select name="chef{{ $chef->id }}" required class="form-control"
+                                                id="chef{{ $chef->id }}">
+                                                <option value="0">اختر الحالة</option>
+                                                @foreach ($status as $st)
+                                                    <option value="{{ $st->id }}"
+                                                        {{ $st->id == $state ? 'selected' : '' }}>{{ $st->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <button type="submit" name="chef" class="btn btn-primary">Enregistrer</button>
+                        </form>
+                    </li>
                 @endif
 
 
@@ -2092,6 +2139,12 @@
 
     function ck3() {
         var x = document.getElementById("dd").value;
+        if (x) {
+            setCookie("date", x, 365);
+        }
+    }
+    function ck4() {
+        var x = document.getElementById("dd3").value;
         if (x) {
             setCookie("date", x, 365);
         }

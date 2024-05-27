@@ -277,11 +277,12 @@ class ExcelController extends Controller
             }
             $edited = 1;
         } 
-        return view('pages.pointage', ['today' => $date, 'receveurs' => [], 'chauffeurs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => $edited]);
+        return view('pages.pointage', ['today' => $date, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => $edited]);
 
         }
         $receveurs = User::where('is_', 7)->get();
         $chauffeurs = User::where('is_', 8)->get();
+        $chefs = User::where('is_', 4)->get();
         if (isset($_COOKIE['date'])) {
             $date = $_COOKIE['date'];
         } else {
@@ -313,9 +314,22 @@ class ExcelController extends Controller
                 // Pointage::create(['emp_id'=> $value->id, 'date'=> $date, 'emp_status_id'=> $request->ch.$value->id]);
             }
             $edited = 1;
+        }elseif (isset($_POST['chef'])) {
+            $date = $request->date;
+            foreach ($chefs as $key => $value) {
+                $row = Pointage::where('date', $date)->where('emp_id', $value->id)->first();
+                if (!$row) {
+                    Pointage::create(['emp_id' => $value->id, 'date' => $date, 'emp_status_id' => $request['chef' . $value->id]]);
+                } else {
+                    $row->emp_status_id = $request['chef' . $value->id];
+                    $row->save();
+                }
+                // Pointage::create(['emp_id'=> $value->id, 'date'=> $date, 'emp_status_id'=> $request->ch.$value->id]);
+            }
+            $edited = 1;
         }
 
-        return view('pages.pointage', ['today' => $date, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs, 'controleurs' => [], 'status' => $status, 'edited' => $edited]);
+        return view('pages.pointage', ['today' => $date, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs, 'chefs' => $chefs, 'controleurs' => [], 'status' => $status, 'edited' => $edited]);
     }
     public function ExportExcel($etat_receveur, $etat_chauffeur, $etat_cs, $d, $d2, $m, $y)
     {
