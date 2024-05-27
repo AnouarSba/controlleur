@@ -47,7 +47,7 @@
                     <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-bell cursor-pointer"></i>
-                        @if ($month == date('m')-1 && date('d')<7)
+                        @if (isset($month) && $month == date('m')-1 && date('d')<7)
                         <span class="badge bg-danger">1</span> <!-- Notification counter -->
                         @endif
 
@@ -56,9 +56,9 @@
                         aria-labelledby="dropdownMenuButton">
                         
                                     @php
-                                                    $months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"];
+                                                    $months = ["Janvier", "F茅vrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Ao没t", "Septembre", "Octobre", "Novembre", "Decembre"];
                                     @endphp
-                                    @if ($month == date('m')-1)
+                                    @if (isset($month) && $month == date('m')-1)
                                         
                         <li>
                             <a class="dropdown-item border-radius-md" href="javascript:;">

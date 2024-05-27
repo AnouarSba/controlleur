@@ -9,7 +9,7 @@
         {{ $success }}
     </div>
 @endif
-@if (in_array(Illuminate\Support\Facades\Auth::user()->is_, [1, 3, 6]))
+@if (in_array(Illuminate\Support\Facades\Auth::user()->is_, [1,  6]))
     <div class="col-md-12">
         <div class="row justify-content-center">
             <div class="col-md-12 py-2">
