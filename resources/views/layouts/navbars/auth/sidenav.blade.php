@@ -39,9 +39,12 @@
                             @break
                             @case(2)
                             @case(4)
+                            Repport
+                            @break
                             @case(7)
                             @case(8)
-                            Repport
+                            @case(10)
+                            Demande
                             @break
                         @case(5)
                             Pannes
@@ -178,7 +181,8 @@
                         <span class="nav-link-text ms-1">Show Planing</span>
                     </a>
                 </li>
-                @if(in_array(Illuminate\Support\Facades\Auth::user()->is_ , [2,3,4, 7,8]))
+                @endif
+                @if(in_array(Illuminate\Support\Facades\Auth::user()->is_ , [2,3,4, 7,8,10]))
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
                         href="{{ route('avances') }}">
@@ -186,7 +190,7 @@
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Avance</span>
+                        <span class="nav-link-text ms-1">تسبيق الأجرة</span>
                     </a>
                 </li>
                 
@@ -197,10 +201,19 @@
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Attestation de travail</span>
+                        <span class="nav-link-text ms-1">طلب شهادة العمل</span>
                     </a>
                 </li>
-                @endif
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
+                        href="{{ route('events') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">تبليغ عن حدث عائلي</span>
+                    </a>
+                </li>
                 @endif
                 @if(Illuminate\Support\Facades\Auth::user()->is_ == 9)
                 <li class="nav-item">

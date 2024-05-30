@@ -1933,6 +1933,7 @@
                                     </a>
                                 </div>
                             </div>
+
                             <div class="row">
                                 @foreach ($controleurs as $controleur)
                                     @php
@@ -1976,6 +1977,17 @@
                                         <button type="button" class="btn btn-outline-primary w-100">بحث</button>
                                     </a>
                                 </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-6">
+                                <select name="holiday" class="form-control" id="holiday">
+                                    <option value="0">يوم عادي</option>
+                                    @foreach ($holidays as $holiday)
+                                        <option value="{{ $holiday->id }}">{{ $holiday->name }}</option>                                        
+                                    @endforeach
+                                </select>
+                            </div>
+                            <br>
                             </div>
                             <div class="row">
                                 @foreach ($receveurs as $receveur)

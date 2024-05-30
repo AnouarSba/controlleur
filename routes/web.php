@@ -54,6 +54,13 @@ Route::post('attestation_reg',[ ExcelController::class, 'attestation_reg'])->nam
 Route::post('PAIE',[ ExcelController::class, 'import_paie'])->name('import_paie')->middleware('auth'); 
 
 
+Route::post('Show_Events',[ ExcelController::class, 'show_events'])->name('show_events')->middleware('auth'); 
+
+Route::post('Demande_Events',[ ExcelController::class, 'demande_events'])->name('demande_events')->middleware('auth'); 
+Route::get('Demander_Events',[ ExcelController::class, 'events'])->name('events')->middleware('auth'); 
+Route::post('event_reg',[ ExcelController::class, 'event_reg'])->name('event_reg')->middleware('auth'); 
+
+
 Route::get('Publicité',[ ControlController::class, 'pub'])->name('pub')->middleware('auth'); 
 
 Route::get('Infraction_list',[ ControlController::class, 'Infra_list'])->middleware('auth'); 

@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Emp_status;
+use App\Models\Holiday;
 
 return new class extends Migration
 {
@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('emp_statuses', function (Blueprint $table) {
+        Schema::create('holidays', function (Blueprint $table) {
             $table->increments('id');
 
         $table->string('name')->nullable();
@@ -21,71 +21,71 @@ return new class extends Migration
         
             
                         
-    Emp_status::create( [
+    Holiday::create( [
         'id'=>'1',
-        'name'=>'R'
+        'name'=>'رأس السنة الميلادية'
         ] );
         
         
                     
-        Emp_status::create( [
+        Holiday::create( [
         'id'=>'2',
-        'name'=>'A'
+        'name'=>'رأس السنة الأمازيغية'
         ] );
         
         
                     
-        Emp_status::create( [
+        Holiday::create( [
         'id'=>'3',
-        'name'=>'MP'
+        'name'=>'عيد العمال'
         ] );
         
         
                     
-        Emp_status::create( [
+        Holiday::create( [
         'id'=>'4',
-        'name'=>'CM'
+        'name'=>'عيد الاستقلال'
         ] );
         
         
                     
-        Emp_status::create( [
-        'id'=>'',
-        'name'=>'CG'
+        Holiday::create( [
+        'id'=>'5',
+        'name'=>'أول نوفمبر'
         ] );
         
         
                     
-        Emp_status::create( [
+        Holiday::create( [
         'id'=>'6',
-        'name'=>'DC'
+        'name'=>'محرم'
         ] );
         
         
                     
-        Emp_status::create( [
+        Holiday::create( [
         'id'=>'7',
-        'name'=>'S.S'
+        'name'=>'عاشوراء'
         ] );
         
         
                     
-        Emp_status::create( [
+        Holiday::create( [
         'id'=>'8',
-        'name'=>'P'
+        'name'=>'المولد النبوي الشريف'
         ] );
 
                  
-        Emp_status::create( [
+        Holiday::create( [
             'id'=>'9',
-            'name'=>'RJ'
+            'name'=>'عيد الفطر'
             ] );
             
             
                         
-            Emp_status::create( [
+            Holiday::create( [
             'id'=>'10',
-            'name'=>'SHM'
+            'name'=>'عيد الأضحى'
             ] );
     }
 
@@ -94,7 +94,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('emp_statuses');
+        Schema::dropIfExists('holidays');
         
     }
 };

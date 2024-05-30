@@ -12,6 +12,7 @@ use App\Models\Image;
 use App\Models\Pointage;
 use App\Models\User;
 use App\Models\validate_pointage;
+use App\Models\Holiday;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -115,6 +116,13 @@ class ExcelController extends Controller
         } 
 
         return view('pages.attestations');
+    }
+    public function events()
+    {
+
+        
+
+        return view('pages.events');
     }
     public function demande_attestations(Request $request){
 
@@ -251,6 +259,7 @@ class ExcelController extends Controller
     public function do_pointage(Request $request)
     {
         $status = Emp_status::get();
+        $holidays = Holiday::get();
         $edited = 0;
         if (auth()->user()->is_ == 1) {
             $ctrls = User::whereIn('is_', [2,3])->get();
@@ -277,7 +286,7 @@ class ExcelController extends Controller
             }
             $edited = 1;
         } 
-        return view('pages.pointage', ['today' => $date, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => $edited]);
+        return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => $edited]);
 
         }
         $receveurs = User::where('is_', 7)->get();
@@ -329,7 +338,7 @@ class ExcelController extends Controller
             $edited = 1;
         }
 
-        return view('pages.pointage', ['today' => $date, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs, 'chefs' => $chefs, 'controleurs' => [], 'status' => $status, 'edited' => $edited]);
+        return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs, 'chefs' => $chefs, 'controleurs' => [], 'status' => $status, 'edited' => $edited]);
     }
     public function ExportExcel($etat_receveur, $etat_chauffeur, $etat_cs, $d, $d2, $m, $y)
     {

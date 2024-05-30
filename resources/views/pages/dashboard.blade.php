@@ -120,7 +120,7 @@
                 </div>
             </div>
         </div>
-        @elseif(in_array(Illuminate\Support\Facades\Auth::user()->is_,[7,8]))
+        @elseif(in_array(Illuminate\Support\Facades\Auth::user()->is_,[7,8,10]))
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
@@ -196,9 +196,10 @@
                                 <h5 class="font-weight-bolder">
                                     {{$salaire}} DA
                                 </h5>
+                                
                                 {{-- @if ($salaire_p) --}}
                                 <p class="mb-0">
-                                   <span class="text-danger text-sm font-weight-bolder"></span>
+                                   <span class="text-danger text-sm font-weight-bolder">&nbsp;</span>
                                 </p>
                                 {{-- @else
                                 <p class="mb-0">
@@ -895,13 +896,13 @@ document.addEventListener("DOMContentLoaded", function() {
             itemContainer.classList.add("article-container");
             var href = document.createAttribute("href");
             href.value = articles[i].onClickLink;
-            if ([3,4,5,6,7,8,9].includes(p) && i==5 ) 
+            if ([3,4,5,6,7,8,9,10].includes(p) && i==5 ) 
             itemContainer.style.display = "none";
             itemContainer.setAttributeNode(href);
             var target = document.createAttribute("target");
             target.value = '_blank';
             itemContainer.setAttributeNode(target);
-             if([5,6,9].includes(p) && i>=2 )
+             if([5,6,9,10].includes(p) && i>=2 )
             itemContainer.style.display = "none";
             itemContainer.setAttributeNode(href);
             var target = document.createAttribute("target");
@@ -909,7 +910,7 @@ document.addEventListener("DOMContentLoaded", function() {
             itemContainer.setAttributeNode(target);
         } else {
             var itemContainer = document.createElement("div");
-            if([6,7,8,9].includes(p) )
+            if([6,7,8,9,10].includes(p) )
             itemContainer.style.display = "none";
             itemContainer.classList.add("article-container");
             itemContainer.classList.add("date");
