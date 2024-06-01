@@ -147,7 +147,7 @@
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Control</span>
+                        <span class="nav-link-text ms-1">مراقبة</span>
                     </a>
                     @if (Illuminate\Support\Facades\Auth::user()->is_ == 3)
                     <a class="nav-link {{ str_contains(request()->url(), 'Pointage') == true ? 'active' : '' }}"
@@ -156,7 +156,7 @@
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Pointage</span>
+                        <span class="nav-link-text ms-1">تسجيل الحضور</span>
                     </a>
                     @elseif (Illuminate\Support\Facades\Auth::user()->is_ == 1 and Illuminate\Support\Facades\Auth::user()->id != 1 )
                     <a class="nav-link {{ str_contains(request()->url(), 'Planing') == true ? 'active' : '' }}"
@@ -165,7 +165,7 @@
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Planing</span>
+                        <span class="nav-link-text ms-1">البرنامج اليومي</span>
                     </a>
                     @endif
                 </li>
@@ -178,7 +178,7 @@
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Show Planing</span>
+                        <span class="nav-link-text ms-1">البرنامج اليومي</span>
                     </a>
                 </li>
                 @endif
@@ -204,7 +204,7 @@
                         <span class="nav-link-text ms-1">طلب شهادة العمل</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
                         href="{{ route('events') }}">
                         <div
@@ -213,7 +213,7 @@
                         </div>
                         <span class="nav-link-text ms-1">تبليغ عن حدث عائلي</span>
                     </a>
-                </li>
+                </li> --}}
                 @endif
                 @if(Illuminate\Support\Facades\Auth::user()->is_ == 9)
                 <li class="nav-item">
@@ -223,7 +223,7 @@
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Avance</span>
+                        <span class="nav-link-text ms-1">التسبيق</span>
                     </a>
                 </li>
                 @endif
