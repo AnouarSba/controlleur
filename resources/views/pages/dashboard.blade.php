@@ -120,7 +120,7 @@
                 </div>
             </div>
         </div>
-        @elseif(in_array(Illuminate\Support\Facades\Auth::user()->is_,[7,8,10]))
+        @elseif(in_array(Illuminate\Support\Facades\Auth::user()->is_,[2,3,4,7,8,10]))
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
@@ -270,7 +270,7 @@
             </div>
         </div>
        
-        @elseif(in_array(Illuminate\Support\Facades\Auth::user()->is_ , [2, 3, 4]))
+        @elseif(in_array(Illuminate\Support\Facades\Auth::user()->is_ , [12, 13, 14]))
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
