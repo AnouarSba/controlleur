@@ -1896,6 +1896,11 @@
                 alert('تمت العملية بنجاح')
             </script>
         @endif
+        @if (isset($error) && $error != null)
+        <script>
+            alert({{ $error }})
+        </script>
+@endif
 
         <!-- tabs -->
         <div style="height: 100vh" class="pcss3t pcss3t-effect-scale pcss3t-theme-1">
@@ -1923,7 +1928,7 @@
                             <div class="row">
                                 <div class="col-sm-8">
                                     <!-- Input field for date -->
-                                    <input type="date" onblur="ck3();" name="date" id="dd"
+                                    <input type="date" onblur="ck3();" name="date" value="{{ $today }}" id="dd"
                                         class="form-control mb-3">
                                 </div>
                                 <div class="col-sm-4">
@@ -1933,7 +1938,18 @@
                                     </a>
                                 </div>
                             </div>
-
+                            <br>
+                            
+                            <div class="row">
+                                <div class="col-6">
+                                    <select name="holiday" class="form-control" id="holiday">
+                                        <option value="0">يوم عادي</option>
+                                        @foreach ($holidays as $holiday)
+                                            <option value="{{ $holiday->id }}" {{ $holiday->id == $holiday_id ? 'selected' : ''}}>{{ $holiday->name }}</option>                                        
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <br>
                             <div class="row">
                                 @foreach ($controleurs as $controleur)
                                     @php
@@ -1949,10 +1965,10 @@
                                             </label>
                                             <select name="ctrl{{ $controleur->id }}" required class="form-control"
                                                 id="ctrl{{ $controleur->id }}">
-                                                <option value="0">اختر الحالة</option>
+                                                
                                                 @foreach ($status as $st)
                                                     <option value="{{ $st->id }}"
-                                                        {{ $st->id == $state ? 'selected' : '' }}>{{ $st->name }}
+                                                        {{ ($st->id == $state ? 'selected' : ($st->id == 1 ? 'selected' : '')) }}>{{ $st->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -1968,7 +1984,7 @@
                             <div class="row">
                                 <div class="col-sm-8">
                                     <!-- Input field for date -->
-                                    <input type="date" onblur="ck();" name="date" id="dd"
+                                    <input type="date" onblur="ck();" name="date" value="{{ $today }}" id="dd"
                                         class="form-control mb-3">
                                 </div>
                                 <div class="col-sm-4">
@@ -1978,16 +1994,6 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="row">
-                            <div class="col-6">
-                                <select name="holiday" class="form-control" id="holiday">
-                                    <option value="0">يوم عادي</option>
-                                    @foreach ($holidays as $holiday)
-                                        <option value="{{ $holiday->id }}">{{ $holiday->name }}</option>                                        
-                                    @endforeach
-                                </select>
-                            </div>
-                            <br>
                             </div>
                             <div class="row">
                                 @foreach ($receveurs as $receveur)
@@ -2004,10 +2010,10 @@
                                             </label>
                                             <select name="rec{{ $receveur->id }}" required class="form-control"
                                                 id="rec{{ $receveur->id }}">
-                                                <option value="0">اختر الحالة</option>
+                                                
                                                 @foreach ($status as $st)
                                                     <option value="{{ $st->id }}"
-                                                        {{ $st->id == $state ? 'selected' : '' }}>{{ $st->name }}
+                                                        {{ ($st->id == $state ? 'selected' : ($st->id == 1 ? 'selected' : '')) }}>{{ $st->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -2027,7 +2033,7 @@
                             <div class="row">
                                 <div class="col-sm-8">
                                     <!-- Input field for date -->
-                                    <input type="date" onblur="ck2();" name="date" id="dd2"
+                                    <input type="date" onblur="ck2();" name="date" value="{{ $today }}" id="dd2"
                                         class="form-control mb-3">
                                 </div>
                                 <div class="col-sm-4">
@@ -2052,10 +2058,10 @@
                                             </label>
                                             <select name="ch{{ $chauffeur->id }}" required class="form-control"
                                                 id="ch{{ $chauffeur->id }}">
-                                                <option value="0">اختر الحالة</option>
+                                                
                                                 @foreach ($status as $st)
                                                     <option value="{{ $st->id }}"
-                                                        {{ $st->id == $state ? 'selected' : '' }}>{{ $st->name }}
+                                                        {{ ($st->id == $state ? 'selected' : ($st->id == 1 ? 'selected' : '')) }}>{{ $st->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -2073,7 +2079,7 @@
                             <div class="row">
                                 <div class="col-sm-8">
                                     <!-- Input field for date -->
-                                    <input type="date" onblur="ck4();" name="date" id="dd3"
+                                    <input type="date" onblur="ck4();" name="date" value="{{ $today }}" id="dd3"
                                         class="form-control mb-3">
                                 </div>
                                 <div class="col-sm-4">
@@ -2098,10 +2104,10 @@
                                             </label>
                                             <select name="chef{{ $chef->id }}" required class="form-control"
                                                 id="chef{{ $chef->id }}">
-                                                <option value="0">اختر الحالة</option>
+                                                
                                                 @foreach ($status as $st)
                                                     <option value="{{ $st->id }}"
-                                                        {{ $st->id == $state ? 'selected' : '' }}>{{ $st->name }}
+                                                        {{ ($st->id == $state ? 'selected' : ($st->id == 1 ? 'selected' : '')) }}>{{ $st->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -2137,7 +2143,7 @@
         var x = document.getElementById("dd").value;
         if (x) {
             document.getElementById("dd2").value = x;
-            setCookie("date", x, 365);
+            setCookie("date", x, 1);
         }
     }
 
@@ -2145,26 +2151,26 @@
         var x = document.getElementById("dd2").value;
         if (x) {
             document.getElementById("dd").value = x;
-            setCookie("date", x, 365);
+            setCookie("date", x, 1);
         }
     }
 
     function ck3() {
         var x = document.getElementById("dd").value;
         if (x) {
-            setCookie("date", x, 365);
+            setCookie("date", x, 1);
         }
     }
     function ck4() {
         var x = document.getElementById("dd3").value;
         if (x) {
-            setCookie("date", x, 365);
+            setCookie("date", x, 1);
         }
     }
 
     function setCookie(cname, cvalue, exdays) {
         const d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        d.setTime(d.getTime() + (exdays * 8 * 60 * 60 * 1000)); // pour 8h
         let expires = "expires=" + d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }

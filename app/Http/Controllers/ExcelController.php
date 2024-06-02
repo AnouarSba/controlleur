@@ -13,6 +13,7 @@ use App\Models\Pointage;
 use App\Models\User;
 use App\Models\validate_pointage;
 use App\Models\Holiday;
+use App\Models\EmpInHoliday;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -269,6 +270,12 @@ class ExcelController extends Controller
         } else {
             $date = date('Y-m-d');
         }
+        $holiday_id=0;
+        $holiday = EmpInHoliday::where('date', $date)->first();
+        if ($holiday) {
+            $holiday_id = $holiday->holiday_id;
+        }
+
         if (isset($_POST['ctrl'])) {
             $date = $request->date;
             foreach ($ctrls as $key => $ctrl) {
@@ -278,15 +285,30 @@ class ExcelController extends Controller
                 } else {
                     $row->emp_status_id = $request['ctrl' . $ctrl->id];
                     $row->save();
-                    $validate = Validate_pointage::where('date', $date)->first();
-                    if (!$validate) {
-                        Validate_pointage::create(['date' => $date, 'validation' => 1]);
-                    }
+                    
                 }
             }
             $edited = 1;
+            $validate = Validate_pointage::where('date', $date)->first();
+                    if (!$validate) {
+                        Validate_pointage::create(['date' => $date, 'validation' => 1]);
+                    }
+                    else {
+                        $validate->validation = 1;
+                        $validate->save();
+                    }
+            $emps = Pointage::where('date', $date)->where('emp_status_id', 1)->get();
+            $arr = [];
+            foreach ($emps as $emp) {
+                $arr[] = $emp->emp_id;
+            }
+            if ($request->holiday) {
+                $holiday_id = $request->holiday;
+                EmpInHoliday::create(['date' => $date, 'emps' => $arr, 'holiday_id' => $holiday_id]);
+            }
+
         } 
-        return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => $edited]);
+        return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'holiday_id' => $holiday_id, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => $edited]);
 
         }
         $receveurs = User::where('is_', 7)->get();
@@ -299,6 +321,11 @@ class ExcelController extends Controller
         }
         if (isset($_POST['rec'])) {
             $date = $request->date;
+            $validate = Validate_pointage::where('date', $date)->first();
+                    if ($validate) {
+        return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
+
+                    }
             foreach ($receveurs as $key => $value) {
                 $row = Pointage::where('date', $date)->where('emp_id', $value->id)->first();
                 if (!$row) {
@@ -312,6 +339,11 @@ class ExcelController extends Controller
             $edited = 1;
         } elseif (isset($_POST['ch'])) {
             $date = $request->date;
+            $validate = Validate_pointage::where('date', $date)->first();
+                    if ($validate) {
+        return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
+
+                    }
             foreach ($chauffeurs as $key => $value) {
                 $row = Pointage::where('date', $date)->where('emp_id', $value->id)->first();
                 if (!$row) {
