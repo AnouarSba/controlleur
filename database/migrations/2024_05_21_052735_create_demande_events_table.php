@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('demand_events', function (Blueprint $table) {
+        Schema::create('demande_events', function (Blueprint $table) {
             $table->id();
             
             $table->integer('emp_id')->length(3)->nullable();
+            $table->integer('event_id')->length(2)->nullable();
 
             $table->date('date')->nullable();
             $table->boolean('valide')->default(0);

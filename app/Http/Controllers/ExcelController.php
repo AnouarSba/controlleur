@@ -14,6 +14,8 @@ use App\Models\User;
 use App\Models\validate_pointage;
 use App\Models\Holiday;
 use App\Models\EmpInHoliday;
+use App\Models\Event;
+use App\Models\DemandeEvent;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -121,9 +123,8 @@ class ExcelController extends Controller
     public function events()
     {
 
-        
 
-        return view('pages.events');
+        return view('pages.events', ['events' => Event::get()]);
     }
     public function demande_attestations(Request $request){
 
@@ -147,6 +148,22 @@ class ExcelController extends Controller
                 return \view('pages.attestations')->with('attestation', $attestation);
             } else {
                 return \view('pages.attestations')->with('error', $attestation);
+            }
+    }
+    public function demande_events(Request $request){
+
+            $events = Event::get();
+            $event = new DemandeEvent();
+            $event->emp_id = auth()->user()->id;
+            $event->event_id = $request->event_id;
+            $event->date = date('Y-m-d');
+            $event->valide = 0;
+            $event->nbr_jr = 0;
+            $event->save();
+            if ($event) {
+                return \view('pages.events', ['events' => $events])->with('event', $event);
+            } else {
+                return \view('pages.events', ['events' => $events])->with('error', $event);
             }
     }
     public function demande_avances(Request $request)
@@ -209,6 +226,37 @@ class ExcelController extends Controller
     return view('admin.attestation', ['sttart_date'=> $from,   'endd_date'=> $to]);
 
     }
+    public function show_events(Request $request)
+    {
+    $from = $request->start_date;
+    $to = $request->end_date; 
+    
+    if ($request->ajax()) {
+
+  $data = DemandeEvent::Join('users', 'demande_events.emp_id', '=', 'users.id')
+                        ->Join('events', 'demande_events.event_id', '=', 'events.id')
+            
+            ->whereBetween('demande_events.date', [$from, $to])
+       ->select('demande_events.id as id', 'demande_events.created_at as date', 'events.name as name' , 'demande_events.valide as status', 'users.username as username');
+      
+        return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn = '';
+
+                    if($row->status != 1)  $btn .= '
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" onclick="put_id('.$row->id.',1);" data-target="#exampleModal">
+                    معالجة الطلب
+                  </button>
+                  
+                  '; 
+                        return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);    }
+    return view('admin.event', ['sttart_date'=> $from,   'endd_date'=> $to]);
+
+    }
     public function attestation_reg(Request $request){
         $attestation = Attestation::find($request->attestation);
         $attestation->reg = $request->status;
@@ -220,6 +268,21 @@ class ExcelController extends Controller
             return view('admin.attestation',  ['sttart_date'=> $from,   'endd_date'=> $to, 'attestation'=>1]);
         } else {
             return view('admin.attestation',  ['sttart_date'=> $from,   'endd_date'=> $to, 'attestation'=>0]);
+        }
+        
+    }
+    public function event_reg(Request $request){
+        $event = DemandeEvent::find($request->event);
+        $event->valide = $request->status;
+        $event->nbr_jr = $request->nbr_jr;
+        
+    $from = $request->from;
+    $to = $request->to; 
+        $event->save();
+        if ($event) {
+            return view('admin.event',  ['sttart_date'=> $from,   'endd_date'=> $to, 'event'=>1]);
+        } else {
+            return view('admin.event',  ['sttart_date'=> $from,   'endd_date'=> $to, 'event'=>0]);
         }
         
     }

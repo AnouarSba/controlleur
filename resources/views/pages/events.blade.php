@@ -28,7 +28,7 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
+    /* max-width: 500px; */
     width: 100%;
     text-align: center;
 }
@@ -156,35 +156,61 @@ button:hover {
     cursor: pointer;
 }
     </style>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            /* display: flex;
+            justify-content: center;
+            align-items: center; 
+            height: 100vh; */
+        }
+        .form-group {
+            width: 100%;
+        }
+        .form-heading {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
 </head>
-<body>
-    <div class="container">
-        @if($attestation ?? '')
+<body> 
+        <div class="container form-container">
+            @if($event ?? '')
         <div class="alert alert-success">
             Operation effectuee avec succes.
         </div>
-        @elseif($deja_demmander ?? '')
-        <div class="alert alert-warning">
-            Vou avez deja demmander une attestation.
-        </div>
-        @elseif($error ?? '')
-        <div class="alert alert-warning">
-            Operation echoue. Veuillez reessayer.
-        </div>
         @endif
-
-        <form action="{{ route('demande_attestations') }}" method="POST" >
-            @csrf
-            
-            <h2>Demander votre Attestation de travail</h2>
-
-
-            <button type="submit">Demander</button>
-        </form>
-
+            <form action="{{ route('demande_events') }}" method="POST" class="form-group">
+                @csrf
+                
+                <h2 class="form-heading">التبليغ عن حدث عائلي</h2>
+    
+                <div class="form-group">
+                    <label for="event">الحدث:</label>
+                    <select name="event_id" id="event_id" class="form-control" required>
+                        <option value="">اختر الحدث</option>
+                        @foreach ($events as $event)
+                        <option value="{{ $event->id }}">{{ $event->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+    
+                <button type="submit" class="btn btn-primary btn-submit">Demander</button>
+            </form>
         <div class="col-12" style="display: contents;">
             <a href="/"> <button type="button" class="btn btn-primary mb-2"> Retour</button></a>
         </div>
-    </div>
+        </div>
+    
+        <!-- Bootstrap JS and dependencies -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
 </body>
 </html>

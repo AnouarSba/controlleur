@@ -204,7 +204,7 @@
                         <span class="nav-link-text ms-1">طلب شهادة العمل</span>
                     </a>
                 </li>
-                {{-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
                         href="{{ route('events') }}">
                         <div
@@ -213,7 +213,7 @@
                         </div>
                         <span class="nav-link-text ms-1">تبليغ عن حدث عائلي</span>
                     </a>
-                </li> --}}
+                </li>
                 @endif
                 @if(Illuminate\Support\Facades\Auth::user()->is_ == 9)
                 <li class="nav-item">
