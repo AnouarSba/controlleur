@@ -12,6 +12,7 @@ use App\Models\Kabid;
 use App\Models\Fkab;
 use App\Models\Fchauffeur;
 use App\Models\User;
+use App\Models\Pointage;
 use App\Models\Position;
 use App\Models\Bus;
 use App\Models\Ligne;
@@ -904,12 +905,32 @@ public function locate(Request $request)
     
     $lat = $request->lat;
     $lang = $request->lang;
+    
+        
+    $RJ = User::where('id',  auth()->user()->id)->first()->RJ;
+    $R = User::where('id',  auth()->user()->id)->first()->R;
+    $RJ_t = 0;
+    $R_t = 0;
+      $pointage = Pointage::where('emp_id',  auth()->user()->id)->whereDate('date', Carbon::today())->first();
+      if ($pointage) {
+          if ($pointage->emp_status_id == 1) {
+              $R_t = 1;
+          }
+          elseif ($pointage->emp_status == 9) {
+              $RJ_t = 1;
+          }
+          
+      }
+
+      $S = User::where('id',  auth()->user()->id)->first()->salaire;
+      $M = User::where('id',  auth()->user()->id)->first()->salaire_mois;
+      
     DB::statement("SET SQL_MODE=''");
    $row = Position::create(['user_id' => $y, 'bus_id' => $bus,'lat' => $lat, 'lang' => $lang ]);
     $row = Report::create(['user_id' => $y, 'bus_id' => $bus,'ligne_id' => $ligne, 'num' => $num, 'kabid_id' => $kabid,'chauffeur_id' => $chauff, 'place' => $place ]);
   
     $buses = Bus::get();
-    return view('pages.dashboard', ['ctrl_b'=>$bus, 'buses' => $buses]);
+    return view('pages.dashboard', [ 'salaire' => $S, 'month'=>$M, 'today_rj'=>$RJ_t, 'all_rj' => $RJ,'today_recup'=>$R_t, 'all_recup' => $R,'ctrl_b'=>$bus, 'buses' => $buses]);
 }
     
 
