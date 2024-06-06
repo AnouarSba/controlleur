@@ -1994,7 +1994,6 @@
                                     </a>
                                 </div>
                             </div>
-                            </div>
                             <div class="row">
                                 @foreach ($receveurs as $receveur)
                                     @php
