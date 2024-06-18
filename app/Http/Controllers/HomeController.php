@@ -71,6 +71,14 @@ class HomeController extends Controller
          $ttti = Coffre::where('inf', '>=',1)->count();
         $rrri = Coffre::where('inf', '>=',1)->whereDate('created_at', Carbon::today())->count();
         $bus = Bus::get();
-        return view('pages.dashboard', ['today_i'=>$r, 'salaire' => $S, 'month'=>$M,  'all_i' => $t, 'today_p'=>$pp, 'all_p' => $p,'today_dmnd'=>$D_t, 'all_dmnd' => $D, 'all_dmnd_reg' => $D_reg,'today_d'=>$dd, 'all_d' => $d, 'today_rj'=>$RJ_t, 'all_rj' => $RJ,'today_recup'=>$R_t, 'all_recup' => $R, 'today_a'=>$rr, 'all_a' => $tt, 'today_c'=>$rrr, 'all_c' => $ttt, 'today_ci'=>$rrri, 'all_ci' => $ttti, 'buses' => $bus]);
+       $avance = Avance::where('emp_id', auth()->user()->id)->where('month', date('m'))->where('year', date('Y'))->first();
+       if ($avance) {
+        $montant = $avance->avance;
+       } else {
+        $montant = 0;
+       }
+       
+
+        return view('pages.dashboard', ['today_i'=>$r, 'salaire' => $S, 'montant' => $montant , 'month'=>$M,  'all_i' => $t, 'today_p'=>$pp, 'all_p' => $p,'today_dmnd'=>$D_t, 'all_dmnd' => $D, 'all_dmnd_reg' => $D_reg,'today_d'=>$dd, 'all_d' => $d, 'today_rj'=>$RJ_t, 'all_rj' => $RJ,'today_recup'=>$R_t, 'all_recup' => $R, 'today_a'=>$rr, 'all_a' => $tt, 'today_c'=>$rrr, 'all_c' => $ttt, 'today_ci'=>$rrri, 'all_ci' => $ttti, 'buses' => $bus]);
     }
 }

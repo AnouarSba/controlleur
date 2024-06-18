@@ -199,7 +199,7 @@
                                 
                                 {{-- @if ($salaire_p) --}}
                                 <p class="mb-0">
-                                   <span class="text-danger text-sm font-weight-bolder">&nbsp;</span>
+                                   <span class="text-danger text-sm font-weight-bolder">{{ ($montant)? 'Avance Salaire : '.$montant. ' DA' : ''}} &nbsp;</span>
                                 </p>
                                 {{-- @else
                                 <p class="mb-0">

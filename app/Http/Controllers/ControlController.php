@@ -930,7 +930,13 @@ public function locate(Request $request)
     $row = Report::create(['user_id' => $y, 'bus_id' => $bus,'ligne_id' => $ligne, 'num' => $num, 'kabid_id' => $kabid,'chauffeur_id' => $chauff, 'place' => $place ]);
   
     $buses = Bus::get();
-    return view('pages.dashboard', [ 'salaire' => $S, 'month'=>$M, 'today_rj'=>$RJ_t, 'all_rj' => $RJ,'today_recup'=>$R_t, 'all_recup' => $R,'ctrl_b'=>$bus, 'buses' => $buses]);
+    $avance = Avance::where('emp_id', auth()->user()->id)->where('month', date('m'))->where('year', date('Y'))->first();
+    if ($avance) {
+     $montant = $avance->avance;
+    } else {
+     $montant = 0;
+    }
+    return view('pages.dashboard', [ 'salaire' => $S, 'month'=>$M, 'montant' => $montant ,'today_rj'=>$RJ_t, 'all_rj' => $RJ,'today_recup'=>$R_t, 'all_recup' => $R,'ctrl_b'=>$bus, 'buses' => $buses]);
 }
     
 
