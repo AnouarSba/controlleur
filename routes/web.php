@@ -56,7 +56,9 @@ Route::post('PAIE',[ ExcelController::class, 'import_paie'])->name('import_paie'
 
 Route::post('Show_Events',[ ExcelController::class, 'show_events'])->name('show_events')->middleware('auth'); 
 Route::get('Repos',[ ExcelController::class, 'repos'])->name('repos')->middleware('auth'); 
+Route::get('RJ',[ ExcelController::class, 'repos_j'])->name('repos_j')->middleware('auth'); 
 Route::get('Detail_Repos/{id}',[ ExcelController::class, 'details'])->name('details')->middleware('auth'); 
+Route::get('Detail_RJ/{id}',[ ExcelController::class, 'details_rj'])->name('details_rj')->middleware('auth'); 
 
 Route::post('Demande_Events',[ ExcelController::class, 'demande_events'])->name('demande_events')->middleware('auth'); 
 Route::get('Demander_Events',[ ExcelController::class, 'events'])->name('events')->middleware('auth'); 

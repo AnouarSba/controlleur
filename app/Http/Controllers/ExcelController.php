@@ -17,6 +17,7 @@ use App\Models\EmpInHoliday;
 use App\Models\Event;
 use App\Models\DemandeEvent;
 use App\Models\Emp_recup;
+use App\Models\Emp_rj;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -153,6 +154,26 @@ class ExcelController extends Controller
 
         return view('pages.repos', ['events' => Event::get(), 'holidays' => Holiday::get(), 'emps' => $emps]);
     }
+    public function repos_j()
+    {
+        if(in_array(auth()->user()->is_, [1, 6]) ){
+            $emps = User::where('id', '!=', 1)->select('id','username','RJ')->get();
+        }
+        else{
+            $emps = User::where('id', auth()->user()->id)->select('id','username','RJ')->get();
+        }
+        foreach ($emps as $emp) {
+            $new= $emp->RJ;
+                $rj = Emp_rj::where('emp_id', $emp->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $new+= $rj;
+                    $emp['pj']=$rj;
+           
+            $emp['rj'] = Emp_rj::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
+            $emp['new'] = $new- $emp['rj'];
+        }
+
+        return view('pages.repos_j', [ 'emps' => $emps]);
+    }
     public function details($id)
     {
         
@@ -166,6 +187,17 @@ class ExcelController extends Controller
                 ->get();          
 
         return view('pages.repos_details', ['emp' => $emp, 'recups' => $recups]);
+    }
+    public function details_rj($id)
+    {
+        
+            $emp = User::where('id', $id)->select('id','username','RJ')->first();
+        
+                $rjs = Emp_rj::where('emp_id', $id)
+                ->whereYear('date', date('Y'))
+                ->get();          
+
+        return view('pages.repos_j_details', ['emp' => $emp, 'rjs' => $rjs]);
     }
     public function demande_attestations(Request $request){
 
@@ -415,10 +447,17 @@ class ExcelController extends Controller
                 if($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2)){
                     $arr[] = $emp->emp_id;
                        Emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
+                    if($emp->emp_status_id == 2){
+                        Emp_rj::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1]);
+                    }
                 }
-                elseif($emp->emp_status_id == 7 ){//|| $emp->emp_status_id == 8
+                elseif($emp->emp_status_id == 7 ){
                     Emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
                     
+                }
+                elseif($emp->emp_status_id == 8 ){
+                    Emp_rj::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0]);
+            
                 }
             }
             if (!$holiday && $holiday_id) {
