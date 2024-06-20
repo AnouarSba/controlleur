@@ -74,6 +74,7 @@ Route::get('ticket',[ ControlController::class, 'c_helloworld'])->name('hellowor
 Route::get('locate',[ ControlController::class, 'locate'])->name('pos')->middleware('auth'); 
 Route::post('Stop',[ ControlController::class, 'panne'])->name('panne')->middleware('auth'); 
 Route::post('Move',[ ControlController::class, 'move'])->name('move')->middleware('auth'); 
+Route::post('Clean',[ ControlController::class, 'clean'])->name('clean')->middleware('auth'); 
 Route::post('/store_panne',[ ControlController::class, 'store_panne'])->name('store_panne')->middleware('auth'); 
 Route::post('/store_move',[ ControlController::class, 'store_move'])->name('store_move')->middleware('auth'); 
 Route::get('Moved',[ ControlController::class, 'move'])->name('Move')->middleware('auth'); 

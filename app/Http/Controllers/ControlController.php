@@ -1198,7 +1198,7 @@ public function move(Request $request)
        ->Join('users', 'moves.user_id', '=', 'users.id')
         ->Join('chauffeurs', 'moves.chauffeur_id', '=', 'chauffeurs.id')
             
-       ->select('moves.id as id', 'service', 'moves.status as ms', 'gstatus', 'nstatus', 'timing', 'station_id','users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name', /* 'kabids.name as k_name',*/ 'chauffeurs.name as c_name');
+       ->select('moves.id as id', 'service', 'moves.status as ms', 'gstatus', 'timing', 'station_id','users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name', /* 'kabids.name as k_name',*/ 'chauffeurs.name as c_name');
       
         
 
@@ -1222,5 +1222,45 @@ public function move(Request $request)
       
     $p= Tstation::get()->pluck('name'); 
     return view('admin.move', ['sttart_date'=> $from,   'endd_date'=> $to,'tp'=> $p]);
+}
+public function clean(Request $request)
+{ 
+      
+        
+    if ($request->ajax()) {
+        $from= $request->sttart_date;	
+       $to= $request->endd_date;
+    
+           $data = Move::whereBetween('timing', [$from, $to])
+            ->join('buses','moves.bus_id','=','buses.id')
+        ->leftjoin('lignes','moves.ligne_id','=','lignes.id')
+     //  ->Join('kabids', 'moves.kabid_id','=','kabids.id')
+       ->Join('users', 'moves.user_id', '=', 'users.id')
+        ->Join('chauffeurs', 'moves.chauffeur_id', '=', 'chauffeurs.id')
+            
+       ->select('moves.id as id', 'nstatus', 'timing', 'station_id','users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name', /* 'kabids.name as k_name',*/ 'chauffeurs.name as c_name');
+      
+        
+
+        return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+    }
+    if ($request->sttart_date) {
+        
+        $from = $request->sttart_date;
+        $to = $request->endd_date;
+        }
+        else {
+            $from = '2023-10-01 00:00:00' ;
+            $to = $date = date("Y-m-d H:i:s");
+        }
+    /*    $data = Move::whereBetween('timing', [$from, $to])->select( DB::raw("sum(time) as time"))->get();
+        if(!$data[0]->time) $t = 0;
+        else $t = $data[0]->time;
+        , 'time'=> $t */
+      
+    $p= Tstation::get()->pluck('name'); 
+    return view('admin.clean', ['sttart_date'=> $from,   'endd_date'=> $to,'tp'=> $p]);
 }
 }
