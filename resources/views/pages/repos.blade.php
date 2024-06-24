@@ -62,7 +62,8 @@
             margin-top: 20px;
         }
 
-        .btn-primary, .btn-pdf {
+        .btn-primary,
+        .btn-pdf {
             background-color: #007bff;
             border: none;
             padding: 10px 20px;
@@ -73,8 +74,25 @@
             margin: 5px;
         }
 
-        .btn-primary:hover, .btn-pdf:hover {
+        .btn-primary:hover,
+        .btn-pdf:hover {
             background-color: #0056b3;
+        }
+
+
+        .checkbox-container {
+            display: flex;
+            /* flex-direction: column; */
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkbox-container label {
+            margin: 10px 0;
         }
     </style>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -82,6 +100,22 @@
 
 <body>
     <div class="contain form-contain">
+        @if (in_array(auth()->user()->is_, [1, 6]))
+            <div class="row m-5" style="justify-content: center; align-items: center;">
+
+                <div class="checkbox-container" dir="rtl">
+                    <form action="{{ route('repo') }}" method="post" id="form">
+                        @csrf
+                    <label><input type="checkbox" {{$admin ?? ''}} name="admin" value="1"> الإدارة </label>
+                    <label><input type="checkbox" {{$exp ?? ''}} name="exp" value="2"> الاستغلال </label>
+                    {{-- <label><input type="checkbox" {{$compta ?? ''}} name="compta" value="3">المحاسبة </label> --}}
+                    <label><input type="checkbox" {{$maint ?? ''}} name="maint" value="4"> الصيانة </label>
+                    {{-- <label><input type="checkbox" {{$stock ?? ''}} name="stock" value="5"> المخزن </label> --}}
+                        <input class="btn-primary mb-2 " type="submit" value="بحث">
+                    </form>
+                </div>
+            </div>
+        @endif
         <div class="table-responsive" id="table-container">
             <table class="table table-bordered" dir="rtl">
                 <thead>
@@ -101,7 +135,7 @@
                 <tbody>
                     @foreach ($emps as $emp)
                         <tr>
-                            <td><a href="{{route('details', ['id' => $emp->id])}}">{{ $emp->username }}</a></td>
+                            <td><a href="{{ route('details', ['id' => $emp->id]) }}">{{ $emp->username }}</a></td>
                             <td>{{ $emp->R }}</td>
                             @foreach ($holidays as $holiday)
                                 <td>{{ $emp[$holiday->name] }}</td>
@@ -132,7 +166,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         async function downloadPDF() {
-            const { jsPDF } = window.jspdf;
+            const {
+                jsPDF
+            } = window.jspdf;
             const doc = new jsPDF('p', 'pt', 'a4');
             const table = document.getElementById("table-container");
 

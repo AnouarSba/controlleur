@@ -119,7 +119,7 @@ return response()->json(['options'=>$data]);
 }
 public function control(Request $request)
 {
-    $users = User::where('id', '>', 2)->get();
+    $users = User::where('is_',  2)->get();
     return view('controls.control', ['users' => $users]);
 
 }

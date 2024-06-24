@@ -154,6 +154,40 @@ class ExcelController extends Controller
 
         return view('pages.repos', ['events' => Event::get(), 'holidays' => Holiday::get(), 'emps' => $emps]);
     }
+    public function repo(Request $request)
+    {
+        $arr = [];
+        if ($request->admin) {
+            $arr = [1, 3,5];
+        }
+            $query1 = User::whereIn('service', $arr)->select('id','username','R');
+            $query2 = User::where('service', $request->exp ?? 98)->select('id','username','R');
+            // $query3 = User::where('service', $request->compta ?? 98)->select('id','username','R');
+            $query4 = User::where('service', $request->maint ?? 98)->select('id','username','R');
+            // $query5 = User::where('service', $request->stock ?? 98)->select('id','username','R');
+
+        
+// Combining the two queries using union->union($query3)->union($query5)
+$emps = $query1->union($query2)->union($query4)->get();
+        
+        foreach ($emps as $emp) {
+            $new= $emp->R;
+            foreach (Holiday::get() as $holiday) {
+                $recup = Emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $emp[$holiday->name] = $recup;
+                    $new+= $recup;
+            }
+            foreach (Event::get() as $event) {
+                $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $emp[$event->name] = $recup;
+                    $new+= $recup;
+            }
+            $emp['repos'] = Emp_recup::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
+            $emp['new'] = $new- $emp['repos'];
+        }
+
+        return view('pages.repos', ['events' => Event::get(), 'holidays' => Holiday::get(), 'emps' => $emps, 'admin' => ($request->admin)? 'checked' : '', 'exp' => ($request->exp)? 'checked' : '', 'compta' => ($request->compta)? 'checked' : '', 'maint' => ($request->maint)? 'checked' : '', 'stock' => ($request->stock)? 'checked' : '']);
+    }
     public function repos_j()
     {
         if(in_array(auth()->user()->is_, [1, 6]) ){
