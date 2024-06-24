@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Move</title>
+    <title>Clean</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
@@ -74,9 +74,7 @@
                     <th>الخط </th>
                     <th>اسم السائق</th>
                   <!--  <th>اسم القابض</th>-->
-                    <th> الخدمة</th>
-                    <th> الحالة </th>
-                    <th> حالة اللوحة الالكترونية </t>
+                    <th> حالة نظافة الحافلات</th>
                     <th> التوقيت </th>
                 </tr>
             </thead>
@@ -101,10 +99,8 @@ $.ajaxSetup({
 
 
 $(function() {
-    var arr = ['A', 'B', 'C', 'D'];
-    var s=['دخول','خروج'];
     var st=  @php echo $tp; @endphp ;;
-    var g=['تشتغل','لا تشتغل'];
+          var n=['غير نظيفة',' نظيفة '];
 
 
     var table = $('.data-table').DataTable({
@@ -112,7 +108,7 @@ $(function() {
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('move') }}",
+            url: "{{ route('clean') }}",
             type: "post",
             data: {
                 sttart_date: "{{$sttart_date}}",
@@ -149,20 +145,10 @@ $(function() {
                 data: 'k_name',
                 name: 'kabids.name'
             },*/
-            {
-                data: 'service',
-                name: 'service'
+              {
+                data: 'nstatus',
+                name: 'nstatus'
             },
-            {
-                data: 'ms',
-                name: 'moves.status'
-            },
-
-            {
-                data: 'gstatus',
-                name: 'gstatus'
-            },
-            
             
             {
                 data: 'timing',
@@ -176,10 +162,11 @@ $(function() {
                               $('td:eq(2)', row).html(st[data.station_id-1]); // Behind of Original Date
 
             // Updated Schedule Week 1 - 07 Mar 22
-            $('td:eq(6)', row).html(arr[data.service - 1]); //Original Date
+                    $('td:eq(6)', row).html(n[data.nstatus]); // Behind of Original Date
+                    if (data.nstatus ==0) {
+                        $('td', row).css("background-color","red"); // Behind of Original Date
 
-                              $('td:eq(7)', row).html(s[data.ms]); // Behind of Original Date
-                              $('td:eq(8)', row).html(g[data.gstatus]); // Behind of Original Date
+                    }
 
                      
         },
