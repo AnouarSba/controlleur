@@ -24,6 +24,10 @@ use App\Models\Alert;
 use App\Models\Tpanne;
 use App\Models\Lpanne;
 use App\Models\Tstation;
+use App\Models\Emp_recup;
+use App\Models\Emp_rj;
+use App\Models\Event;
+use App\Models\Holiday;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
 
@@ -907,8 +911,25 @@ public function locate(Request $request)
     $lang = $request->lang;
     
         
-    $RJ = User::where('id',  auth()->user()->id)->first()->RJ;
-    $R = User::where('id',  auth()->user()->id)->first()->R;
+    $emp = User::where('id', auth()->user()->id)->first();
+    $R = $emp->R;
+    foreach (Holiday::get() as $holiday) {
+        $recup = Emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+        $R += $recup;
+    }
+    foreach (Event::get() as $event) {
+        $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+        $R += $recup;
+    }
+    $emp_r = Emp_recup::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
+    $R -= $emp_r;
+
+    $RJ = $emp->RJ;
+    $rj = Emp_rj::where('emp_id', $emp->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+    $RJ += $rj;
+    $emp_rj = Emp_rj::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
+    $RJ = $RJ - $emp_rj;
+
     $RJ_t = 0;
     $R_t = 0;
       $pointage = Pointage::where('emp_id',  auth()->user()->id)->whereDate('date', Carbon::today())->first();
