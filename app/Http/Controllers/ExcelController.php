@@ -705,6 +705,8 @@ $emps = $query1->union($query2)->union($query4)->get();
             // Add the attendance data for the current date to the transformed data array
             switch ($user->is_) {
                 case 2:
+                case 3:
+                case 4:
                     $c_transformedData[$user->username] = $attendanceData;
                     break;
                 case 7:
