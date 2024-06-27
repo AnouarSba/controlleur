@@ -101,30 +101,31 @@ An &#105;frame should be displayed here but your browser version does not suppor
 
 
             @if (Illuminate\Support\Facades\Auth::user()->service == 99 || Illuminate\Support\Facades\Auth::user()->service == 1)
-                {{-- <div id="accordion" class=" col-12 shadow p-3 mb-5 bg-white rounded"
+                 <div id="accordion" class=" col-12 shadow p-3 mb-5 bg-white rounded"
                     style="font-family: Aparajita;font-size: 25px;direction:rtl;width:90%;">
                     <h2 class="text-center" style="font-family: Aparajita;font-size: 30px;direction:rtl;">مصلحة
                         الإدارة</h2>
 
-                    <div class="card-header" id="heading1" style="direction:rtl;text-align: right;font-size: 28px;">
+                    <div class="card-header" id="heading1_a" style="direction:rtl;text-align: right;font-size: 28px;">
                         <h5 class="mb-0 mr-0">
-                            <button class="btn btn-link collapsed d1" data-toggle="collapse"
-                                style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse1"
-                                aria-expanded="true" aria-controls="collapse1">
-                                العنوان
+                            <button class="btn btn-link collapsed d1_a" data-toggle="collapse"
+                                style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse1_a"
+                                aria-expanded="true" aria-controls="collapse1_a">
+                                تعليمة خاصة بالأختام الدائرية للمؤسسة
                         </h5>
                     </div>
 
-                    <div id="collapse1" class="collapse " aria-labelledby="heading1" data-parent="#accordion">
+                    <div id="collapse1_a" class="collapse " aria-labelledby="heading1_a" data-parent="#accordion">
                         <div class="card-body row" style="text-align: right;">
 
                             <div class="row" style="margin:0 25px">
-                                المحتوى
-                            </div>
+                            <img src="{{ asset('assets/image/a1.jpg') }}" alt="" width="80%"
+                            height="100%"> 
+                        </div>
                         </div>
                     </div>
 
-                </div> --}}
+                </div> 
             @endif
             @if (Illuminate\Support\Facades\Auth::user()->service == 99 || Illuminate\Support\Facades\Auth::user()->service == 2)
                 <div id="accordion" class=" col-12 shadow p-3 mb-5 bg-white rounded"
