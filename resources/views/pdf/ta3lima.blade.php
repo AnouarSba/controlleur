@@ -350,8 +350,8 @@ An &#105;frame should be displayed here but your browser version does not suppor
 
                 
                 </div>
-
-
+                </div> 
+ 
             @endif
             @if (Illuminate\Support\Facades\Auth::user()->service == 99 || Illuminate\Support\Facades\Auth::user()->service == 3)
                 <!-- <div id="accordion" class=" col-12 shadow p-3 mb-5 bg-white rounded"
