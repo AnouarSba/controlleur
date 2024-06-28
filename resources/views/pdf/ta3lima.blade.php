@@ -324,16 +324,14 @@ An &#105;frame should be displayed here but your browser version does not suppor
                     </div>
 
                     
-                
-
-
-                <div class="card-header" id="heading8" style="direction:rtl;text-align: right;font-size: 28px;">
+                    
+                    <div class="card-header" id="heading8" style="direction:rtl;text-align: right;font-size: 28px;">
                         <h5 class="mb-0 mr-0">
                             <button class="btn btn-link collapsed d8" data-toggle="collapse"
                                 style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse7"
                                 aria-expanded="true" aria-controls="collapse8">
-                                التعليمة رقم 013 المؤرخة في 2022/06/22 <br>
-                               على مسؤولي الاستغلال فرض النظام العام باماكن العمل بالمؤسسة</button>
+                                التعليمة رقم 13 المؤرخة في 2022/06/22 <br>
+                        على مسؤولي الاستغلال فرض النظام العام باماكن العمل</button>
                         </h5>
                     </div>
 
@@ -348,9 +346,10 @@ An &#105;frame should be displayed here but your browser version does not suppor
                         </div>
                     </div>
 
+
                 
                 </div>
-                </div> 
+                
  
             @endif
             @if (Illuminate\Support\Facades\Auth::user()->service == 99 || Illuminate\Support\Facades\Auth::user()->service == 3)
