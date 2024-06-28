@@ -400,6 +400,34 @@ An &#105;frame should be displayed here but your browser version does not suppor
 
         </div> -->
             @endif
+            {{--
+                
+                جميع عمال المؤسسة
+                
+                <!-- <div id="accordion" class=" col-12 shadow p-3 mb-5 bg-white rounded"
+            style="font-family: Aparajita;font-size: 25px;direction:rtl;width:90%;">
+            <h2 class="text-center" style="font-family: Aparajita;font-size: 30px;direction:rtl;">مصلحة
+                        تسيير المخزونات</h2>
+            <div class="card-header" id="heading1" style="direction:rtl;text-align: right;font-size: 28px;">
+                <h5 class="mb-0 mr-0">
+                    <button class="btn btn-link collapsed d1" data-toggle="collapse"
+                        style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse1"
+                        aria-expanded="true" aria-controls="collapse1">
+                        العنوان
+                </h5>
+            </div>
+
+            <div id="collapse1" class="collapse " aria-labelledby="heading1" data-parent="#accordion">
+                <div class="card-body row" style="text-align: right;">
+
+                    <div class="row" style="margin:0 25px">
+                       المحتوى
+                    </div>
+                </div>
+            </div>
+
+        </div> -->
+                --}}
         </div>
     @else
         @php
