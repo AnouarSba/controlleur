@@ -323,7 +323,35 @@ An &#105;frame should be displayed here but your browser version does not suppor
                         </div>
                     </div>
 
+                    
+                
+
+
+                <div class="card-header" id="heading7" style="direction:rtl;text-align: right;font-size: 28px;">
+                        <h5 class="mb-0 mr-0">
+                            <button class="btn btn-link collapsed d7" data-toggle="collapse"
+                                style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse7"
+                                aria-expanded="true" aria-controls="collapse7">
+                                التعليمة رقم 013 المؤرخة في 2022/06/22 <br>
+                               على مسؤولي الاستغلال فرض النظام العام باماكن العمل بالمؤسسة</button>
+                        </h5>
+                    </div>
+
+                    <div id="collapse7" class="collapse " aria-labelledby="heading7" data-parent="#accordion">
+                        <div class="card-body row" style="text-align: center;">
+
+                            <div class="row" style="margin:auto">
+                                <img src="{{ asset('assets/image/ex1.jpg') }}" alt="" width="80%"
+                                    height="100%">
+
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+</div>
+
+
             @endif
             @if (Illuminate\Support\Facades\Auth::user()->service == 99 || Illuminate\Support\Facades\Auth::user()->service == 3)
                 <!-- <div id="accordion" class=" col-12 shadow p-3 mb-5 bg-white rounded"
