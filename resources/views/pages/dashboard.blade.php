@@ -77,6 +77,9 @@
 .article-title {
     padding: 10px;
 }
+.salaire{
+    display: none;
+}
 </style>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -193,7 +196,10 @@
                                     
                                 @endphp
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Salaire du mois "{{$months[$month -1]}}" </p>
-                                <h5 class="font-weight-bolder">
+                                <h5>
+                                    <button onclick="show_s({{$salaire}});">كشف الراتب</button>
+                                </h5>
+                                <h5 class="salaire font-weight-bolder">
                                     {{$salaire}} DA
                                 </h5>
                                 
@@ -833,6 +839,7 @@ $p = Illuminate\Support\Facades\Auth::user()->is_;
 
 @push('js')
 <script>
+    
 // Add, remove, modify your articles here
 document.addEventListener("DOMContentLoaded", function() {
     var articles = [{
@@ -955,6 +962,9 @@ window.onload = function() {
 <script src="./assets/js/plugins/chartjs.min.js"></script>
 
 <script>
+   function show_s(x){
+        alert(x+ ' DA')
+    }
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
