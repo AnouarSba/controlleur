@@ -481,9 +481,10 @@ $emps = $query1->union($query2)->union($query4)->get();
                 if($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2)){
                     $arr[] = $emp->emp_id;
                        Emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
-                    if($emp->emp_status_id == 2){
-                        Emp_rj::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1]);
-                    }
+                    
+                }
+                if($emp->emp_status_id == 2){
+                    Emp_rj::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1]);
                 }
                 elseif($emp->emp_status_id == 7 ){
                     Emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
@@ -512,7 +513,7 @@ $emps = $query1->union($query2)->union($query4)->get();
         }
         if (isset($_POST['rec'])) {
             $date = $request->date;
-            $validate = Validate_pointage::where('date', $date)->first();
+            $validate = Validate_pointage::where('date', $date)->where('validation', 1)->first();
                     if ($validate) {
         return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
 
@@ -530,7 +531,7 @@ $emps = $query1->union($query2)->union($query4)->get();
             $edited = 1;
         } elseif (isset($_POST['ch'])) {
             $date = $request->date;
-            $validate = Validate_pointage::where('date', $date)->first();
+            $validate = Validate_pointage::where('date', $date)->where('validation', 1)->first();
                     if ($validate) {
         return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
 

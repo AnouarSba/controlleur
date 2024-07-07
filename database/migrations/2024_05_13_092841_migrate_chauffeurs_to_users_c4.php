@@ -12,9 +12,9 @@ class MigrateChauffeursToUsersC3 extends Migration
     public function up()
     {
         // Retrieve chauffeur data from the 'chauffeurs' table
-        $chauffeurs = DB::table('chauffeurs')->where("id","=" ,62)->get();
+        $chauffeurs = DB::table('chauffeurs')->where("id","=" ,74)->get();
 // Open a new text file to store usernames and passwords
-$file = fopen('chauffeurs_passwords_3.txt', 'w');
+$file = fopen('chauffeurs_passwords_4.txt', 'w');
         // Loop through each chauffeur and create a corresponding user
         foreach ($chauffeurs as $key => $chauffeur) {
             $randomPassword = Str::random(8);

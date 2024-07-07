@@ -28,6 +28,7 @@ use App\Models\Emp_recup;
 use App\Models\Emp_rj;
 use App\Models\Event;
 use App\Models\Holiday;
+use App\Models\Avance;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
 

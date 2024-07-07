@@ -407,11 +407,6 @@
         </div>
 
         @endif
-        @if(isset($ctrl_b))
-        <script>
-        alert('انت تراقب الحافلة {{$buses[$ctrl_b-1]->name}}')
-        </script>
-        @endif
         <!--
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                 <div class="card">
@@ -752,6 +747,12 @@
         </div> -->
     <!--Copy this into your website or website generator, in the HTML section.-->
     @if(Illuminate\Support\Facades\Auth::user()->is_ == 2 )
+    
+    @if(isset($ctrl_b))
+    <script>
+    alert('انت تراقب الحافلة {{$buses[$ctrl_b-1]->name}}')
+    </script>
+    @endif
     <form action="{{ route('pos') }}" id="myform1" style="margin-left:10px; margin-top:10px;
     z-index: 99;
     position: relative;
