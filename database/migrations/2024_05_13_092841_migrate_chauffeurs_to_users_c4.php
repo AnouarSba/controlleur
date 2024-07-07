@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-class MigrateChauffeursToUsersC3 extends Migration
+class MigrateChauffeursToUsersC4 extends Migration
 {
     public function up()
     {
