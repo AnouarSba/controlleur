@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-class MigrateChauffeursToUsersC4 extends Migration
+class MigrateChauffeursToUsersC5 extends Migration
 {
     public function up()
     {
         // Retrieve chauffeur data from the 'chauffeurs' table
-        $chauffeurs = DB::table('chauffeurs')->where("id","=" ,74)->get();
+        $chauffeurs = DB::table('chauffeurs')->where("id",">=" ,75)->get();
 // Open a new text file to store usernames and passwords
-$file = fopen('chauffeurs_passwords_4.txt', 'w');
+$file = fopen('chauffeurs_passwords_5.txt', 'w');
         // Loop through each chauffeur and create a corresponding user
         foreach ($chauffeurs as $key => $chauffeur) {
             $randomPassword = Str::random(8);
