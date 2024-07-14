@@ -515,7 +515,7 @@ $emps = $query1->union($query2)->union($query4)->get();
             $date = $request->date;
             $validate = Validate_pointage::where('date', $date)->where('validation', 1)->first();
                     if ($validate) {
-        return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
+        return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs, 'chefs' => $chefs, 'controleurs' => [], 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
 
                     }
             foreach ($receveurs as $key => $value) {
@@ -533,7 +533,7 @@ $emps = $query1->union($query2)->union($query4)->get();
             $date = $request->date;
             $validate = Validate_pointage::where('date', $date)->where('validation', 1)->first();
                     if ($validate) {
-        return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
+        return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs, 'chefs' => $chefs, 'controleurs' => [], 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
 
                     }
             foreach ($chauffeurs as $key => $value) {
