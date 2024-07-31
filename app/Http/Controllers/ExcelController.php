@@ -208,6 +208,34 @@ $emps = $query1->union($query2)->union($query4)->get();
 
         return view('pages.repos_j', [ 'emps' => $emps]);
     }
+    public function repo_j(Request $request)
+    {
+        $arr = [];
+        if ($request->admin) {
+            $arr = [1, 3,5];
+        }
+            $query1 = User::whereIn('service', $arr)->select('id','username','RJ');
+            $query2 = User::where('service', $request->exp ?? 98)->select('id','username','RJ');
+            // $query3 = User::where('service', $request->compta ?? 98)->select('id','username','RJ');
+            $query4 = User::where('service', $request->maint ?? 98)->select('id','username','RJ');
+            // $query5 = User::where('service', $request->stock ?? 98)->select('id','username','RJ');
+
+        
+// Combining the two queries using union->union($query3)->union($query5)
+$emps = $query1->union($query2)->union($query4)->get();
+        
+        foreach ($emps as $emp) {
+            $new= $emp->RJ;
+                $rj = Emp_rj::where('emp_id', $emp->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $new+= $rj;
+                    $emp['pj']=$rj;
+           
+            $emp['rj'] = Emp_rj::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
+            $emp['new'] = $new- $emp['rj'];
+        }
+
+        return view('pages.repos_j', [ 'emps' => $emps, 'admin' => ($request->admin)? 'checked' : '', 'exp' => ($request->exp)? 'checked' : '', 'compta' => ($request->compta)? 'checked' : '', 'maint' => ($request->maint)? 'checked' : '', 'stock' => ($request->stock)? 'checked' : '']);
+    }
     public function details($id)
     {
         

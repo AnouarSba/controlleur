@@ -58,6 +58,7 @@ Route::post('Show_Events',[ ExcelController::class, 'show_events'])->name('show_
 Route::get('Repos',[ ExcelController::class, 'repos'])->name('repos')->middleware('auth'); 
 Route::post('/Repos',[ ExcelController::class, 'repo'])->name('repo')->middleware('auth'); 
 Route::get('RJ',[ ExcelController::class, 'repos_j'])->name('repos_j')->middleware('auth'); 
+Route::post('/RJ',[ ExcelController::class, 'repo_j'])->name('repo_j')->middleware('auth'); 
 Route::get('Detail_Repos/{id}',[ ExcelController::class, 'details'])->name('details')->middleware('auth'); 
 Route::get('Detail_RJ/{id}',[ ExcelController::class, 'details_rj'])->name('details_rj')->middleware('auth'); 
 

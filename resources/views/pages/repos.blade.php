@@ -166,25 +166,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         async function downloadPDF() {
-            const {
-                jsPDF
-            } = window.jspdf;
-            const doc = new jsPDF('p', 'pt', 'a4');
-            const table = document.getElementById("table-container");
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const table = document.getElementById("table-container");
 
-            await html2canvas(table, {
-                scale: 2,
-                useCORS: true
-            }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const imgProps = doc.getImageProperties(imgData);
-                const pdfWidth = doc.internal.pageSize.getWidth();
-                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    // Convert the table to a canvas
+    await html2canvas(table, { scale: 2, useCORS: true }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const imgProps = doc.getImageProperties(imgData);
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        const pageHeight = doc.internal.pageSize.getHeight();
+        let heightLeft = pdfHeight;
+        let position = 0;
 
-                doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                doc.save("وضعية أيام الراحة العالقة.pdf");
-            });
+        doc.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pageHeight;
+
+        // Add new pages while content still exists
+        while (heightLeft > 0) {
+            position = heightLeft - pdfHeight;
+            doc.addPage();
+            doc.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+            heightLeft -= pageHeight;
         }
+
+        doc.save("وضعية أيام الراحة العالقة.pdf");
+    });
+}
+
     </script>
 </body>
 

@@ -76,12 +76,44 @@
         .btn-primary:hover, .btn-pdf:hover {
             background-color: #0056b3;
         }
+        
+
+        .checkbox-container {
+            display: flex;
+            /* flex-direction: column; */
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkbox-container label {
+            margin: 10px 0;
+        }
     </style>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="contain form-contain">
+        @if (in_array(auth()->user()->is_, [1, 6]))
+            <div class="row m-5" style="justify-content: center; align-items: center;">
+
+                <div class="checkbox-container" dir="rtl">
+                    <form action="{{ route('repo_j') }}" method="post" id="form">
+                        @csrf
+                    <label><input type="checkbox" {{$admin ?? ''}} name="admin" value="1"> الإدارة </label>
+                    <label><input type="checkbox" {{$exp ?? ''}} name="exp" value="2"> الاستغلال </label>
+                    {{-- <label><input type="checkbox" {{$compta ?? ''}} name="compta" value="3">المحاسبة </label> --}}
+                    <label><input type="checkbox" {{$maint ?? ''}} name="maint" value="4"> الصيانة </label>
+                    {{-- <label><input type="checkbox" {{$stock ?? ''}} name="stock" value="5"> المخزن </label> --}}
+                        <input class="btn-primary mb-2 " type="submit" value="بحث">
+                    </form>
+                </div>
+            </div>
+        @endif
         <div class="table-responsive" id="table-container">
             <table class="table table-bordered" dir="rtl">
                 <thead>
@@ -123,23 +155,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         async function downloadPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'pt', 'a4');
-            const table = document.getElementById("table-container");
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const table = document.getElementById("table-container");
 
-            await html2canvas(table, {
-                scale: 2,
-                useCORS: true
-            }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const imgProps = doc.getImageProperties(imgData);
-                const pdfWidth = doc.internal.pageSize.getWidth();
-                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    // Convert the table to a canvas
+    await html2canvas(table, { scale: 2, useCORS: true }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const imgProps = doc.getImageProperties(imgData);
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        const pageHeight = doc.internal.pageSize.getHeight();
+        let heightLeft = pdfHeight;
+        let position = 0;
 
-                doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                doc.save("وضعية أيام الراحة الكاملة.pdf");
-            });
+        doc.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pageHeight;
+
+        // Add new pages while content still exists
+        while (heightLeft > 0) {
+            position = heightLeft - pdfHeight;
+            doc.addPage();
+            doc.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+            heightLeft -= pageHeight;
         }
+
+        doc.save("وضعية أيام الراحة الكاملة.pdf");
+    });
+}
+
     </script>
 </body>
 
