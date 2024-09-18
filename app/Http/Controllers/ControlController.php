@@ -1128,7 +1128,7 @@ else $data = Panne::where('pannes.id' , '!=', 0);
        ->Join('users', 'pannes.user_id', '=', 'users.id')
         ->Join('chauffeurs', 'pannes.chauffeur_id', '=', 'chauffeurs.id')
             
-       ->select('pannes.id as id', 'service', 'cause','panne', 'caused', 'time', 'start_date', 'end_date', 'users.username as ctrl_name','users.id as uid', 'buses.name as b_name', 'lignes.name as l_name',  'chauffeurs.name as c_name');
+       ->select('pannes.id as id', 'pannes.service as service', 'cause','panne', 'caused', 'time', 'start_date', 'end_date', 'users.username as ctrl_name','users.id as uid', 'buses.name as b_name', 'lignes.name as l_name',  'chauffeurs.name as c_name');
       
         
 
@@ -1220,7 +1220,7 @@ public function move(Request $request)
        ->Join('users', 'moves.user_id', '=', 'users.id')
         ->Join('chauffeurs', 'moves.chauffeur_id', '=', 'chauffeurs.id')
             
-       ->select('moves.id as id', 'service', 'moves.status as ms', 'gstatus', 'timing', 'station_id','users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name', /* 'kabids.name as k_name',*/ 'chauffeurs.name as c_name');
+       ->select('moves.id as id', 'moves.service as service', 'moves.status as ms', 'gstatus', 'timing', 'station_id','users.username as ctrl_name', 'buses.name as b_name', 'lignes.name as l_name', /* 'kabids.name as k_name',*/ 'chauffeurs.name as c_name');
       
         
 

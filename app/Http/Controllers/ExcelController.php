@@ -498,12 +498,8 @@ $emps = $query1->union($query2)->union($query4)->get();
             $validate = Validate_pointage::where('date', $date)->first();
                     if (!$validate) {
                         Validate_pointage::create(['date' => $date, 'validation' => 1]);
-                    }
-                    else {
-                        $validate->validation = 1;
-                        $validate->save();
-                    }
-            $emps = Pointage::where('date', $date)->get();
+                        
+                         $emps = Pointage::where('date', $date)->get();
             $arr = [];
             foreach ($emps as $emp) {
                 if($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2)){
@@ -526,6 +522,13 @@ $emps = $query1->union($query2)->union($query4)->get();
             if (!$holiday && $holiday_id) {
                 EmpInHoliday::create(['date' => $date, 'emps' => $arr, 'holiday_id' => $holiday_id]);
             }
+                        
+                    }
+                    else {
+                        $validate->validation = 1;
+                        $validate->save();
+                    }
+           
 
         } 
         return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'holiday_id' => $holiday_id, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => $edited]);
