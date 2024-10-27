@@ -10,13 +10,21 @@ use App\Models\Avance; // Import class for parsing
 use App\Models\Emp_status;
 use App\Models\Image;
 use App\Models\Pointage;
+use App\Models\admin_pointage;
+use App\Models\maint_pointage;
 use App\Models\User;
 use App\Models\validate_pointage;
+use App\Models\admin_validate_pointage;
+use App\Models\maint_validate_pointage;
 use App\Models\Holiday;
 use App\Models\EmpInHoliday;
+use App\Models\admin_empInHoliday;
+use App\Models\maint_empInHoliday;
 use App\Models\Event;
 use App\Models\DemandeEvent;
 use App\Models\Emp_recup;
+use App\Models\admin_emp_recup;
+use App\Models\maint_emp_recup;
 use App\Models\Emp_rj;
 use DateInterval;
 use DatePeriod;
@@ -595,6 +603,155 @@ $emps = $query1->union($query2)->union($query4)->get();
 
         return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs, 'chefs' => $chefs, 'controleurs' => [], 'status' => $status, 'edited' => $edited]);
     }
+
+    public function do_pointage_admin(Request $request)
+
+    {       
+               
+
+        $status = Emp_status::get();
+        $holidays = Holiday::get();
+        $edited = 0;
+        if (auth()->user()->is_ == 6) {
+            $ctrls = User::where('is_', 10)->whereIn('service',[1,3,4])->get();
+        
+        if (isset($_COOKIE['date'])) {
+            $date = $_COOKIE['date'];
+        } else {
+            $date = date('Y-m-d');
+        }
+        $holiday_id=0;
+        $holiday_maint = maint_empInHoliday::where('date', $date)->first();
+        $holiday_admin = admin_empInHoliday::where('date', $date)->first();
+        if ($holiday_admin) {
+            $holiday_id = $holiday_admin->holiday_id;
+        }
+        if ($holiday_maint) {
+            $holiday_id = $holiday_maint->holiday_id;
+        }
+        if ($request->holiday)
+        $holiday_id = $request->holiday;
+
+
+        if (isset($_POST['ctrl'])) {
+            
+            $edited = 1;
+            $validate_admin = admin_validate_pointage::where('date', $date)->first();
+                    if (!$validate_admin) {
+                        admin_validate_pointage::create(['date' => $date, 'validation' => 1]);
+                        
+                         $emps = admin_pointage::where('date', $date)->get();
+            $arr = [];
+            foreach ($emps as $emp) {
+                if($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2)){
+                    $arr[] = $emp->emp_id;
+                       admin_emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
+                    
+                }
+                
+                elseif($emp->emp_status_id == 7 ){
+                    admin_emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
+                    
+                }
+                
+            }
+            if (!$holiday_admin && $holiday_id) {
+                admin_empInHoliday::create(['date' => $date, 'emps' => $arr, 'holiday_id' => $holiday_id]);
+            }
+                        
+                    }
+                    else {
+                        $validate_admin->validation = 1;
+                        $validate_admin->save();
+                    }
+           
+                    $validate_maint = maint_validate_pointage::where('date', $date)->first();
+                    if (!$validate_maint) {
+                        maint_validate_pointage::create(['date' => $date, 'validation' => 1]);
+                        
+                         $emps = maint_pointage::where('date', $date)->get();
+            $arr = [];
+            foreach ($emps as $emp) {
+                if($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2)){
+                    $arr[] = $emp->emp_id;
+                       maint_emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
+                    
+                }
+                
+                elseif($emp->emp_status_id == 7 ){
+                    maint_emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
+                    
+                }
+                
+            }
+            if (!$holiday_maint && $holiday_id) {
+                maint_empInHoliday::create(['date' => $date, 'emps' => $arr, 'holiday_id' => $holiday_id]);
+            }
+                        
+                    }
+                    else {
+                        $validate_maint->validation = 1;
+                        $validate_maint->save();
+                    }
+
+
+
+
+
+        } 
+        return view('pages.pointage_admin', ['today' => $date, 'holidays' => $holidays, 'holiday_id' => $holiday_id, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => $edited]);
+
+        }
+        $receveurs = User::where('is_', 10)->whereIn('service',[1,3])->get();
+        $chauffeurs = User::where('is_', 10)->where('service',4)->get();
+        
+        if (isset($_COOKIE['date'])) {
+            $date = $_COOKIE['date'];
+        } else {
+            $date = date('Y-m-d');
+        }
+        if (isset($_POST['rec'])) {
+            $date = $request->date;
+            $validate = admin_Validate_pointage::where('date', $date)->where('validation', 1)->first();
+                    if ($validate) {
+        return view('pages.pointage_admin', ['today' => $date, 'holidays' => $holidays, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs,  'controleurs' => [], 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
+
+                    }
+            foreach ($receveurs as $key => $value) {
+                $row = admin_pointage::where('date', $date)->where('emp_id', $value->id)->first();
+                if (!$row) {
+                    admin_pointage::create(['emp_id' => $value->id, 'date' => $date, 'emp_status_id' => $request['rec' . $value->id]]);
+                } else {
+                    $row->emp_status_id = $request['rec' . $value->id];
+                    $row->save();
+                }
+                // Pointage::create(['emp_id'=> $value->id, 'date'=> $date, 'emp_status_id'=> $request->rec.$value->id]);
+            }
+            $edited = 1;
+        } elseif (isset($_POST['ch'])) {
+            $date = $request->date;
+            $validate = maint_Validate_pointage::where('date', $date)->where('validation', 1)->first();
+                    if ($validate) {
+        return view('pages.pointage_admin', ['today' => $date, 'holidays' => $holidays, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs, 'controleurs' => [], 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
+
+                    }
+            foreach ($chauffeurs as $key => $value) {
+                $row = maint_Pointage::where('date', $date)->where('emp_id', $value->id)->first();
+                if (!$row) {
+                    maint_Pointage::create(['emp_id' => $value->id, 'date' => $date, 'emp_status_id' => $request['ch' . $value->id]]);
+                } else {
+                    $row->emp_status_id = $request['ch' . $value->id];
+                    $row->save();
+                }
+                // Pointage::create(['emp_id'=> $value->id, 'date'=> $date, 'emp_status_id'=> $request->ch.$value->id]);
+            }
+            $edited = 1;
+        }
+        return view('pages.pointage_admin', ['today' => $date, 'holidays' => $holidays, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs,  'controleurs' => [], 'status' => $status, 'edited' => $edited]);
+    }
+
+
+
     public function ExportExcel($etat_receveur, $etat_chauffeur, $etat_cs, $d, $d2, $m, $y)
     {
         ini_set('max_execution_time', -1);

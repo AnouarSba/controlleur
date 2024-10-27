@@ -69,6 +69,28 @@ class User extends Authenticatable
         }
         
     }
+    public function get_status_admin($date)
+    {
+        $pointage=admin_pointage::where('date',$date)->where('emp_id', $this->id)->first();
+        if ($pointage) {
+            return $pointage->emp_status_id;
+        } else {
+            return null;
+        }
+        
+    }
+
+    public function get_status_maint($date)
+    {
+        $pointage=maint_pointage::where('date',$date)->where('emp_id', $this->id)->first();
+        if ($pointage) {
+            return $pointage->emp_status_id;
+        } else {
+            return null;
+        }
+        
+    }
+
     public function avances()
     {
         return $this->hasMany(Avance::class, 'emp_id', 'id');

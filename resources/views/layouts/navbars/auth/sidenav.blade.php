@@ -39,6 +39,7 @@
                             @break
                             @case(2)
                             @case(4)
+                            @case(11)
                             Repport
                             @break
                             @case(7)
@@ -149,7 +150,18 @@
                         <span class="nav-link-text ms-1">إضافة عطب جديد</span>
                     </a>
                 </li>
-                @elseif(in_array(Illuminate\Support\Facades\Auth::user()->is_ , [1, 3,6]))
+                    @elseif (in_array(Illuminate\Support\Facades\Auth::user()->is_ , [6,11]))
+                    <a class="nav-link {{ str_contains(request()->url(), 'Pointage_admin') == true ? 'active' : '' }}"
+                        href="{{ route('do_pointage_admin') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-notification-70 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">تسجيل الحضور</span>
+                    </a>
+                    @endif
+
+                @if(in_array(Illuminate\Support\Facades\Auth::user()->is_ , [1, 3,6]))
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(request()->url(), 'Control') == true ? 'active' : '' }}"
                         href="{{ route('control') }}">
@@ -168,6 +180,7 @@
                         </div>
                         <span class="nav-link-text ms-1">تسجيل الحضور</span>
                     </a>
+
                     @elseif (Illuminate\Support\Facades\Auth::user()->is_ == 1 and Illuminate\Support\Facades\Auth::user()->id != 1 )
                     <a class="nav-link {{ str_contains(request()->url(), 'Planing') == true ? 'active' : '' }}"
                         href="{{ route('planing') }}">

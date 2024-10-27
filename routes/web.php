@@ -37,6 +37,11 @@ Route::get('Pointage',[ ExcelController::class, 'do_pointage'])->name('do_pointa
 Route::post('Remplir_Pointage',[ ExcelController::class, 'do_pointage'])->name('fill_pointage')->middleware('auth'); 
 Route::post('/upload/image', [ExcelController::class, 'upload'])->name('uploadImage');
 
+Route::get('/getExcelData_admin', [ExcelController::class, 'getExcelData_admin'])->name('getExcelData_admin');
+Route::post('Export_admin',[ ExcelController::class, 'exportData_admin'])->name('pointage_admin')->middleware('auth'); 
+Route::get('Pointage_admin',[ ExcelController::class, 'do_pointage_admin'])->name('do_pointage_admin')->middleware('auth'); 
+Route::post('Remplir_Pointage_admin',[ ExcelController::class, 'do_pointage_admin'])->name('fill_pointage_admin')->middleware('auth'); 
+
 // Route::get('Pointage',[ ControlController::class, 'pointage'])->name('pointage')->middleware('auth'); 
 Route::get('Planing',[ ControlController::class, 'planing'])->name('planing')->middleware('auth'); 
 Route::get('Show_Planing',[ ExcelController::class, 'show_planing'])->name('show_planing')->middleware('auth'); 
@@ -61,6 +66,12 @@ Route::get('RJ',[ ExcelController::class, 'repos_j'])->name('repos_j')->middlewa
 Route::post('/RJ',[ ExcelController::class, 'repo_j'])->name('repo_j')->middleware('auth'); 
 Route::get('Detail_Repos/{id}',[ ExcelController::class, 'details'])->name('details')->middleware('auth'); 
 Route::get('Detail_RJ/{id}',[ ExcelController::class, 'details_rj'])->name('details_rj')->middleware('auth'); 
+
+
+Route::get('Repos_admin',[ ExcelController::class, 'repos_admin'])->name('repos_admin')->middleware('auth'); 
+Route::post('/Repos_admin',[ ExcelController::class, 'repo_admin'])->name('repo_admin')->middleware('auth'); 
+
+Route::get('Detail_Repos_admin/{id}',[ ExcelController::class, 'details_admin'])->name('details_admin')->middleware('auth'); 
 
 Route::post('Demande_Events',[ ExcelController::class, 'demande_events'])->name('demande_events')->middleware('auth'); 
 Route::get('Demander_Events',[ ExcelController::class, 'events'])->name('events')->middleware('auth'); 

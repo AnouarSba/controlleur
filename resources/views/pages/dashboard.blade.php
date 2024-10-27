@@ -904,13 +904,13 @@ document.addEventListener("DOMContentLoaded", function() {
             itemContainer.classList.add("article-container");
             var href = document.createAttribute("href");
             href.value = articles[i].onClickLink;
-            if ([3,4,5,6,7,8,9,10].includes(p) && i==5 ) 
+            if ([3,4,5,6,7,8,9,10,11].includes(p) && i==5 ) 
             itemContainer.style.display = "none";
             itemContainer.setAttributeNode(href);
             var target = document.createAttribute("target");
             target.value = '_blank';
             itemContainer.setAttributeNode(target);
-             if([5,6,9,10].includes(p) && i>=3 )
+             if([5,6,9,10,11].includes(p) && i>=3 )
             itemContainer.style.display = "none";
             itemContainer.setAttributeNode(href);
             var target = document.createAttribute("target");
@@ -918,7 +918,7 @@ document.addEventListener("DOMContentLoaded", function() {
             itemContainer.setAttributeNode(target);
         } else {
             var itemContainer = document.createElement("div");
-            if([6,7,8,9,10].includes(p) )
+            if([6,7,8,9,10,11].includes(p) )
             itemContainer.style.display = "none";
             itemContainer.classList.add("article-container");
             itemContainer.classList.add("date");
