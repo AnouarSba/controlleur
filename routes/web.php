@@ -38,7 +38,7 @@ Route::post('Remplir_Pointage',[ ExcelController::class, 'do_pointage'])->name('
 Route::post('/upload/image', [ExcelController::class, 'upload'])->name('uploadImage');
 
 Route::get('/getExcelData_admin', [ExcelController::class, 'getExcelData_admin'])->name('getExcelData_admin');
-Route::post('Export_admin',[ ExcelController::class, 'exportData_admin'])->name('pointage_admin')->middleware('auth'); 
+Route::post('Export_admin',[ ExcelController::class, 'exportData_adm'])->name('pointage_admin')->middleware('auth'); 
 Route::get('Pointage_admin',[ ExcelController::class, 'do_pointage_admin'])->name('do_pointage_admin')->middleware('auth'); 
 Route::post('Remplir_Pointage_admin',[ ExcelController::class, 'do_pointage_admin'])->name('fill_pointage_admin')->middleware('auth'); 
 
