@@ -61,6 +61,71 @@
                     </div>
                 </div>
             </div>
+            <div class="card-header" id="heading2" style="direction:rtl;text-align: right;font-size: 28px;">
+                <h5 class="mb-0 mr-0">
+                    <button class="btn btn-link collapsed d2" data-toggle="collapse"
+                        style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse2"
+                        aria-expanded="true" aria-controls="collapse2">
+                        اعلان عن تسوية علاوة الدراسة لسنة 2024-2025
+                </h5>
+            </div>
+            
+
+            <div id="collapse2" class="collapse " aria-labelledby="heading2" data-parent="#accordion">
+                <div class="card-body row" style="text-align: right;">
+
+                    <div class="row" style="margin:0 25px">
+                       <div class="row" style="margin:0 25px">
+                            <img src="{{ asset('assets/image/scol.jpg') }}" alt="" width="80%"
+                            height="100%"> 
+                        </div> 
+                    </div>
+                </div>
+            </div>
+          
+            <div class="card-header" id="heading3" style="direction:rtl;text-align: right;font-size: 28px;">
+                <h5 class="mb-0 mr-0">
+                    <button class="btn btn-link collapsed d3" data-toggle="collapse"
+                        style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse3"
+                        aria-expanded="true" aria-controls="collapse3">
+                        اعلان عن برمجة الفحوص الطبية المتعلقة بطب العمل لسنة 2024
+                </h5>
+            </div>
+
+            <div id="collapse3" class="collapse " aria-labelledby="heading3" data-parent="#accordion">
+                <div class="card-body row" style="text-align: right;">
+
+                    <div class="row" style="margin:0 25px">
+                       <div class="row" style="margin:0 25px">
+                            <img src="{{ asset('assets/image/mt.png') }}" alt="" width="80%"
+                            height="100%"> 
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="card-header" id="heading4" style="direction:rtl;text-align: right;font-size: 28px;">
+                <h5 class="mb-0 mr-0">
+                    <button class="btn btn-link collapsed d4" data-toggle="collapse"
+                        style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse4"
+                        aria-expanded="true" aria-controls="collapse4">
+                        اعلان عن منصب سائق سيارة صنف خفيف
+                </h5>
+            </div>
+
+            <div id="collapse4" class="collapse " aria-labelledby="heading4" data-parent="#accordion">
+                <div class="card-body row" style="text-align: right;">
+
+                    <div class="row" style="margin:0 25px">
+                       <div class="row" style="margin:0 25px">
+                            <img src="{{ asset('assets/image/driver_alert.jpg') }}" alt="" width="80%"
+                            height="100%"> 
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            
 
     </div> 
         
