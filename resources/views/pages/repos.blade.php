@@ -154,10 +154,17 @@
             <a href="/">
                 <button type="button" class="btn btn-primary mb-2">Retour</button>
             </a>
-            <a href="{{ route('generatePDF') }}">
-                <button type="button" class="btn-pdf mb-2" >Download PDF</button>
-            </a>
-            
+            <div class="checkbox-container" dir="rtl">
+                <form action="{{ route('generatePDF') }}" method="post" id="form">
+                    @csrf
+                <label><input type="checkbox" {{$admin ?? ''}} name="admin" value="1"> الإدارة </label>
+                <label><input type="checkbox" {{$exp ?? ''}} name="exp" value="2"> الاستغلال </label>
+                {{-- <label><input type="checkbox" {{$compta ?? ''}} name="compta" value="3">المحاسبة </label> --}}
+                <label><input  type="checkbox" {{$maint ?? ''}} name="maint" value="4"> الصيانة </label>
+                {{-- <label><input type="checkbox" {{$stock ?? ''}} name="stock" value="5"> المخزن </label> --}}
+                    <button type="button" class="btn-pdf mb-2" >Download PDF</button>
+                </form>                
+            </div>
         </div>
     </div>
 
