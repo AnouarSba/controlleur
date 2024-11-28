@@ -41,8 +41,12 @@ use Mpdf\Mpdf;
 
 class ExcelController extends Controller
 {
+<<<<<<< HEAD
 
 public function generatePDF_repos(Request $request)
+=======
+    public function generatePDF_repos(Request $request)
+>>>>>>> 404d9afdf6f40e4ac8289d8a3acc6284f7bd1493
 {
     if(in_array(auth()->user()->is_, [1, 6]) ){
         $emps = User::where('id', '!=', 1)->select('id','username','R')->get();
@@ -902,6 +906,7 @@ $emps = $query1->union($query2)->union($query4)->get();
             return;
         }
     }
+
     public function exportData(Request $request)
     {
         $req = $request->validate([
