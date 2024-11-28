@@ -37,9 +37,79 @@ use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 // Adjust the namespace and model name as needed
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use Mpdf\Mpdf;
 
 class ExcelController extends Controller
 {
+
+public function generatePDF_repos(Request $request)
+{
+    if(in_array(auth()->user()->is_, [1, 6]) ){
+        $emps = User::where('id', '!=', 1)->select('id','username','R')->get();
+    }
+    else{
+        $emps = User::where('id', auth()->user()->id)->select('id','username','R')->get();
+    }
+    foreach ($emps as $emp) {
+        $new= $emp->R;
+        foreach (Holiday::get() as $holiday) {
+            $recup = Emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                $emp[$holiday->name] = $recup;
+                $new+= $recup;
+        }
+        foreach (Event::get() as $event) {
+            $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                $emp[$event->name] = $recup;
+                $new+= $recup;
+        }
+        $emp['repos'] = Emp_recup::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
+        $emp['new'] = $new- $emp['repos'];
+    }
+
+        $holidays = Holiday::all();
+        $events = Event::all();
+
+
+        $html = view('pdf.repos', compact('emps', 'holidays', 'events'))->render();
+
+        $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4-L', 'default_font' => 'Amiri']);
+        $mpdf->WriteHTML($html);
+
+        return $mpdf->Output('وضعية أيام الراحة العالقة.pdf', 'D'); // Download PDF
+
+        
+}
+public function generatePDF_repos_j(Request $request)
+{
+    if(in_array(auth()->user()->is_, [1, 6]) ){
+        $emps = User::where('id', '!=', 1)->select('id','username','RJ')->get();
+    }
+    else{
+        $emps = User::where('id', auth()->user()->id)->select('id','username','RJ')->get();
+    }
+    foreach ($emps as $emp) {
+        $new= $emp->RJ;
+            $rj = Emp_rj::where('emp_id', $emp->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                $new+= $rj;
+                $emp['pj']=$rj;
+       
+        $emp['rj'] = Emp_rj::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
+        $emp['new'] = $new- $emp['rj'];
+    }
+
+        $holidays = Holiday::all();
+        $events = Event::all();
+
+
+        $html = view('pdf.repos_j', compact('emps', 'holidays', 'events'))->render();
+
+        $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4-L', 'default_font' => 'Amiri']);
+        $mpdf->WriteHTML($html);
+
+        return $mpdf->Output('وضعية أيام الراحة الكاملة.pdf', 'D'); // Download PDF
+
+        
+}
     public function upload(Request $request)
     {
         // $request->validate([
@@ -175,8 +245,8 @@ class ExcelController extends Controller
             // $query5 = User::where('service', $request->stock ?? 98)->select('id','username','R');
 
         
-// Combining the two queries using union->union($query3)->union($query5)
-$emps = $query1->union($query2)->union($query4)->get();
+        // Combining the two queries using union->union($query3)->union($query5)
+        $emps = $query1->union($query2)->union($query4)->get();
         
         foreach ($emps as $emp) {
             $new= $emp->R;
@@ -518,7 +588,7 @@ $emps = $query1->union($query2)->union($query4)->get();
                 if($emp->emp_status_id == 2){
                     Emp_rj::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1]);
                 }
-                elseif($emp->emp_status_id == 7 ){
+                elseif($emp->emp_status_id == 7 || $emp->emp_status_id == 11){
                     Emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
                     
                 }
@@ -649,7 +719,7 @@ $emps = $query1->union($query2)->union($query4)->get();
                     
                 }
                 
-                elseif($emp->emp_status_id == 7 ){
+                elseif($emp->emp_status_id == 7 || $emp->emp_status_id == 11){
                     admin_emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
                     
                 }
@@ -678,7 +748,7 @@ $emps = $query1->union($query2)->union($query4)->get();
                     
                 }
                 
-                elseif($emp->emp_status_id == 7 ){
+                elseif($emp->emp_status_id == 7 || $emp->emp_status_id == 11){
                     maint_emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
                     
                 }
@@ -797,52 +867,6 @@ $emps = $query1->union($query2)->union($query4)->get();
             return;
         }
     }
-
-    public function ExportExcel_adm($etat_receveur, $etat_chauffeur, $d, $d2, $m, $y)
-    {
-        ini_set('max_execution_time', -1);
-        ini_set('memory_limit', '40000M');
-        try {
-
-            $inputFileType = 'Xlsx';
-            $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
-            $reader->setIncludeCharts(true);
-            
-
-            $month = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"];
-            $month_ar = ["جانفي", "فيفري", "مارس", "أفريل", "ماي", "جوان", "جويلية", "أوت", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
-            $month_abrv = ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Dec"];
-
-            $spreadSheet = $reader->load('assets/word/Pointage_adm.xlsx');
-            $spreadSheet->setActiveSheetIndex(0);
-
-            $spreadSheet->getActiveSheet()->fromArray(['ADMINISTRATION - ' . $month[$m] . ' ' . $y], null, 'I1');
-            $spreadSheet->getActiveSheet()->fromArray($etat_receveur, null, 'B7');
-            $spreadSheet->setActiveSheetIndex(1);
-
-            $spreadSheet->getActiveSheet()->fromArray(['MAINTENANCE - ' . $month[$m] . ' ' . $y], null, 'I1');
-            $spreadSheet->getActiveSheet()->fromArray($etat_chauffeur, null, 'B7');
-
-                        
-
-
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-
-            header('Content-Disposition: attachment;filename="pointage_adm ' . $d . '-' . $d2 . ' ' . $month[$m] . ' ' . $y . '.xlsx"');
-
-            $writer = IOFactory::createWriter($spreadSheet, 'Xlsx');
-            $writer->setIncludeCharts(true);
-
-            //save into php output
-            $writer->save('php://output');
-            exit();
-        } catch (Exception $e) {
-            return;
-        }
-    }
-
-
-
     public function ExportExcelAvance($etat_avance, $m, $y)
     {
         ini_set('max_execution_time', -1);
@@ -897,8 +921,10 @@ $emps = $query1->union($query2)->union($query4)->get();
         $end_date = date_create($to);
 
         $end_date = $end_date->add(DateInterval::createFromDateString('tomorrow'));
+// Step 2: Defining the Date Interval
         $interval = new DateInterval('P1D');
 
+// Step 3: Creating the Date Range
         $period = new DatePeriod($start_date, $interval, $end_date);
         if(auth()->user()->is_ == 6){
             
@@ -1003,130 +1029,6 @@ $emps = $query1->union($query2)->union($query4)->get();
 
         return $this->ExportExcel($rec, $ch, $controleur, $from, $to, $month, $year);
     }
-
-
-    public function exportData_adm(Request $request)
-    {
-        $req = $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-        ]);
-        $from = $req['start_date'];
-        $to = $req['end_date'];
-
-        $month = $request->month;
-        $year = $request->year;
-        /*    $current_month_first_day = new DateTime('first day of this month'); // first day of the current month
-        $current_month_last_day  = date('t');  // last day of the current month
-        $interval = new DateInterval('P1D');*/
-        // Step 1: Setting the Start and End Dates
-        $start_date = date_create($from);
-        $end_date = date_create($to);
-
-        $end_date = $end_date->add(DateInterval::createFromDateString('tomorrow'));
-        $interval = new DateInterval('P1D');
-
-        $period = new DatePeriod($start_date, $interval, $end_date);
-        // if(auth()->user()->is_ == 6){
-        // $holidays = Holiday::get();
-            
-        // foreach ($period as  $value) {
-        //     $date = $value->format('Y-m-d');
-        //     $admin_validate_pointage = admin_validate_pointage::where('date', $date)->where('validation', 1)->first();
-        //     $maint_validate_pointage = maint_validate_pointage::where('date', $date)->where('validation', 1)->first();
-        //     if (!$admin_validate_pointage or !$maint_validate_pointage) {
-        //         return view('pages.pointage_admin', ['error' => 'Validation du pointage du ' . $date . ' n\'a pas été effectuée.', 'today' => $date, 'holidays' => $holidays, 'holiday_id' => 0, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => []]);
-        //     }
-        // }
-        // }
-
-        //  $period = new DatePeriod($current_month_first_day, $interval, $current_month_last_day - 1);
-        $date = date('Y-m-d');
-        $c_transformedData = [];
-        $r_transformedData = [];
-
-        $users_adm = User::whereIn('service', [1,3,4])->get();
-        foreach ($users_adm as $user) {
-            $attendanceData = [];
-            foreach ($period as $value) {
-                if ($value->format("Y-m-d") <= $date) {
-                    // Retrieve the attendance status for the user on the current date
-                    if ($user->service == 1 or $user->service == 3) {
-                       $attendance = admin_pointage::where('emp_id', $user->id)
-                        ->whereDate('date', $value->format("Y-m-d"))
-                        ->join('emp_statuses', 'emp_statuses.id', '=', 'admin_pointages.emp_status_id')
-                        ->first();
-                    }
-                    if ($user->service == 4) {
-                        $attendance = maint_pointage::where('emp_id', $user->id)
-                         ->whereDate('date', $value->format("Y-m-d"))
-                         ->join('emp_statuses', 'emp_statuses.id', '=', 'maint_pointages.emp_status_id')
-                         ->first();
-                     }
-
-                    // Determine the attendance status (default to 'absent' if no record found)
-                    $status = $attendance ? $attendance->name : '';
-
-                    // Store the attendance status for the user
-                    $attendanceData[$value->format("Y-m-d")] = $status;
-                }
-            }
-            // Add the attendance data for the current date to the transformed data array
-            switch ($user->service) {
-                case 1:
-                case 3:
-                    $r_transformedData[$user->username] = $attendanceData;
-                    break;
-                case 4:
-                    $c_transformedData[$user->username] = $attendanceData;
-                    break;
-                default:
-                    # code...
-                    break;
-            }
-
-        }
-        // Output the transformed data (days as rows, users as columns)
-
-        //   return response()->json(['data' => $transformedData]);
-
-        $rec = [];
-        $ch = [];
-        // Initialize the matrix array
-
-        // Loop through each user
-        foreach ($r_transformedData as $user => $attendance) {
-            // Initialize a row array for the current user
-            $rowData = [$user];
-
-            // Append attendance statuses to the row array
-            foreach ($attendance as $status) {
-                $rowData[] = $status;
-            }
-
-            // Add the row data to the matrix
-            $rec[] = $rowData;
-        }
-        foreach ($c_transformedData as $user => $attendance) {
-            // Initialize a row array for the current user
-            $rowData = [$user];
-
-            // Append attendance statuses to the row array
-            foreach ($attendance as $status) {
-                $rowData[] = $status;
-            }
-
-            // Add the row data to the matrix
-            $ch[] = $rowData;
-        }
-        
-
-        return $this->ExportExcel_adm($rec, $ch, $from, $to, $month, $year);
-    }
-
-
-
-
     public function import_paie(Request $request){
         $request->validate([
             'file' => 'required|file|mimes:xlsx,xls|max:4096', // Adjust the validation rules as needed
