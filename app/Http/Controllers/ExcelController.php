@@ -37,9 +37,78 @@ use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 // Adjust the namespace and model name as needed
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use Mpdf\Mpdf;
 
 class ExcelController extends Controller
 {
+    public function generatePDF_repos(Request $request)
+{
+    if(in_array(auth()->user()->is_, [1, 6]) ){
+        $emps = User::where('id', '!=', 1)->select('id','username','R')->get();
+    }
+    else{
+        $emps = User::where('id', auth()->user()->id)->select('id','username','R')->get();
+    }
+    foreach ($emps as $emp) {
+        $new= $emp->R;
+        foreach (Holiday::get() as $holiday) {
+            $recup = Emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                $emp[$holiday->name] = $recup;
+                $new+= $recup;
+        }
+        foreach (Event::get() as $event) {
+            $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                $emp[$event->name] = $recup;
+                $new+= $recup;
+        }
+        $emp['repos'] = Emp_recup::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
+        $emp['new'] = $new- $emp['repos'];
+    }
+
+        $holidays = Holiday::all();
+        $events = Event::all();
+
+
+        $html = view('pdf.repos', compact('emps', 'holidays', 'events'))->render();
+
+        $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4-L', 'default_font' => 'Amiri']);
+        $mpdf->WriteHTML($html);
+
+        return $mpdf->Output('وضعية أيام الراحة العالقة.pdf', 'D'); // Download PDF
+
+        
+}
+public function generatePDF_repos_j(Request $request)
+{
+    if(in_array(auth()->user()->is_, [1, 6]) ){
+        $emps = User::where('id', '!=', 1)->select('id','username','RJ')->get();
+    }
+    else{
+        $emps = User::where('id', auth()->user()->id)->select('id','username','RJ')->get();
+    }
+    foreach ($emps as $emp) {
+        $new= $emp->RJ;
+            $rj = Emp_rj::where('emp_id', $emp->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                $new+= $rj;
+                $emp['pj']=$rj;
+       
+        $emp['rj'] = Emp_rj::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
+        $emp['new'] = $new- $emp['rj'];
+    }
+
+        $holidays = Holiday::all();
+        $events = Event::all();
+
+
+        $html = view('pdf.repos_j', compact('emps', 'holidays', 'events'))->render();
+
+        $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4-L', 'default_font' => 'Amiri']);
+        $mpdf->WriteHTML($html);
+
+        return $mpdf->Output('وضعية أيام الراحة الكاملة.pdf', 'D'); // Download PDF
+
+        
+}
     public function upload(Request $request)
     {
         // $request->validate([
@@ -518,7 +587,7 @@ $emps = $query1->union($query2)->union($query4)->get();
                 if($emp->emp_status_id == 2){
                     Emp_rj::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1]);
                 }
-                elseif($emp->emp_status_id == 7 ){
+                elseif($emp->emp_status_id == 7 || $emp->emp_status_id == 11){
                     Emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
                     
                 }
@@ -649,7 +718,7 @@ $emps = $query1->union($query2)->union($query4)->get();
                     
                 }
                 
-                elseif($emp->emp_status_id == 7 ){
+                elseif($emp->emp_status_id == 7 || $emp->emp_status_id == 11){
                     admin_emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
                     
                 }
@@ -678,7 +747,7 @@ $emps = $query1->union($query2)->union($query4)->get();
                     
                 }
                 
-                elseif($emp->emp_status_id == 7 ){
+                elseif($emp->emp_status_id == 7 || $emp->emp_status_id == 11){
                     maint_emp_recup::create(['date' => $date,  'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
                     
                 }
@@ -878,6 +947,7 @@ $emps = $query1->union($query2)->union($query4)->get();
             return;
         }
     }
+
     public function exportData(Request $request)
     {
         $req = $request->validate([
