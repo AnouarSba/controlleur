@@ -94,7 +94,20 @@ class ExcelController extends Controller
 public function generatePDF_repos_j(Request $request)
 {
     if(in_array(auth()->user()->is_, [1, 6]) ){
-        $emps = User::where('id', '!=', 1)->select('id','username','RJ')->get();
+        $arr = [];
+    //     if ($request->admin) {
+    //         $arr = [1, 3,5];
+    //     }
+    //         $query1 = User::whereIn('service', $arr)->select('id','username','R');
+    //         $query2 = User::where('service', $request->exp ?? 98)->select('id','username','R');
+    //         // $query3 = User::where('service', $request->compta ?? 98)->select('id','username','R');
+    //         $query4 = User::where('service', $request->maint ?? 98)->select('id','username','R');
+    //         // $query5 = User::where('service', $request->stock ?? 98)->select('id','username','R');
+    
+        
+    // // Combining the two queries using union->union($query3)->union($query5)
+    //     $emps = $query1->union($query2)->union($query4)->get();
+        $emps =  User::where('service', 2)->select('id','username','R')->get();
     }
     else{
         $emps = User::where('id', auth()->user()->id)->select('id','username','RJ')->get();
@@ -281,7 +294,8 @@ $emps = $query1->union($query2)->union($query4)->get();
     public function repos_j()
     {
         if(in_array(auth()->user()->is_, [1, 6]) ){
-            $emps = User::where('id', '!=', 1)->select('id','username','RJ')->get();
+            // $emps = User::where('id', '!=', 1)->select('id','username','RJ')->get();
+            $emps = User::where('service', 2)->select('id','username','RJ')->get();
         }
         else{
             $emps = User::where('id', auth()->user()->id)->select('id','username','RJ')->get();

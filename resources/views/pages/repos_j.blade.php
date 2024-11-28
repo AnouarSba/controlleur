@@ -101,8 +101,8 @@
         @if (in_array(auth()->user()->is_, [1, 6]))
             <div class="row m-5" style="justify-content: center; align-items: center;">
 
-                <div class="checkbox-container" dir="rtl">
-                    <form action="{{ route('repo_j') }}" method="post" id="form">
+                <div hidden class="checkbox-container" dir="rtl">
+                    <form  action="{{ route('repo_j') }}" method="post" id="form">
                         @csrf
                     <label><input type="checkbox" {{$admin ?? ''}} name="admin" value="1"> الإدارة </label>
                     <label><input type="checkbox" {{$exp ?? ''}} name="exp" value="2"> الاستغلال </label>
