@@ -143,7 +143,10 @@
             <a href="/">
                 <button type="button" class="btn btn-primary mb-2">Retour</button>
             </a>
-            <button type="button" class="btn-pdf mb-2" onclick="downloadPDF()">Download PDF</button>
+            <a href="{{ route('generatePDF_j') }}">
+                <button type="button" class="btn-pdf mb-2" >Download PDF</button>
+            </a>
+            
         </div>
     </div>
 

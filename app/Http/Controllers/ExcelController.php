@@ -1080,7 +1080,7 @@ $emps = $query1->union($query2)->union($query4)->get();
         $req = $request->validate([
             'start_date' => 'required|date',
             'end_date' => 'required|date',
-        ]);
+        ]); 
         $from = $req['start_date'];
         $to = $req['end_date'];
 

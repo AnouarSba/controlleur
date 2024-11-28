@@ -38,7 +38,7 @@ Route::post('Remplir_Pointage',[ ExcelController::class, 'do_pointage'])->name('
 Route::post('/upload/image', [ExcelController::class, 'upload'])->name('uploadImage');
 
 Route::get('/getExcelData_admin', [ExcelController::class, 'getExcelData_admin'])->name('getExcelData_admin');
-Route::post('Export_admin',[ ExcelController::class, 'exportData_adm'])->name('pointage_admin')->middleware('auth'); 
+Route::post('Export_admin',[ ExcelController::class, 'exportData_admin'])->name('pointage_admin')->middleware('auth'); 
 Route::get('Pointage_admin',[ ExcelController::class, 'do_pointage_admin'])->name('do_pointage_admin')->middleware('auth'); 
 Route::post('Remplir_Pointage_admin',[ ExcelController::class, 'do_pointage_admin'])->name('fill_pointage_admin')->middleware('auth'); 
 
@@ -61,6 +61,8 @@ Route::post('PAIE',[ ExcelController::class, 'import_paie'])->name('import_paie'
 
 Route::post('Show_Events',[ ExcelController::class, 'show_events'])->name('show_events')->middleware('auth'); 
 Route::get('Repos',[ ExcelController::class, 'repos'])->name('repos')->middleware('auth'); 
+Route::get('Repos_pdf',[ ExcelController::class, 'generatePDF_repos'])->name('generatePDF')->middleware('auth'); 
+Route::get('Repos_j_pdf',[ ExcelController::class, 'generatePDF_repos_j'])->name('generatePDF_j')->middleware('auth'); 
 Route::post('/Repos',[ ExcelController::class, 'repo'])->name('repo')->middleware('auth'); 
 Route::get('RJ',[ ExcelController::class, 'repos_j'])->name('repos_j')->middleware('auth'); 
 Route::post('/RJ',[ ExcelController::class, 'repo_j'])->name('repo_j')->middleware('auth'); 
