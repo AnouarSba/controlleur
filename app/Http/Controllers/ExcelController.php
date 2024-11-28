@@ -1075,7 +1075,7 @@ $emps = $query1->union($query2)->union($query4)->get();
     }
 
 
-    public function exportData_adm(Request $request)
+    public function exportData_admin(Request $request)
     {
         $req = $request->validate([
             'start_date' => 'required|date',
