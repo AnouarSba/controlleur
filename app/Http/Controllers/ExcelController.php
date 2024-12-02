@@ -49,16 +49,16 @@ class ExcelController extends Controller
             if ($request->admin) {
                 $arr = [1, 3, 5];
             }
-            $query1 = User::whereIn('service', $arr)->select('id', 'username', 'R');
-            $query2 = User::where('service', $request->exp ?? 98)->select('id', 'username', 'R');
-            // $query3 = User::where('service', $request->compta ?? 98)->select('id','username','R');
-            $query4 = User::where('service', $request->maint ?? 98)->select('id', 'username', 'R');
-            // $query5 = User::where('service', $request->stock ?? 98)->select('id','username','R');
+            $query1 = User::whereIn('service', $arr)->select('id', 'username', 'service', 'R');
+            $query2 = User::where('service', $request->exp ?? 98)->select('id', 'username', 'service', 'R');
+            // $query3 = User::where('service', $request->compta ?? 98)->select('id','username', 'service','R');
+            $query4 = User::where('service', $request->maint ?? 98)->select('id', 'username', 'service', 'R');
+            // $query5 = User::where('service', $request->stock ?? 98)->select('id','username', 'service','R');
 
             // Combining the two queries using union->union($query3)->union($query5)
             $emps = $query1->union($query2)->union($query4)->get();
         } else {
-            $emps = User::where('id', auth()->user()->id)->select('id', 'username', 'R')->get();
+            $emps = User::where('id', auth()->user()->id)->select('id', 'username', 'service', 'R')->get();
         }
         foreach ($emps as $emp) {
             $new = $emp->R;
@@ -122,17 +122,17 @@ class ExcelController extends Controller
             //     if ($request->admin) {
             //         $arr = [1, 3,5];
             //     }
-            //         $query1 = User::whereIn('service', $arr)->select('id','username','R');
-            //         $query2 = User::where('service', $request->exp ?? 98)->select('id','username','R');
-            //         // $query3 = User::where('service', $request->compta ?? 98)->select('id','username','R');
-            //         $query4 = User::where('service', $request->maint ?? 98)->select('id','username','R');
-            //         // $query5 = User::where('service', $request->stock ?? 98)->select('id','username','R');
+            //         $query1 = User::whereIn('service', $arr)->select('id','username', 'service','R');
+            //         $query2 = User::where('service', $request->exp ?? 98)->select('id','username', 'service','R');
+            //         // $query3 = User::where('service', $request->compta ?? 98)->select('id','username', 'service','R');
+            //         $query4 = User::where('service', $request->maint ?? 98)->select('id','username', 'service','R');
+            //         // $query5 = User::where('service', $request->stock ?? 98)->select('id','username', 'service','R');
 
             // // Combining the two queries using union->union($query3)->union($query5)
             //     $emps = $query1->union($query2)->union($query4)->get();
-            $emps = User::where('service', 2)->select('id', 'username', 'R')->get();
+            $emps = User::where('service', 2)->select('id', 'username', 'service', 'R')->get();
         } else {
-            $emps = User::where('id', auth()->user()->id)->select('id', 'username', 'RJ')->get();
+            $emps = User::where('id', auth()->user()->id)->select('id', 'username', 'service', 'RJ')->get();
         }
         foreach ($emps as $emp) {
             $new = $emp->RJ;
@@ -253,9 +253,9 @@ class ExcelController extends Controller
     public function repos()
     {
         if (in_array(auth()->user()->is_, [1, 6])) {
-            $emps = User::where('id', '!=', 1)->select('id', 'username', 'R')->get();
+            $emps = User::where('id', '!=', 1)->select('id', 'username', 'service', 'R')->get();
         } else {
-            $emps = User::where('id', auth()->user()->id)->select('id', 'username', 'R')->get();
+            $emps = User::where('id', auth()->user()->id)->select('id', 'username', 'service', 'R')->get();
         }
         foreach ($emps as $emp) {
             $new = $emp->R;
@@ -309,11 +309,11 @@ class ExcelController extends Controller
         if ($request->admin) {
             $arr = [1, 3, 5];
         }
-        $query1 = User::whereIn('service', $arr)->select('id', 'username', 'R');
-        $query2 = User::where('service', $request->exp ?? 98)->select('id', 'username', 'R');
-        // $query3 = User::where('service', $request->compta ?? 98)->select('id','username','R');
-        $query4 = User::where('service', $request->maint ?? 98)->select('id', 'username', 'R');
-        // $query5 = User::where('service', $request->stock ?? 98)->select('id','username','R');
+        $query1 = User::whereIn('service', $arr)->select('id', 'username', 'service', 'R');
+        $query2 = User::where('service', $request->exp ?? 98)->select('id', 'username', 'service', 'R');
+        // $query3 = User::where('service', $request->compta ?? 98)->select('id','username', 'service','R');
+        $query4 = User::where('service', $request->maint ?? 98)->select('id', 'username', 'service', 'R');
+        // $query5 = User::where('service', $request->stock ?? 98)->select('id','username', 'service','R');
 
 // Combining the two queries using union->union($query3)->union($query5)
         $emps = $query1->union($query2)->union($query4)->get();
@@ -367,10 +367,10 @@ class ExcelController extends Controller
     public function repos_j()
     {
         if (in_array(auth()->user()->is_, [1, 6])) {
-            // $emps = User::where('id', '!=', 1)->select('id','username','RJ')->get();
-            $emps = User::where('service', 2)->select('id', 'username', 'RJ')->get();
+            // $emps = User::where('id', '!=', 1)->select('id','username', 'service','RJ')->get();
+            $emps = User::where('service', 2)->select('id', 'username', 'service', 'RJ')->get();
         } else {
-            $emps = User::where('id', auth()->user()->id)->select('id', 'username', 'RJ')->get();
+            $emps = User::where('id', auth()->user()->id)->select('id', 'username', 'service', 'RJ')->get();
         }
         foreach ($emps as $emp) {
             $new = $emp->RJ;
@@ -390,11 +390,11 @@ class ExcelController extends Controller
         if ($request->admin) {
             $arr = [1, 3, 5];
         }
-        $query1 = User::whereIn('service', $arr)->select('id', 'username', 'RJ');
-        $query2 = User::where('service', $request->exp ?? 98)->select('id', 'username', 'RJ');
-        // $query3 = User::where('service', $request->compta ?? 98)->select('id','username','RJ');
-        $query4 = User::where('service', $request->maint ?? 98)->select('id', 'username', 'RJ');
-        // $query5 = User::where('service', $request->stock ?? 98)->select('id','username','RJ');
+        $query1 = User::whereIn('service', $arr)->select('id', 'username', 'service', 'RJ');
+        $query2 = User::where('service', $request->exp ?? 98)->select('id', 'username', 'service', 'RJ');
+        // $query3 = User::where('service', $request->compta ?? 98)->select('id','username', 'service','RJ');
+        $query4 = User::where('service', $request->maint ?? 98)->select('id', 'username', 'service', 'RJ');
+        // $query5 = User::where('service', $request->stock ?? 98)->select('id','username', 'service','RJ');
 
 // Combining the two queries using union->union($query3)->union($query5)
         $emps = $query1->union($query2)->union($query4)->get();
@@ -414,7 +414,7 @@ class ExcelController extends Controller
     public function details($id)
     {
 
-        $emp = User::where('id', $id)->select('id', 'username', 'R')->first();
+        $emp = User::where('id', $id)->select('id', 'username', 'service', 'R')->first();
         $total_recups = [];
         if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
             $recups = admin_emp_recup::where('emp_id', $id)
@@ -456,7 +456,7 @@ class ExcelController extends Controller
     public function details_rj($id)
     {
 
-        $emp = User::where('id', $id)->select('id', 'username', 'RJ')->first();
+        $emp = User::where('id', $id)->select('id', 'username', 'service', 'RJ')->first();
 
         $rjs = Emp_rj::where('emp_id', $id)
             ->whereYear('date', date('Y'))
@@ -546,7 +546,7 @@ class ExcelController extends Controller
             $data = Attestation::Join('users', 'attestations.emp_id', '=', 'users.id')
 
                 ->whereBetween('attestations.date', [$from, $to])
-                ->select('attestations.id as id', 'attestations.created_at as date', 'attestations.reg as status', 'users.username as username');
+                ->select('attestations.id as id', 'attestations.created_at as date', 'attestations.reg as status', 'users.username as username', 'service');
 
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -581,7 +581,7 @@ class ExcelController extends Controller
                 ->Join('events', 'demande_events.event_id', '=', 'events.id')
 
                 ->whereBetween('demande_events.date', [$from, $to])
-                ->select('demande_events.id as id', 'demande_events.created_at as date', 'events.name as name', 'demande_events.valide as status', 'users.username as username');
+                ->select('demande_events.id as id', 'demande_events.created_at as date', 'events.name as name', 'demande_events.valide as status', 'users.username as username', 'service');
 
             return Datatables::of($data)
                 ->addIndexColumn()
