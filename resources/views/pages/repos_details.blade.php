@@ -114,7 +114,7 @@
                             <td>{{ $recup->date }}</td>
                             <td>{{ $recup->holiday? $recup->holiday : ($recup->event? $recup->event : '/') }}</td>
                             @if (Auth::user()->is_ == 1 && Auth::user()->id > 1)
-                            <td>
+                            <td class="d-flex justify-content-around">
                                 <form action="{{route('recup.edit')}}" method="POST">
                                     @csrf
                                     <input type="hidden" name="id" value="{{$recup->id }}">
