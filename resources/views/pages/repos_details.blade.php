@@ -97,7 +97,7 @@
                     <tr>
                         <th style="width: 30%">التاريخ</th>
                         <th style="width: 50%">الحدث</th>
-                       @if (auth::user()->is_ == 1)
+                       @if (auth::user()->is_ == 1 && auth::user()->id > 1)
                            <th style="width: 20%"></th>
                        @endif 
                     </tr>
