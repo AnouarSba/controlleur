@@ -250,6 +250,100 @@ class ExcelController extends Controller
 
         return view('pages.events', ['events' => Event::get()]);
     }
+    public function recup_edit(Request $request){
+        $emp_id = $request->emp_id;
+
+        $emp = User::where('id', $emp_id)->select('id', 'username', 'service', 'R')->first();
+        $total_recups = [];
+        if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
+            admin_emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status]);
+            admin_pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
+            $recups = admin_emp_recup::where('emp_id', $id)
+                ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
+                ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
+                ->whereYear('date', date('Y'))
+                ->select('emp_recups.*', 'holidays.name as holiday', 'events.name as event');
+
+            $dj = Emp_dj::where('emp_id', $id)
+                ->whereYear('date', date('Y'))
+                ->select('emp_recups.*');
+
+            $total_recups = $recups->union($dj)->get();
+
+        } elseif ($emp->service == 4) {
+            maint_emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status]);
+            maint_pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
+            $recups = maint_emp_recup::where('emp_id', $id)
+                ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
+                ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
+                ->whereYear('date', date('Y'))
+                ->select('emp_recups.*', 'holidays.name as holiday', 'events.name as event');
+
+            $dj = Emp_dj::where('emp_id', $id)
+                ->whereYear('date', date('Y'))
+                ->select('emp_recups.*');
+
+            $total_recups = $recups->union($dj)->get();
+
+        } elseif ($emp->service == 2) {
+            Emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status]);
+            Pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
+
+            $total_recups = Emp_recup::where('emp_id', $id)
+                ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
+                ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
+                ->whereYear('date', date('Y'))
+                ->select('emp_recups.*', 'holidays.name as holiday', 'events.name as event')->get();
+
+        }
+
+        return view('pages.repos_details', ['emp' => $emp, 'recups' => $total_recups]);
+    }
+    public function recup_delete(){
+        $emp_id = $request->emp_id;
+
+        $emp = User::where('id', $emp_id)->select('id', 'username', 'service', 'R')->first();
+        $total_recups = [];
+        if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
+            admin_emp_recup::whereId($request->id)->delete();
+            $recups = admin_emp_recup::where('emp_id', $id)
+                ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
+                ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
+                ->whereYear('date', date('Y'))
+                ->select('emp_recups.*', 'holidays.name as holiday', 'events.name as event');
+
+            $dj = Emp_dj::where('emp_id', $id)
+                ->whereYear('date', date('Y'))
+                ->select('emp_recups.*');
+
+            $total_recups = $recups->union($dj)->get();
+
+        } elseif ($emp->service == 4) {
+            maint_emp_recup::whereId($request->id)->delete();
+            $recups = maint_emp_recup::where('emp_id', $id)
+                ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
+                ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
+                ->whereYear('date', date('Y'))
+                ->select('emp_recups.*', 'holidays.name as holiday', 'events.name as event');
+
+            $dj = Emp_dj::where('emp_id', $id)
+                ->whereYear('date', date('Y'))
+                ->select('emp_recups.*');
+
+            $total_recups = $recups->union($dj)->get();
+
+        } elseif ($emp->service == 2) {
+            Emp_recup::whereId($request->id)->delete();
+            $total_recups = Emp_recup::where('emp_id', $id)
+                ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
+                ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
+                ->whereYear('date', date('Y'))
+                ->select('emp_recups.*', 'holidays.name as holiday', 'events.name as event')->get();
+
+        }
+
+        return view('pages.repos_details', ['emp' => $emp, 'recups' => $total_recups]);
+    }
     public function repos()
     {
         if (in_array(auth()->user()->is_, [1, 6])) {

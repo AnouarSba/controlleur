@@ -97,6 +97,9 @@
                     <tr>
                         <th style="width: 30%">التاريخ</th>
                         <th style="width: 50%">الحدث</th>
+                       @if (auth::user()->is_ == 1)
+                           <th style="width: 20%"></th>
+                       @endif 
                     </tr>
                 </thead>
                 <tbody>
@@ -110,6 +113,27 @@
                         <tr class="{{($recup->sign)? 'sc' : 'dg'}}">
                             <td>{{ $recup->date }}</td>
                             <td>{{ $recup->holiday? $recup->holiday : ($recup->event? $recup->event : '/') }}</td>
+                            @if (auth::user()->is_ == 1)
+                            <td>
+                                <form action="{{route('recup.edit')}}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{$recup->id }}">
+                                    <input type="hidden" name="emp_id" value="{{$recup->emp_id }}">
+                                    <input type="hidden" name="date" value="{{$recup->date }}">
+                                    <select name="status">
+                                        @foreach (App\Models\Emp_status::all() as $item)
+                                            <option value="{{$item->id}}" @if ($item->id == $recup->emp_status_id) selected @endif>{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <button type="submit" class="btn btn-danger">تعديل</button>
+                                </form>
+                                <form action="{{route('recup.destroy')}}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{$recup->id }}">
+                                    <button type="submit" class="btn btn-danger">حذف</button>
+                                </form>
+                            </td>
+                            @endif 
                         </tr>
                     @endforeach
                 </tbody>

@@ -59,6 +59,8 @@ Route::post('attestation_reg',[ ExcelController::class, 'attestation_reg'])->nam
 Route::post('PAIE',[ ExcelController::class, 'import_paie'])->name('import_paie')->middleware('auth'); 
 
 
+Route::post('recup_edit',[ ExcelController::class, 'recup_edit'])->name('recup.edit')->middleware('auth'); 
+Route::post('recup_delete',[ ExcelController::class, 'recup_delete'])->name('recup.destroy')->middleware('auth'); 
 Route::post('Show_Events',[ ExcelController::class, 'show_events'])->name('show_events')->middleware('auth'); 
 Route::get('Repos',[ ExcelController::class, 'repos'])->name('repos')->middleware('auth'); 
 Route::get('Repos_pdf',[ ExcelController::class, 'generatePDF_repos'])->name('generatePDF')->middleware('auth'); 
