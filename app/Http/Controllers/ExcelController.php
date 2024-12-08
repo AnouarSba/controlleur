@@ -78,11 +78,11 @@ class ExcelController extends Controller
             }
             foreach (Event::get() as $event) {
                 if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
-                    $recup = admin_emp_recup::where('emp_id', $emp->id)->where('event_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $recup = admin_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 } elseif ($emp->service == 4) {
-                    $recup = maint_emp_recup::where('emp_id', $emp->id)->where('event_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $recup = maint_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 } elseif ($emp->service == 2) {
-                    $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 }
                 else
                 $recup = 0;
@@ -275,11 +275,11 @@ class ExcelController extends Controller
             }
             foreach (Event::get() as $event) {
                 if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
-                    $recup = admin_emp_recup::where('emp_id', $emp->id)->where('event_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $recup = admin_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 } elseif ($emp->service == 4) {
-                    $recup = maint_emp_recup::where('emp_id', $emp->id)->where('event_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $recup = maint_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 } elseif ($emp->service == 2) {
-                    $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 }
                 else
                 $recup = 0;
@@ -336,11 +336,11 @@ class ExcelController extends Controller
             }
             foreach (Event::get() as $event) {
                 if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
-                    $recup = admin_emp_recup::where('emp_id', $emp->id)->where('event_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $recup = admin_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 } elseif ($emp->service == 4) {
-                    $recup = maint_emp_recup::where('emp_id', $emp->id)->where('event_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $recup = maint_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 } elseif ($emp->service == 2) {
-                    $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+                    $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 }
                 else
                 $recup = 0;
