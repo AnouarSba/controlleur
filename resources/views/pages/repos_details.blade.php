@@ -97,7 +97,7 @@
                     <tr>
                         <th style="width: 30%">التاريخ</th>
                         <th style="width: 50%">الحدث</th>
-                       @if (auth::user()->is_ == 1 && auth::user()->id > 1)
+                       @if (Auth::user()->is_ == 1 && Auth::user()->id > 1)
                            <th style="width: 20%"></th>
                        @endif 
                     </tr>
@@ -113,7 +113,7 @@
                         <tr class="{{($recup->sign)? 'sc' : 'dg'}}">
                             <td>{{ $recup->date }}</td>
                             <td>{{ $recup->holiday? $recup->holiday : ($recup->event? $recup->event : '/') }}</td>
-                            @if (auth::user()->is_ == 1)
+                            @if (Auth::user()->is_ == 1 && Auth::user()->id > 1)
                             <td>
                                 <form action="{{route('recup.edit')}}" method="POST">
                                     @csrf
