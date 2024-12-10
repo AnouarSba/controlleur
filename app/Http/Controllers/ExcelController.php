@@ -256,8 +256,7 @@ class ExcelController extends Controller
         $emp = User::where('id', $emp_id)->select('id', 'username', 'service', 'R')->first();
         $total_recups = [];
         if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
-            $sign = ($request->status == 11) ? 1 : 0; 
-            admin_emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status, 'sign' =>$sign]);
+            admin_emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status]);
             admin_pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
             $recups = admin_emp_recup::where('emp_id', $emp_id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
@@ -272,8 +271,7 @@ class ExcelController extends Controller
             $total_recups = $recups->union($dj)->get();
 
         } elseif ($emp->service == 4) {
-            $sign = ($request->status == 11) ? 1 : 0; 
-            maint_emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status, 'sign' =>$sign]);
+            maint_emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status]);
             maint_pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
             $recups = maint_emp_recup::where('emp_id', $emp_id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
@@ -288,8 +286,7 @@ class ExcelController extends Controller
             $total_recups = $recups->union($dj)->get();
 
         } elseif ($emp->service == 2) {
-            $sign = ($request->status == 11) ? 1 : 0; 
-            Emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status, 'sign' =>$sign]);
+            Emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status]);
             Pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
 
             $total_recups = Emp_recup::where('emp_id', $emp_id)
