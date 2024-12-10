@@ -258,7 +258,7 @@ class ExcelController extends Controller
         if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
             $sign = ($request->status == 11) ? 1 : 0; 
             admin_emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status, 'sign' =>$sign]);
-            admin_pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status, 'sign' =>$sign]);
+            admin_pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
             $recups = admin_emp_recup::where('emp_id', $emp_id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
                 ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
@@ -274,7 +274,7 @@ class ExcelController extends Controller
         } elseif ($emp->service == 4) {
             $sign = ($request->status == 11) ? 1 : 0; 
             maint_emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status, 'sign' =>$sign]);
-            maint_pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status, 'sign' =>$sign]);
+            maint_pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
             $recups = maint_emp_recup::where('emp_id', $emp_id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
                 ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
@@ -290,7 +290,7 @@ class ExcelController extends Controller
         } elseif ($emp->service == 2) {
             $sign = ($request->status == 11) ? 1 : 0; 
             Emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status, 'sign' =>$sign]);
-            Pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status, 'sign' =>$sign]);
+            Pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
 
             $total_recups = Emp_recup::where('emp_id', $emp_id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
