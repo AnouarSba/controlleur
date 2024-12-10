@@ -258,13 +258,13 @@ class ExcelController extends Controller
         if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
             admin_emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status]);
             admin_pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
-            $recups = admin_emp_recup::where('emp_id', $id)
+            $recups = admin_emp_recup::where('emp_id', $emp_id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
                 ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
                 ->whereYear('date', date('Y'))
                 ->select('emp_recups.*', 'holidays.name as holiday', 'events.name as event');
 
-            $dj = Emp_dj::where('emp_id', $id)
+            $dj = Emp_dj::where('emp_id', $emp_id)
                 ->whereYear('date', date('Y'))
                 ->select('emp_recups.*');
 
@@ -273,13 +273,13 @@ class ExcelController extends Controller
         } elseif ($emp->service == 4) {
             maint_emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status]);
             maint_pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
-            $recups = maint_emp_recup::where('emp_id', $id)
+            $recups = maint_emp_recup::where('emp_id', $emp_id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
                 ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
                 ->whereYear('date', date('Y'))
                 ->select('emp_recups.*', 'holidays.name as holiday', 'events.name as event');
 
-            $dj = Emp_dj::where('emp_id', $id)
+            $dj = Emp_dj::where('emp_id', $emp_id)
                 ->whereYear('date', date('Y'))
                 ->select('emp_recups.*');
 
@@ -289,7 +289,7 @@ class ExcelController extends Controller
             Emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status]);
             Pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
 
-            $total_recups = Emp_recup::where('emp_id', $id)
+            $total_recups = Emp_recup::where('emp_id', $emp_id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'emp_recups.holiday_id')
                 ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
                 ->whereYear('date', date('Y'))
