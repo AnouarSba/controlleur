@@ -101,7 +101,7 @@ $.ajaxSetup({
 
 
 $(function() {
-    var arr = ['A', 'B', 'C', 'D'];
+    var arr = ['A', 'B', 'C', 'D','E'];
     var s=['دخول','خروج'];
     var st=  @php echo $tp; @endphp ;;
     var g=['تشتغل','لا تشتغل'];

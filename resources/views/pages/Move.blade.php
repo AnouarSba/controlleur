@@ -76,13 +76,13 @@ alert('لقد قمت بتأكيد حركة الحافلة')
             </select>
         </div>-->
         @php
-        $arr=[' ', 'A', 'B', 'C', 'D'];
+        $arr=[' ', 'A', 'B', 'C', 'D','E'];
         @endphp
         <div class="form__linput">
             <label class="form__label" for="arret">الخدمة</label>
             <select class="form__select" id="arret" required name="service">
                 <option value="" required>اختر الخدمة</option>
-                @for($i=1; $i<=4 ; $i++) <option value="{{$i}}">{{$arr[$i]}}</option>
+                @for($i=1; $i<=5 ; $i++) <option value="{{$i}}">{{$arr[$i]}}</option>
                     @endfor
             </select>
         </div>
