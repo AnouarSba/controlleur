@@ -258,32 +258,32 @@ class ExcelController extends Controller
         if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
             admin_emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status]);
             admin_pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
-            $recups = admin_emp_recup::where('emp_id', $emp_id)
+            $total_recups = admin_emp_recup::where('emp_id', $emp_id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'admin_emp_recups.holiday_id')
                 ->leftjoin('events', 'events.id', '=', 'admin_emp_recups.event_id')
                 ->whereYear('date', date('Y'))
                 ->select('admin_emp_recups.*', 'holidays.name as holiday', 'events.name as event');
 
-            $dj = Emp_dj::where('emp_id', $emp_id)
-                ->whereYear('date', date('Y'))
-                ->select('admin_emp_recups.*');
+            // $dj = Emp_dj::where('emp_id', $emp_id)
+            //     ->whereYear('date', date('Y'))
+            //     ->select('admin_emp_recups.*');
 
-            $total_recups = $recups->union($dj)->get();
+            // $total_recups = $recups->union($dj)->get();
 
         } elseif ($emp->service == 4) {
             maint_emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status]);
             maint_pointage::where('emp_id', $emp_id)->where('date', $request->date)->update(['emp_status_id' => $request->status]);
-            $recups = maint_emp_recup::where('emp_id', $emp_id)
+            $total_recups = maint_emp_recup::where('emp_id', $emp_id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'maint_emp_recups.holiday_id')
                 ->leftjoin('events', 'events.id', '=', 'maint_emp_recups.event_id')
                 ->whereYear('date', date('Y'))
                 ->select('maint_emp_recups.*', 'holidays.name as holiday', 'events.name as event');
 
-            $dj = Emp_dj::where('emp_id', $emp_id)
-                ->whereYear('date', date('Y'))
-                ->select('maint_emp_recups.*');
+            // $dj = Emp_dj::where('emp_id', $emp_id)
+            //     ->whereYear('date', date('Y'))
+            //     ->select('maint_emp_recups.*');
 
-            $total_recups = $recups->union($dj)->get();
+            // $total_recups = $recups->union($dj)->get();
 
         } elseif ($emp->service == 2) {
             Emp_recup::whereId($request->id)->update(['emp_status_id' => $request->status]);
@@ -306,31 +306,31 @@ class ExcelController extends Controller
         $total_recups = [];
         if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
             admin_emp_recup::whereId($request->id)->delete();
-            $recups = admin_emp_recup::where('emp_id', $id)
+            $total_recups = admin_emp_recup::where('emp_id', $id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'admin_emp_recups.holiday_id')
                 ->leftjoin('events', 'events.id', '=', 'admin_emp_recups.event_id')
                 ->whereYear('date', date('Y'))
                 ->select('admin_emp_recups.*', 'holidays.name as holiday', 'events.name as event');
 
-            $dj = Emp_dj::where('emp_id', $id)
-                ->whereYear('date', date('Y'))
-                ->select('admin_emp_recups.*');
+            // $dj = Emp_dj::where('emp_id', $id)
+            //     ->whereYear('date', date('Y'))
+            //     ->select('admin_emp_recups.*');
 
-            $total_recups = $recups->union($dj)->get();
+            // $total_recups = $recups->union($dj)->get();
 
         } elseif ($emp->service == 4) {
             maint_emp_recup::whereId($request->id)->delete();
-            $recups = maint_emp_recup::where('emp_id', $id)
+            $total_recups = maint_emp_recup::where('emp_id', $id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'maint_emp_recups.holiday_id')
                 ->leftjoin('events', 'events.id', '=', 'maint_emp_recups.event_id')
                 ->whereYear('date', date('Y'))
                 ->select('maint_emp_recups.*', 'holidays.name as holiday', 'events.name as event');
 
-            $dj = Emp_dj::where('emp_id', $id)
-                ->whereYear('date', date('Y'))
-                ->select('maint_emp_recups.*');
+            // $dj = Emp_dj::where('emp_id', $id)
+            //     ->whereYear('date', date('Y'))
+            //     ->select('maint_emp_recups.*');
 
-            $total_recups = $recups->union($dj)->get();
+            // $total_recups = $recups->union($dj)->get();
 
         } elseif ($emp->service == 2) {
             Emp_recup::whereId($request->id)->delete();
@@ -511,30 +511,30 @@ class ExcelController extends Controller
         $emp = User::where('id', $id)->select('id', 'username', 'service', 'R')->first();
         $total_recups = [];
         if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
-            $recups = admin_emp_recup::where('emp_id', $id)
+            $total_recups = admin_emp_recup::where('emp_id', $id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'admin_emp_recups.holiday_id')
                 ->leftjoin('events', 'events.id', '=', 'admin_emp_recups.event_id')
                 ->whereYear('date', date('Y'))
                 ->select('admin_emp_recups.*', 'holidays.name as holiday', 'events.name as event');
 
-            $dj = Emp_dj::where('emp_id', $id)
-                ->whereYear('date', date('Y'))
-                ->select('admin_emp_recups.*');
+            // $dj = Emp_dj::where('emp_id', $id)
+            //     ->whereYear('date', date('Y'))
+            //     ->select('admin_emp_recups.*');
 
-            $total_recups = $recups->union($dj)->get();
+            // $total_recups = $recups->union($dj)->get();
 
         } elseif ($emp->service == 4) {
-            $recups = maint_emp_recup::where('emp_id', $id)
+            $total_recups = maint_emp_recup::where('emp_id', $id)
                 ->leftjoin('holidays', 'holidays.id', '=', 'maint_emp_recups.holiday_id')
                 ->leftjoin('events', 'events.id', '=', 'maint_emp_recups.event_id')
                 ->whereYear('date', date('Y'))
                 ->select('maint_emp_recups.*', 'holidays.name as holiday', 'events.name as event');
 
-            $dj = Emp_dj::where('emp_id', $id)
-                ->whereYear('date', date('Y'))
-                ->select('maint_emp_recups.*');
+            // $dj = Emp_dj::where('emp_id', $id)
+            //     ->whereYear('date', date('Y'))
+            //     ->select('maint_emp_recups.*');
 
-            $total_recups = $recups->union($dj)->get();
+            // $total_recups = $recups->union($dj)->get();
 
         } elseif ($emp->service == 2) {
             $total_recups = Emp_recup::where('emp_id', $id)
