@@ -436,8 +436,8 @@ class ExcelController extends Controller
 
             $empnew = $new - $emprepos;
 
-            $emp->R = $empnew;
-            $emp->save();
+            // $emp->R = $empnew;
+            // $emp->save();
         }
         //modification RJ       
         $emps2 = User::where('service', 2)->select('id', 'username', 'service', 'RJ')->get();  
@@ -450,8 +450,8 @@ class ExcelController extends Controller
             $emprj = Emp_rj::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
             $empnew = $new - $emprj;
 
-            $emp->RJ = $empnew;
-            $emp->save();
+            // $emp->RJ = $empnew;
+            // $emp->save();
         }
         return redirect()->back();
     }
