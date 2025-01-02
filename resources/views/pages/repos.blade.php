@@ -103,6 +103,12 @@
         @if (in_array(auth()->user()->is_, [1, 6]))
             <div class="row m-5" style="justify-content: center; align-items: center;">
 
+                <div class="checkbox-container" hidden dir="rtl">
+                    <form action="{{ route('update_r') }}" method="post" id="form">
+                        @csrf
+                        <input class="btn-primary mb-2 "  type="submit" value="update ancien valuer">
+                    </form>
+                </div>
                 <div class="checkbox-container" dir="rtl">
                     <form action="{{ route('repo') }}" method="post" id="form">
                         @csrf

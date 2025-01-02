@@ -69,9 +69,8 @@ class ExcelController extends Controller
                     $recup = maint_emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 } elseif ($emp->service == 2) {
                     $recup = Emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
-                }
-                else
-                $recup = 0;
+                } else
+                    $recup = 0;
 
                 $emp[$holiday->name] = $recup;
                 $new += $recup;
@@ -83,9 +82,8 @@ class ExcelController extends Controller
                     $recup = maint_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 } elseif ($emp->service == 2) {
                     $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
-                }
-                else
-                $recup = 0;
+                } else
+                    $recup = 0;
 
                 $emp[$event->name] = $recup;
                 $new += $recup;
@@ -97,9 +95,8 @@ class ExcelController extends Controller
                 $emp['repos'] = maint_emp_recup::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
             } elseif ($emp->service == 2) {
                 $emp['repos'] = Emp_recup::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
-            }
-            else
-            $emp['repos'] = 0;
+            } else
+                $emp['repos'] = 0;
 
             $emp['new'] = $new - $emp['repos'];
         }
@@ -250,7 +247,8 @@ class ExcelController extends Controller
 
         return view('pages.events', ['events' => Event::get()]);
     }
-    public function recup_edit(Request $request){
+    public function recup_edit(Request $request)
+    {
         $emp_id = $request->emp_id;
 
         $emp = User::where('id', $emp_id)->select('id', 'username', 'service', 'R')->first();
@@ -294,12 +292,12 @@ class ExcelController extends Controller
                 ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
                 ->whereYear('date', date('Y'))
                 ->select('emp_recups.*', 'holidays.name as holiday', 'events.name as event')->get();
-
         }
 
         return view('pages.repos_details', ['emp' => $emp, 'recups' => $total_recups]);
     }
-    public function recup_delete(){
+    public function recup_delete()
+    {
         $emp_id = $request->emp_id;
 
         $emp = User::where('id', $emp_id)->select('id', 'username', 'service', 'R')->first();
@@ -339,7 +337,6 @@ class ExcelController extends Controller
                 ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
                 ->whereYear('date', date('Y'))
                 ->select('emp_recups.*', 'holidays.name as holiday', 'events.name as event')->get();
-
         }
 
         return view('pages.repos_details', ['emp' => $emp, 'recups' => $total_recups]);
@@ -360,9 +357,8 @@ class ExcelController extends Controller
                     $recup = maint_emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 } elseif ($emp->service == 2) {
                     $recup = Emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
-                }
-                else
-                $recup = 0;
+                } else
+                    $recup = 0;
 
                 $emp[$holiday->name] = $recup;
                 $new += $recup;
@@ -374,9 +370,8 @@ class ExcelController extends Controller
                     $recup = maint_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 } elseif ($emp->service == 2) {
                     $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
-                }
-                else
-                $recup = 0;
+                } else
+                    $recup = 0;
 
                 $emp[$event->name] = $recup;
                 $new += $recup;
@@ -388,14 +383,73 @@ class ExcelController extends Controller
                 $emp['repos'] = maint_emp_recup::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
             } elseif ($emp->service == 2) {
                 $emp['repos'] = Emp_recup::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
-            }
-            else
-            $emp['repos'] = 0;
+            } else
+                $emp['repos'] = 0;
 
             $emp['new'] = $new - $emp['repos'];
         }
 
         return view('pages.repos', ['events' => Event::get(), 'holidays' => Holiday::get(), 'emps' => $emps]);
+    }
+    public function update_r()
+    {
+        //modification R
+        $emps = User::where('id', '!=', 1)->select('id', 'username', 'service', 'R')->get();
+        foreach ($emps as $emp) {
+            $new = $emp->R;
+            foreach (Holiday::get() as $holiday) {
+                if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
+                    $recup = admin_emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', 2024)->count();
+                } elseif ($emp->service == 4) {
+                    $recup = maint_emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', 2024)->count();
+                } elseif ($emp->service == 2) {
+                    $recup = Emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', 2024)->count();
+                } else
+                    $recup = 0;
+
+                $emp[$holiday->name] = $recup;
+                $new += $recup;
+            }
+            foreach (Event::get() as $event) {
+                if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
+                    $recup = admin_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', 2024)->count();
+                } elseif ($emp->service == 4) {
+                    $recup = maint_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', 2024)->count();
+                } elseif ($emp->service == 2) {
+                    $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', 2024)->count();
+                } else
+                    $recup = 0;
+
+                $emp[$event->name] = $recup;
+                $new += $recup;
+            }
+
+            if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
+                $emp['repos'] = admin_emp_recup::where('emp_id', $emp->id)->whereYear('date', 2024)->where('sign', 0)->count();
+            } elseif ($emp->service == 4) {
+                $emp['repos'] = maint_emp_recup::where('emp_id', $emp->id)->whereYear('date', 2024)->where('sign', 0)->count();
+            } elseif ($emp->service == 2) {
+                $emp['repos'] = Emp_recup::where('emp_id', $emp->id)->whereYear('date', 2024)->where('sign', 0)->count();
+            } else
+                $emp['repos'] = 0;
+
+            $emp['new'] = $new - $emp['repos'];
+
+            $emp->update(['R' => $emp['new']]);
+            
+        }
+        //modification RJ       
+        $emps2 = User::where('service', 2)->select('id', 'username', 'service', 'RJ')->get();  
+        foreach ($emps2 as $emp) {
+            $new = $emp->RJ;
+            $rj = Emp_rj::where('emp_id', $emp->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+            $new += $rj;
+            $emp['pj'] = $rj;
+            
+            $emp['rj'] = Emp_rj::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
+            $emp['new'] = $new - $emp['rj'];
+            $emp->update(['RJ' => $emp['new']]);
+        }
     }
     public function repo(Request $request)
     {
@@ -409,7 +463,7 @@ class ExcelController extends Controller
         $query4 = User::where('service', $request->maint ?? 98)->select('id', 'username', 'service', 'R');
         // $query5 = User::where('service', $request->stock ?? 98)->select('id','username', 'service','R');
 
-// Combining the two queries using union->union($query3)->union($query5)
+        // Combining the two queries using union->union($query3)->union($query5)
         $emps = $query1->union($query2)->union($query4)->get();
 
         foreach ($emps as $emp) {
@@ -421,9 +475,8 @@ class ExcelController extends Controller
                     $recup = maint_emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 } elseif ($emp->service == 2) {
                     $recup = Emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
-                }
-                else
-                $recup = 0;
+                } else
+                    $recup = 0;
 
                 $emp[$holiday->name] = $recup;
                 $new += $recup;
@@ -435,9 +488,8 @@ class ExcelController extends Controller
                     $recup = maint_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
                 } elseif ($emp->service == 2) {
                     $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
-                }
-                else
-                $recup = 0;
+                } else
+                    $recup = 0;
 
                 $emp[$event->name] = $recup;
                 $new += $recup;
@@ -449,9 +501,8 @@ class ExcelController extends Controller
                 $emp['repos'] = maint_emp_recup::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
             } elseif ($emp->service == 2) {
                 $emp['repos'] = Emp_recup::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
-            }
-            else
-            $emp['repos'] = 0;
+            } else
+                $emp['repos'] = 0;
 
             $emp['new'] = $new - $emp['repos'];
         }
@@ -490,7 +541,7 @@ class ExcelController extends Controller
         $query4 = User::where('service', $request->maint ?? 98)->select('id', 'username', 'service', 'RJ');
         // $query5 = User::where('service', $request->stock ?? 98)->select('id','username', 'service','RJ');
 
-// Combining the two queries using union->union($query3)->union($query5)
+        // Combining the two queries using union->union($query3)->union($query5)
         $emps = $query1->union($query2)->union($query4)->get();
 
         foreach ($emps as $emp) {
@@ -542,7 +593,6 @@ class ExcelController extends Controller
                 ->leftjoin('events', 'events.id', '=', 'emp_recups.event_id')
                 ->whereYear('date', date('Y'))
                 ->select('emp_recups.*', 'holidays.name as holiday', 'events.name as event')->get();
-
         }
 
         return view('pages.repos_details', ['emp' => $emp, 'recups' => $total_recups]);
@@ -570,7 +620,6 @@ class ExcelController extends Controller
             if ((int) $interval->format('%a') < 30) {
                 return \view('pages.attestations')->with('deja_demmander', $attestation);
             }
-
         }
         $attestation = new attestation();
         $attestation->emp_id = auth()->user()->id;
@@ -629,7 +678,6 @@ class ExcelController extends Controller
         } else {
             return \view('pages.avances')->with('error', 'Operation echoue. Veuillez reessayer.');
         }
-
     }
     public function show_attestations(Request $request)
     {
@@ -662,7 +710,6 @@ class ExcelController extends Controller
                 ->make(true);
         }
         return view('admin.attestation', ['sttart_date' => $from, 'endd_date' => $to]);
-
     }
     public function show_events(Request $request)
     {
@@ -697,7 +744,6 @@ class ExcelController extends Controller
                 ->make(true);
         }
         return view('admin.event', ['sttart_date' => $from, 'endd_date' => $to]);
-
     }
     public function attestation_reg(Request $request)
     {
@@ -712,7 +758,6 @@ class ExcelController extends Controller
         } else {
             return view('admin.attestation', ['sttart_date' => $from, 'endd_date' => $to, 'attestation' => 0]);
         }
-
     }
     public function event_reg(Request $request)
     {
@@ -731,18 +776,15 @@ class ExcelController extends Controller
                 admin_emp_recup::create(['date' => $date, 'emp_id' => $event->emp_id, 'emp_status_id' => 1, 'sign' => 1, 'event_id' => $event->event_id]);
             } elseif ($emp->service == 4) {
                 maint_emp_recup::create(['date' => $date, 'emp_id' => $event->emp_id, 'emp_status_id' => 1, 'sign' => 1, 'event_id' => $event->event_id]);
-
             } elseif ($emp->service == 2) {
                 Emp_recup::create(['date' => $date, 'emp_id' => $event->emp_id, 'emp_status_id' => 1, 'sign' => 1, 'event_id' => $event->event_id]);
             }
-
         }
         if ($event) {
             return view('admin.event', ['sttart_date' => $from, 'endd_date' => $to, 'event' => 1]);
         } else {
             return view('admin.event', ['sttart_date' => $from, 'endd_date' => $to, 'event' => 0]);
         }
-
     }
     public function show_avances(Request $request)
     {
@@ -809,7 +851,6 @@ class ExcelController extends Controller
                     } else {
                         $row->emp_status_id = $request['ctrl' . $ctrl->id];
                         $row->save();
-
                     }
                 }
                 $edited = 1;
@@ -823,30 +864,24 @@ class ExcelController extends Controller
                         if ($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2)) {
                             $arr[] = $emp->emp_id;
                             Emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
-
                         }
                         if ($emp->emp_status_id == 2) {
                             Emp_rj::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1]);
                         } elseif ($emp->emp_status_id == 7 || $emp->emp_status_id == 11) {
                             Emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
-
                         } elseif ($emp->emp_status_id == 8) {
                             Emp_rj::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0]);
-
                         }
                     }
                     if (!$holiday && $holiday_id) {
                         EmpInHoliday::create(['date' => $date, 'emps' => $arr, 'holiday_id' => $holiday_id]);
                     }
-
                 } else {
                     $validate->validation = 1;
                     $validate->save();
                 }
-
             }
             return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'holiday_id' => $holiday_id, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => $edited]);
-
         }
         $receveurs = User::where('is_', 7)->get();
         $chauffeurs = User::where('is_', 8)->get();
@@ -861,7 +896,6 @@ class ExcelController extends Controller
             $validate = Validate_pointage::where('date', $date)->where('validation', 1)->first();
             if ($validate) {
                 return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs, 'chefs' => $chefs, 'controleurs' => [], 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
-
             }
             foreach ($receveurs as $key => $value) {
                 $row = Pointage::where('date', $date)->where('emp_id', $value->id)->first();
@@ -879,7 +913,6 @@ class ExcelController extends Controller
             $validate = Validate_pointage::where('date', $date)->where('validation', 1)->first();
             if ($validate) {
                 return view('pages.pointage', ['today' => $date, 'holidays' => $holidays, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs, 'chefs' => $chefs, 'controleurs' => [], 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
-
             }
             foreach ($chauffeurs as $key => $value) {
                 $row = Pointage::where('date', $date)->where('emp_id', $value->id)->first();
@@ -950,21 +983,17 @@ class ExcelController extends Controller
                         if ($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2)) {
                             $arr[] = $emp->emp_id;
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
-
                         } elseif ($emp->emp_status_id == 7 || $emp->emp_status_id == 11) {
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
-
                         }
 
                         if ($emp->emp_status_id == 16) {
                             Emp_dj::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0]);
                         }
-
                     }
                     if (!$holiday_admin && $holiday_id) {
                         admin_empInHoliday::create(['date' => $date, 'emps' => $arr, 'holiday_id' => $holiday_id]);
                     }
-
                 } else {
                     $validate_admin->validation = 1;
                     $validate_admin->save();
@@ -980,25 +1009,19 @@ class ExcelController extends Controller
                         if ($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2)) {
                             $arr[] = $emp->emp_id;
                             maint_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
-
                         } elseif ($emp->emp_status_id == 7 || $emp->emp_status_id == 11) {
                             maint_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
-
                         }
-
                     }
                     if (!$holiday_maint && $holiday_id) {
                         maint_empInHoliday::create(['date' => $date, 'emps' => $arr, 'holiday_id' => $holiday_id]);
                     }
-
                 } else {
                     $validate_maint->validation = 1;
                     $validate_maint->save();
                 }
-
             }
             return view('pages.pointage_admin', ['today' => $date, 'holidays' => $holidays, 'holiday_id' => $holiday_id, 'receveurs' => [], 'chauffeurs' => [], 'chefs' => [], 'controleurs' => $ctrls, 'status' => $status, 'edited' => $edited]);
-
         }
         $receveurs = User::where('is_', 10)->whereIn('service', [1, 3])->get();
         $chauffeurs = User::where('is_', 10)->where('service', 4)->get();
@@ -1013,7 +1036,6 @@ class ExcelController extends Controller
             $validate = admin_Validate_pointage::where('date', $date)->where('validation', 1)->first();
             if ($validate) {
                 return view('pages.pointage_admin', ['today' => $date, 'holidays' => $holidays, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs, 'controleurs' => [], 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
-
             }
             foreach ($receveurs as $key => $value) {
                 $row = admin_pointage::where('date', $date)->where('emp_id', $value->id)->first();
@@ -1031,7 +1053,6 @@ class ExcelController extends Controller
             $validate = maint_Validate_pointage::where('date', $date)->where('validation', 1)->first();
             if ($validate) {
                 return view('pages.pointage_admin', ['today' => $date, 'holidays' => $holidays, 'receveurs' => $receveurs, 'chauffeurs' => $chauffeurs, 'controleurs' => [], 'status' => $status, 'edited' => 0])->with(['error' => 'Deja validée par le chef service.']);
-
             }
             foreach ($chauffeurs as $key => $value) {
                 $row = maint_Pointage::where('date', $date)->where('emp_id', $value->id)->first();
@@ -1240,7 +1261,6 @@ class ExcelController extends Controller
                     # code...
                     break;
             }
-
         }
         // Output the transformed data (days as rows, users as columns)
 
@@ -1371,7 +1391,6 @@ class ExcelController extends Controller
                     # code...
                     break;
             }
-
         }
         // Output the transformed data (days as rows, users as columns)
 
@@ -1442,7 +1461,6 @@ class ExcelController extends Controller
             return view('controls.control')->with(['success' => 'Fichier uploadé avec succès.']);
         }
         return view('controls.control')->with('error', 'Échec d\'uploader le fichier. Veuillez réessayer.');
-
     }
     public function exportDataAvance(Request $request)
     {

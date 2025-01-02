@@ -75,6 +75,8 @@ Route::get('Detail_RJ/{id}',[ ExcelController::class, 'details_rj'])->name('deta
 Route::get('Repos_admin',[ ExcelController::class, 'repos_admin'])->name('repos_admin')->middleware('auth'); 
 Route::post('/Repos_admin',[ ExcelController::class, 'repo_admin'])->name('repo_admin')->middleware('auth'); 
 
+Route::post('/update_r',[ ExcelController::class, 'update_r'])->name('update_r')->middleware('auth'); 
+
 Route::get('Detail_Repos_admin/{id}',[ ExcelController::class, 'details_admin'])->name('details_admin')->middleware('auth'); 
 
 Route::post('Demande_Events',[ ExcelController::class, 'demande_events'])->name('demande_events')->middleware('auth'); 
