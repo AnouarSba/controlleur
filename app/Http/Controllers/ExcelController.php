@@ -296,7 +296,7 @@ class ExcelController extends Controller
 
         return view('pages.repos_details', ['emp' => $emp, 'recups' => $total_recups]);
     }
-    public function recup_delete()
+    public function recup_delete(Request $request)
     {
         $emp_id = $request->emp_id;
 
@@ -407,7 +407,7 @@ class ExcelController extends Controller
                 } else
                     $recup = 0;
 
-                $emp[$holiday->name] = $recup;
+                // $emp[$holiday->name] = $recup;
                 $new += $recup;
             }
             foreach (Event::get() as $event) {
