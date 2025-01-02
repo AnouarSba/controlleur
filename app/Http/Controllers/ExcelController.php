@@ -450,6 +450,7 @@ class ExcelController extends Controller
             $emp['new'] = $new - $emp['rj'];
             $emp->update(['RJ' => $emp['new']]);
         }
+        return redirect()->back();
     }
     public function repo(Request $request)
     {
