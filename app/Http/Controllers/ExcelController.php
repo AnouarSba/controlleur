@@ -420,22 +420,22 @@ class ExcelController extends Controller
                 } else
                     $recup = 0;
 
-                $emp[$event->name] = $recup;
+                // $emp[$event->name] = $recup;
                 $new += $recup;
             }
 
             if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
-                $emp['repos'] = admin_emp_recup::where('emp_id', $emp->id)->whereYear('date', 2024)->where('sign', 0)->count();
+                $emprepos = admin_emp_recup::where('emp_id', $emp->id)->whereYear('date', 2024)->where('sign', 0)->count();
             } elseif ($emp->service == 4) {
-                $emp['repos'] = maint_emp_recup::where('emp_id', $emp->id)->whereYear('date', 2024)->where('sign', 0)->count();
+                $emprepos = maint_emp_recup::where('emp_id', $emp->id)->whereYear('date', 2024)->where('sign', 0)->count();
             } elseif ($emp->service == 2) {
-                $emp['repos'] = Emp_recup::where('emp_id', $emp->id)->whereYear('date', 2024)->where('sign', 0)->count();
+                $emprepos = Emp_recup::where('emp_id', $emp->id)->whereYear('date', 2024)->where('sign', 0)->count();
             } else
-                $emp['repos'] = 0;
+                $emprepos = 0;
 
-            $emp['new'] = $new - $emp['repos'];
+            $empnew = $new - $emprepos;
 
-            $emp->update(['R' => $emp['new']]);
+            $emp->update(['R' => $empnew]);
             
         }
         //modification RJ       
@@ -444,11 +444,11 @@ class ExcelController extends Controller
             $new = $emp->RJ;
             $rj = Emp_rj::where('emp_id', $emp->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
             $new += $rj;
-            $emp['pj'] = $rj;
+            // $emp['pj'] = $rj;
             
-            $emp['rj'] = Emp_rj::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
-            $emp['new'] = $new - $emp['rj'];
-            $emp->update(['RJ' => $emp['new']]);
+            $emprj = Emp_rj::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
+            $empnew = $new - $emprj;
+            $emp->update(['RJ' => $empnew]);
         }
         return redirect()->back();
     }
