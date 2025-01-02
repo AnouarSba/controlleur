@@ -409,6 +409,7 @@ class ExcelController extends Controller
 
                 // $emp[$holiday->name] = $recup;
                 $new += $recup;
+
             }
             foreach (Event::get() as $event) {
                 if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
@@ -419,7 +420,6 @@ class ExcelController extends Controller
                     $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', 2024)->count();
                 } else
                     $recup = 0;
-
                 // $emp[$event->name] = $recup;
                 $new += $recup;
             }
@@ -435,8 +435,8 @@ class ExcelController extends Controller
 
             $empnew = $new - $emprepos;
 
-            $emp->update(['R' => $empnew]);
-            
+            $emp->R = $empnew;
+            $emp->save();
         }
         //modification RJ       
         $emps2 = User::where('service', 2)->select('id', 'username', 'service', 'RJ')->get();  
@@ -448,10 +448,13 @@ class ExcelController extends Controller
             
             $emprj = Emp_rj::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
             $empnew = $new - $emprj;
-            $emp->update(['RJ' => $empnew]);
+
+            $emp->RJ = $empnew;
+            $emp->save();
         }
         return redirect()->back();
     }
+
     public function repo(Request $request)
     {
         $arr = [];
