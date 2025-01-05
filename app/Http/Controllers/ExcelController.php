@@ -436,8 +436,8 @@ class ExcelController extends Controller
 
         //     $empnew = $new - $emprepos;
 
-        //     // $emp->R = $empnew;
-        //     // $emp->save();
+            // $emp->R = $empnew;
+            // $emp->save();
         // }
         //modification RJ       
         $emps2 = User::where('service', 2)->select('id', 'username', 'service', 'RJ')->get();  
