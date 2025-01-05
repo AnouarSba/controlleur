@@ -440,18 +440,18 @@ class ExcelController extends Controller
             // $emp->save();
         // }
         //modification RJ       
-        $emps2 = User::where('service', 2)->select('id', 'username', 'service', 'RJ')->get();  
-        foreach ($emps2 as $emp) {
-            $new = $emp->RJ;
-            $rj = Emp_rj::where('emp_id', $emp->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
-            $new += $rj;
-            // $emp['pj'] = $rj;
+        // $emps2 = User::where('service', 2)->select('id', 'username', 'service', 'RJ')->get();  
+        // foreach ($emps2 as $emp) {
+        //     $new = $emp->RJ;
+        //     $rj = Emp_rj::where('emp_id', $emp->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
+        //     $new += $rj;
+        //     // $emp['pj'] = $rj;
             
-            $emprj = Emp_rj::where('emp_id', $emp->id)->whereYear('date', $targetyear)->where('sign', 0)->count();
-            $empnew = $new - $emprj;
-            $emp->RJ = $empnew;
-            $emp->save();
-        }
+        //     $emprj = Emp_rj::where('emp_id', $emp->id)->whereYear('date', $targetyear)->where('sign', 0)->count();
+        //     $empnew = $new - $emprj;
+        //     $emp->RJ = $empnew;
+        //     $emp->save();
+        // }
         return redirect()->back();
     }
 
