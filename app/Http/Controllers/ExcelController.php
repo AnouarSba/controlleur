@@ -395,65 +395,65 @@ class ExcelController extends Controller
     {
         $targetyear = now()->year-1;
         //modification R
-        $emps = User::where('id', '!=', 1)->select('id', 'username', 'service', 'R')->get();
-        foreach ($emps as $emp) {
-            $new = $emp->R;
-            foreach (Holiday::get() as $holiday) {
-                if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
-                    $recup = admin_emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
-                } elseif ($emp->service == 4) {
-                    $recup = maint_emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
-                } elseif ($emp->service == 2) {
-                    $recup = Emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
-                } else
-                    $recup = 0;
+        // $emps = User::where('id', '!=', 1)->select('id', 'username', 'service', 'R')->get();
+        // foreach ($emps as $emp) {
+        //     $new = $emp->R;
+        //     foreach (Holiday::get() as $holiday) {
+        //         if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
+        //             $recup = admin_emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
+        //         } elseif ($emp->service == 4) {
+        //             $recup = maint_emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
+        //         } elseif ($emp->service == 2) {
+        //             $recup = Emp_recup::where('emp_id', $emp->id)->where('holiday_id', $holiday->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
+        //         } else
+        //             $recup = 0;
 
-                // $emp[$holiday->name] = $recup;
-                $new += $recup;
+        //         // $emp[$holiday->name] = $recup;
+        //         $new += $recup;
 
-            }
-            foreach (Event::get() as $event) {
-                if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
-                    $recup = admin_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
-                } elseif ($emp->service == 4) {
-                    $recup = maint_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
-                } elseif ($emp->service == 2) {
-                    $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
-                } else
-                    $recup = 0;
-                // $emp[$event->name] = $recup;
-                $new += $recup;
-            }
+        //     }
+        //     foreach (Event::get() as $event) {
+        //         if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
+        //             $recup = admin_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
+        //         } elseif ($emp->service == 4) {
+        //             $recup = maint_emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
+        //         } elseif ($emp->service == 2) {
+        //             $recup = Emp_recup::where('emp_id', $emp->id)->where('event_id', $event->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
+        //         } else
+        //             $recup = 0;
+        //         // $emp[$event->name] = $recup;
+        //         $new += $recup;
+        //     }
 
-            if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
-                $emprepos = admin_emp_recup::where('emp_id', $emp->id)->whereYear('date', $targetyear)->where('sign', 0)->count();
-            } elseif ($emp->service == 4) {
-                $emprepos = maint_emp_recup::where('emp_id', $emp->id)->whereYear('date', $targetyear)->where('sign', 0)->count();
-            } elseif ($emp->service == 2) {
-                $emprepos = Emp_recup::where('emp_id', $emp->id)->whereYear('date', $targetyear)->where('sign', 0)->count();
-            } else
-                $emprepos = 0;
+        //     if ($emp->service == 1 || $emp->service == 3 || $emp->service == 5) {
+        //         $emprepos = admin_emp_recup::where('emp_id', $emp->id)->whereYear('date', $targetyear)->where('sign', 0)->count();
+        //     } elseif ($emp->service == 4) {
+        //         $emprepos = maint_emp_recup::where('emp_id', $emp->id)->whereYear('date', $targetyear)->where('sign', 0)->count();
+        //     } elseif ($emp->service == 2) {
+        //         $emprepos = Emp_recup::where('emp_id', $emp->id)->whereYear('date', $targetyear)->where('sign', 0)->count();
+        //     } else
+        //         $emprepos = 0;
 
-            $empnew = $new - $emprepos;
+        //     $empnew = $new - $emprepos;
 
-            // $emp->R = $empnew;
-            // $emp->save();
-        }
+        //     // $emp->R = $empnew;
+        //     // $emp->save();
+        // }
         //modification RJ       
         $emps2 = User::where('service', 2)->select('id', 'username', 'service', 'RJ')->get();  
         foreach ($emps2 as $emp) {
             $new = $emp->RJ;
-            $rj = Emp_rj::where('emp_id', $emp->id)->where('sign', 1)->whereYear('date', date('Y'))->count();
+            $rj = Emp_rj::where('emp_id', $emp->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
             $new += $rj;
             // $emp['pj'] = $rj;
             
-            $emprj = Emp_rj::where('emp_id', $emp->id)->whereYear('date', date('Y'))->where('sign', 0)->count();
+            $emprj = Emp_rj::where('emp_id', $emp->id)->whereYear('date', $targetyear)->where('sign', 0)->count();
             $empnew = $new - $emprj;
-
+            echo($emp->username.'->'.$empnew);
             // $emp->RJ = $empnew;
             // $emp->save();
         }
-        return redirect()->back();
+        // return redirect()->back();
     }
 
     public function repo(Request $request)
