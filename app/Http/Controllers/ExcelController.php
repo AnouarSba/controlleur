@@ -449,11 +449,10 @@ class ExcelController extends Controller
             
             $emprj = Emp_rj::where('emp_id', $emp->id)->whereYear('date', $targetyear)->where('sign', 0)->count();
             $empnew = $new - $emprj;
-            echo($emp->username.'->'.$empnew);
-            // $emp->RJ = $empnew;
-            // $emp->save();
+            $emp->RJ = $empnew;
+            $emp->save();
         }
-        // return redirect()->back();
+        return redirect()->back();
     }
 
     public function repo(Request $request)
