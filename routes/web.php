@@ -127,7 +127,7 @@ Route::get('Guide',[ ControlController::class, 'dalil'])->name('dalil')->middlew
 Route::get('Reglement',[ ControlController::class, 'emp'])->name('emp')->middleware('auth'); 
 Route::get('Nidam',[ ControlController::class, 'nidam'])->name('nidam')->middleware('auth'); 
 Route::get('Reglement_int',[ ControlController::class, 'reg'])->name('int')->middleware('auth'); 
-Route::get('modawana',[ ControlController::class, 'modawanagia'])->name('int')->middleware('auth'); 
+Route::get('modawana',[ ControlController::class, 'modawana'])->name('modawana')->middleware('auth'); 
 Route::get('Stop_point',[ ControlController::class, 'stop'])->name('stop')->middleware('auth'); 
 
 Route::get('/', function () {return redirect('/dashboard');})->middleware('auth');
