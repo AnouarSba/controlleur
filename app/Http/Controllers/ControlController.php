@@ -133,6 +133,11 @@ public function inst(Request $request)
     return view('pdf.ta3lima');
 
 }
+public function modawana(Request $request)
+{
+    return view('pdf.modawana');
+
+}
 public function reg(Request $request)
 {
     return view('pdf.reglement');
