@@ -89,7 +89,7 @@ An &#105;frame should be displayed here but your browser version does not suppor
 
     <center>
         <h1 class="" style="color: #3d80e4">
-        مدونة سلوك العامل بالمؤسسة العمومية للنقل الحضري وشبه الحظري سيدي بلعباس</h1>
+        مدونة سلوك العامل بالمؤسسة العمومية للنقل الحضري وشبه الحضري سيدي بلعباس</h1>
     </center>
     <div class="" style="text-align: center;font-family: Aparajita;font-size: 25px">
         <p> </p>
