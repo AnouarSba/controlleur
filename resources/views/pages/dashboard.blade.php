@@ -916,7 +916,7 @@ document.addEventListener("DOMContentLoaded", function() {
             var target = document.createAttribute("target");
             target.value = '_blank';
             itemContainer.setAttributeNode(target);
-             if([5,6,9,10,11].includes(p) && i>=3 )
+             if([5,6,9,10,11].includes(p) && i>=3 && i<8)
             itemContainer.style.display = "none";
             itemContainer.setAttributeNode(href);
             var target = document.createAttribute("target");
