@@ -113,12 +113,12 @@
                         اعلان عن منصب سائق سيارة صنف خفيف
                 </h5>
             </div>
-
+            
             <div id="collapse4" class="collapse " aria-labelledby="heading4" data-parent="#accordion">
                 <div class="card-body row" style="text-align: right;">
-
+                    
                     <div class="row" style="margin:0 25px">
-                       <div class="row" style="margin:0 25px">
+                        <div class="row" style="margin:0 25px">
                             <img src="{{ asset('assets/image/driver_alert.jpg') }}" alt="" width="80%"
                             height="100%"> 
                         </div> 
@@ -126,8 +126,27 @@
                 </div>
             </div>
             
-
-    </div> 
+            <div class="card-header" id="heading5" style="direction:rtl;text-align: right;font-size: 28px;">
+                <h5 class="mb-0 mr-0">
+                    <button class="btn btn-link collapsed d5" data-toggle="collapse"
+                    style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse5"
+                    aria-expanded="true" aria-controls="collapse5">
+                    اعلان عن منحة الأجر الوحيد لسنة 2025
+                </h5>
+            </div>
+            
+            <div id="collapse5" class="collapse " aria-labelledby="heading5" data-parent="#accordion">
+                <div class="card-body row" style="text-align: right;">
+                    
+                    <div class="row" style="margin:0 25px">
+                        <div class="row" style="margin:0 25px">
+                            <img src="{{ asset('assets/image/unique.jpg') }}" alt="" width="80%"
+                            height="100%"> 
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div> 
         
         
     </div>
