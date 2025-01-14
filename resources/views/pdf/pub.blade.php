@@ -149,8 +149,8 @@
             <div class="card-header" id="heading6" style="direction:rtl;text-align: right;font-size: 28px;">
                 <h5 class="mb-0 mr-0">
                     <button class="btn btn-link collapsed d5" data-toggle="collapse"
-                    style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse5"
-                    aria-expanded="true" aria-controls="collapse5">
+                    style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse6"
+                    aria-expanded="true" aria-controls="collapse6">
                     اعلان عن سائق حافلات ليلي
                 </h5>
             </div>
