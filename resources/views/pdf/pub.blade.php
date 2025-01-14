@@ -146,6 +146,26 @@
                     </div>
                 </div>
             </div>
+            <div class="card-header" id="heading6" style="direction:rtl;text-align: right;font-size: 28px;">
+                <h5 class="mb-0 mr-0">
+                    <button class="btn btn-link collapsed d5" data-toggle="collapse"
+                    style="direction:rtl;text-align: right;font-size: 28px;" data-target="#collapse5"
+                    aria-expanded="true" aria-controls="collapse5">
+                    اعلان عن سائق حافلات ليلي
+                </h5>
+            </div>
+            
+            <div id="collapse6" class="collapse " aria-labelledby="heading6" data-parent="#accordion">
+                <div class="card-body row" style="text-align: right;">
+                    
+                    <div class="row" style="margin:0 25px">
+                        <div class="row" style="margin:0 25px">
+                            <img src="{{ asset('assets/image/chnuit.jpg') }}" alt="" width="80%"
+                            height="100%"> 
+                        </div> 
+                    </div>
+                </div>
+            </div>
         </div> 
         
         
