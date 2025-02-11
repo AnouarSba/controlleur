@@ -2013,6 +2013,9 @@
                                     <option value=''> اختر المناسبة </option>
                                     <option value="0">يوم عادي</option>
                                     @foreach ($holidays as $holiday)
+                                    @if ($holiday->id == 11)
+                                        @break
+                                    @endif
                                     <option value="{{ $holiday->id }}"
                                         {{ $holiday->id == $holiday_id ? 'selected' : ''}}>{{ $holiday->name }}</option>
                                     @endforeach
