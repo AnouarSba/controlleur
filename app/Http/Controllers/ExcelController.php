@@ -984,7 +984,7 @@ class ExcelController extends Controller
                     $emps = admin_pointage::where('date', $date)->get();
                     $arr = [];
                     foreach ($emps as $emp) {
-                        if ($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2)) {
+                        if ($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2|| $emp->emp_status_id == 17)) {
                             $arr[] = $emp->emp_id;
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
                         } elseif ($emp->emp_status_id == 7 || $emp->emp_status_id == 11) {
