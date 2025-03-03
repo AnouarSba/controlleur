@@ -989,6 +989,10 @@ class ExcelController extends Controller
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
                         } elseif ($emp->emp_status_id == 7 || $emp->emp_status_id == 11) {
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
+                        }elseif($holiday_id && $emp->emp_status_id == 14){
+                            $arr[] = $emp->emp_id;
+                            admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
+                            admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 11]);
                         }elseif ($emp->emp_status_id == 14) {
                             $arr[] = $emp->emp_id;
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 11]);
