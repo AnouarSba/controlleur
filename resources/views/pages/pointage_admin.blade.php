@@ -2092,11 +2092,12 @@
                                             {{ $receveur->username }}
                                         </label>
                                         <select name="rec{{ $receveur->id }}" required class="form-control" id="rec{{ $receveur->id }}">
+                                            <option value="7" {{ (7 == $state ? 'selected' : '') }}>R</option>
                                             <option value="19" {{ (19 == $state ? 'selected' : '') }}>P+</option>
                                             <option value="18" {{ (18 == $state ? 'selected' : '') }}>NT</option>
                                         
                                             @foreach ($status as $st)
-                                            @if (in_array($st->id, [1, 2, 13,18,19]))
+                                            @if (in_array($st->id, [1, 2,7, 13,18,19]))
                                                 @continue
                                             @endif
                                             <option value="{{ $st->id }}" {{ ($st->id == $state ? 'selected' : '') }}>
