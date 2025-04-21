@@ -2046,30 +2046,67 @@
                         </div>
                         <div class="row">
                             @foreach ($receveurs as $receveur)
-                            @php
-                            $state = $receveur->get_status_admin($today);
-                            @endphp
+                            @if ($receveur->about != 'sécuirité')
+                                @php
+                                $state = $receveur->get_status_admin($today);
+                                @endphp
 
-                            <div class="col-lg-6 col-sm-12  border border-primary p-2 mb-2">
-                                <!-- Added col-4 for column layout and mb-3 for margin bottom -->
-                                <div class="form-check">
-                                    <!-- Use form-check for checkbox styling -->
-                                    {{-- <input class="form-check-input" type="checkbox" name="rec[]" value="" id="rec"> --}}
-                                    <label class="form-check-label" for="rec{{ $receveur->id }}">
-                                        {{ $receveur->username }}
-                                    </label>
-                                    <select name="rec{{ $receveur->id }}" required class="form-control"
-                                        id="rec{{ $receveur->id }}">
+                                <div class="col-lg-6 col-sm-12  border border-primary p-2 mb-2">
+                                    <!-- Added col-4 for column layout and mb-3 for margin bottom -->
+                                    <div class="form-check">
+                                        <!-- Use form-check for checkbox styling -->
+                                        {{-- <input class="form-check-input" type="checkbox" name="rec[]" value="" id="rec"> --}}
+                                        <label class="form-check-label" for="rec{{ $receveur->id }}">
+                                            {{ $receveur->username }}
+                                        </label>
+                                        <select name="rec{{ $receveur->id }}" required class="form-control"
+                                            id="rec{{ $receveur->id }}">
 
-                                        @foreach ($status as $st)
-                                        <option value="{{ $st->id }}"
-                                            {{ ($st->id == $state ? 'selected' : ($st->id == 1 ? 'selected' : '')) }}>
-                                            {{ $st->name }}
-                                        </option>
-                                        @endforeach
-                                    </select>
+                                            @foreach ($status as $st)
+                                            @if (in_array($st->id, [19]))
+                                                @continue
+                                            @endif
+                                            <option value="{{ $st->id }}"
+                                                {{ ($st->id == $state ? 'selected' : ($st->id == 1 ? 'selected' : '')) }}>
+                                                {{ $st->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                                @endif
+                            @endforeach
+                            <h4 style="text-align: center;padding-bottom: 15px;">Agents Sécurité</h4>
+                            @foreach ($receveurs as $receveur)
+                            @if ($receveur->about == 'sécuirité')
+                                @php
+                                $state = $receveur->get_status_admin($today);
+                                @endphp
+
+                                <div class="col-lg-6 col-sm-12  border border-primary p-2 mb-2">
+                                    <!-- Added col-4 for column layout and mb-3 for margin bottom -->
+                                    <div class="form-check">
+                                        <!-- Use form-check for checkbox styling -->
+                                        {{-- <input class="form-check-input" type="checkbox" name="rec[]" value="" id="rec"> --}}
+                                        <label class="form-check-label" for="rec{{ $receveur->id }}">
+                                            {{ $receveur->username }}
+                                        </label>
+                                        <select name="rec{{ $receveur->id }}" required class="form-control" id="rec{{ $receveur->id }}">
+                                            <option value="19" {{ (19 == $state ? 'selected' : '') }}>P+</option>
+                                            <option value="18" {{ (18 == $state ? 'selected' : '') }}>NT</option>
+                                        
+                                            @foreach ($status as $st)
+                                            @if (in_array($st->id, [1, 2, 13,18,19]))
+                                                @continue
+                                            @endif
+                                            <option value="{{ $st->id }}" {{ ($st->id == $state ? 'selected' : '') }}>
+                                                {{ $st->name }}
+                                            </option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                @endif
                             @endforeach
                         </div>
                         <button type="submit" name="rec" class="btn btn-primary">Enregistrer</button>
