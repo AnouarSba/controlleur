@@ -984,12 +984,12 @@ class ExcelController extends Controller
                     $emps = admin_pointage::where('date', $date)->get();
                     $arr = [];
                     foreach ($emps as $emp) {
-                        $prev_status = admin_pointage::where('date', date('Y-m-d', strtotime($date . ' -1 day')))
-                        ->where('emp_id', $emp->emp_id)
-                        ->value('emp_status_id');
-                        if($holiday_id && ($prev_status == 18)){
-                            admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => 14, 'sign' => 1, 'holiday_id' => $holiday_id]);
-                        }
+                        // $prev_status = admin_pointage::where('date', date('Y-m-d', strtotime($date . ' -1 day')))
+                        // ->where('emp_id', $emp->emp_id)
+                        // ->value('emp_status_id');
+                        // if($holiday_id && ($prev_status == 18)){
+                        //     admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => 14, 'sign' => 1, 'holiday_id' => $holiday_id]);
+                        // }
                         if ($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2|| $emp->emp_status_id == 17)) {
                             $arr[] = $emp->emp_id;
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
@@ -1002,16 +1002,19 @@ class ExcelController extends Controller
                         }elseif ($emp->emp_status_id == 14) {
                             $arr[] = $emp->emp_id;
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 11]);
-                        }elseif ($holiday_id && $emp->emp_status_id == 18) {
-                            $arr[] = $emp->emp_id;
-                            admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
-                            // admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 12]);
-                            admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 12]);
-                        }elseif ($holiday_id && $emp->emp_status_id == 19) {
-                            $arr[] = $emp->emp_id;
-                            admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
-                            admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 13]);
-                        }elseif ($emp->emp_status_id == 18) {
+                        }
+                        // elseif ($holiday_id && $emp->emp_status_id == 18) {
+                        //     $arr[] = $emp->emp_id;
+                        //     admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
+                        //     // admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 12]);
+                        //     admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 12]);
+                        // }
+                        // elseif ($holiday_id && $emp->emp_status_id == 19) {
+                        //     $arr[] = $emp->emp_id;
+                        //     admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
+                        //     admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 13]);
+                        // }
+                        elseif ($emp->emp_status_id == 18) {
                             $arr[] = $emp->emp_id;
                             // admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 12]);
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 12]);
