@@ -38,6 +38,7 @@ use Mpdf\Mpdf;
 // Adjust the namespace and model name as needed
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class ExcelController extends Controller
 {
@@ -448,7 +449,7 @@ class ExcelController extends Controller
         //     $rj = Emp_rj::where('emp_id', $emp->id)->where('sign', 1)->whereYear('date', $targetyear)->count();
         //     $new += $rj;
         //     // $emp['pj'] = $rj;
-            
+
         //     $emprj = Emp_rj::where('emp_id', $emp->id)->whereYear('date', $targetyear)->where('sign', 0)->count();
         //     $empnew = $new - $emprj;
         //     $emp->RJ = $empnew;
@@ -686,6 +687,71 @@ class ExcelController extends Controller
             return \view('pages.avances')->with('error', 'Operation echoue. Veuillez reessayer.');
         }
     }
+    public function print_attestations($id){
+        $att = Attestation::find($id);
+        $user = User::find($att->emp_id);
+        // dd($att,$user);
+        $mpdf = new Mpdf([
+            'format' => 'A4',
+        ]);
+        $html = view('pdf.recu_attestation', compact(['att','user']))->render();
+        $imagePath = public_path('LOGO ETUS.png');
+        $mpdf->AddPage();
+        $mpdf->Image($imagePath, 230, 12, 25, 25, 'png');
+        $mpdf->SetY(10);
+        date_default_timezone_set('Africa/Algiers');
+        $htmlFooter = "
+        <div style='border-top: 1px solid black; padding-top: 5px; text-align: center; font-size: 14px;'>
+            <div>المؤسسة العمومية للنقل الحضري وشبه الحضري سيدي بلعباس</div>
+            <div>048764072 - طريق معسكر مطول</div>
+        </div>
+        ";
+        $nomfichier = 'Recu inscription.pdf';
+
+        $mpdf->SetHTMLFooter($htmlFooter);
+        $mpdf->WriteHTML($html);
+        return response()->make($mpdf->Output($nomfichier, 'D'), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $nomfichier . '"',
+        ]);
+    // if ($att && $user) {
+    //     $templateProcessor = new TemplateProcessor('assets/word/rapport_coffre_original.docx');
+    
+    //     $time=$c->time;
+    //     $money=$c->money;
+    //     $t20=$c->t20;
+    //     $t25=$c->t25;
+    //     $t30=$c->t30;
+    //     $tp20= $t20 * 20;
+    //     $tp25= $t25 * 25;
+    //     $tp30= $t30 * 30;
+    //     $tt = $tp20+$tp25+$tp30;
+    //     $ts = $c->ts;
+    //     $caisse = $c->caisse;
+    //     $templateProcessor->setValue('c_nom', $ctrl);
+    //     $templateProcessor->setValue('nom', $name);
+    //     $templateProcessor->setValue('ligne', $ligne);
+    //     $templateProcessor->setValue('t20', $t20);
+    //     $templateProcessor->setValue('t25', $t25);
+    //     $templateProcessor->setValue('t30', $t30);
+    //     $templateProcessor->setValue('tp20', $tp20);
+    //     $templateProcessor->setValue('tp25', $tp25);
+    //     $templateProcessor->setValue('tp30', $tp30);
+    //     $templateProcessor->setValue('time', $time);
+    //     $templateProcessor->setValue('tt', $tt);
+    //     $templateProcessor->setValue('money', $money);
+    // // $templateProcessor->setValue('pm', $pm);
+    //     $templateProcessor->setValue('caisse', $caisse);
+    //     $templateProcessor->setValue('ts', $ts);
+    //     $templateProcessor->setValue('date', $c->c_date);
+    //     $templateProcessor->setValue('remarque', $c->rq);
+    //     $templateProcessor->setImageValue('logo', 'assets/word/logo.png');
+    //     $templateProcessor->saveAs('assets/word/rapport_coffre.docx');
+
+    //     // Return a download response to the user
+    //     return response()->download('assets/word/rapport_coffre.docx');
+    // }
+    }
     public function show_attestations(Request $request)
     {
         $from = $request->start_date;
@@ -704,6 +770,11 @@ class ExcelController extends Controller
 
                     if ($row->status != 1) {
                         $btn .= '
+                    <a href="' . route('print_attestation', $row->id) . '"
+                    class="btn btn-success btn-sm"
+                    target="_blank">
+                        Print
+                    </a>
                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" onclick="put_id(' . $row->id . ',1);" data-target="#exampleModal">
                     معالجة الطلب
                   </button>
@@ -993,16 +1064,16 @@ class ExcelController extends Controller
                         // if($holiday_id && ($prev_status == 18)){
                         //     admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => 14, 'sign' => 1, 'holiday_id' => $holiday_id]);
                         // }
-                        if ($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2|| $emp->emp_status_id == 17)) {
+                        if ($holiday_id && ($emp->emp_status_id == 1 || $emp->emp_status_id == 2 || $emp->emp_status_id == 17)) {
                             $arr[] = $emp->emp_id;
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
                         } elseif ($emp->emp_status_id == 7 || $emp->emp_status_id == 11) {
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 0, 'holiday_id' => null]);
-                        }elseif($holiday_id && $emp->emp_status_id == 14){
+                        } elseif ($holiday_id && $emp->emp_status_id == 14) {
                             $arr[] = $emp->emp_id;
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => $holiday_id]);
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 11]);
-                        }elseif ($emp->emp_status_id == 14) {
+                        } elseif ($emp->emp_status_id == 14) {
                             $arr[] = $emp->emp_id;
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 11]);
                         }
@@ -1021,7 +1092,7 @@ class ExcelController extends Controller
                             $arr[] = $emp->emp_id;
                             // admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 12]);
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 12]);
-                        }elseif ($emp->emp_status_id == 19) {
+                        } elseif ($emp->emp_status_id == 19) {
                             $arr[] = $emp->emp_id;
                             admin_emp_recup::create(['date' => $date, 'emp_id' => $emp->emp_id, 'emp_status_id' => $emp->emp_status_id, 'sign' => 1, 'holiday_id' => 13]);
                         }

@@ -52,6 +52,7 @@ Route::post('Export_Avance',[ ExcelController::class, 'exportDataAvance'])->name
 
 
 Route::post('Show_Attestations',[ ExcelController::class, 'show_attestations'])->name('show_attestations')->middleware('auth'); 
+Route::get('Print_Attestation/{id}',[ ExcelController::class, 'print_attestations'])->name('print_attestation')->middleware('auth'); 
 
 Route::post('Demande_Attestations',[ ExcelController::class, 'demande_attestations'])->name('demande_attestations')->middleware('auth'); 
 Route::get('Demander_Attestations',[ ExcelController::class, 'attestations'])->name('attestations')->middleware('auth'); 
