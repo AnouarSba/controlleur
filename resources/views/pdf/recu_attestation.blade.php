@@ -72,6 +72,10 @@
             قابض
         @elseif ($user->is_ == 8)
             سائق حافلة
+        @elseif ($user->is_ == 2  )
+            مراقب
+        @elseif ($user->is_ == 3 || $user->is_ == 4 )
+            رئيس محطة
         @endif
     </div>
     <div class="header" style="margin-top: 40px;">
